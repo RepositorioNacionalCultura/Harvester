@@ -26,7 +26,7 @@ public class OAIPMHURLBuilder {
      * Commonly used prefixes.
      */
     public enum PREFIX {
-        mods, meds, oai_dc, oai_etdms
+        mods, meds, oai_dc, oai_etdms, ore
     }
 
     /**
