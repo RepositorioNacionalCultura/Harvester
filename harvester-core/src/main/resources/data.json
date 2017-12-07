@@ -1,0 +1,1950 @@
+[
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Embriz Osorio, Arnulfo"
+          },
+          "abstract" : "Esta serie fotográfica aporta elementos para conocer algunos aspectos de la vida y del contexto de los Pimas de Yécora, al observar imágenes del paisaje, de sus casas y de su medio ambiente.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Casas tradicionales::Materiales"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Casas tradicionales::Diferencias entre las casas habitacionales"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Casas y paisaje : obnók (del este) : Yécora, Sonora"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2016-11-28"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T20:02:38Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T20:02:38Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Yuto-nahua"
+            },
+            {
+              "languageTerm" : "pima"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/677"
+          },
+          "genre" : [
+            "Etnografía",
+            "Fotografía"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/677",
+        "datestamp" : "2016-11-29T09:00:09Z",
+        "setSpec" : [
+          "com_123456789_556",
+          "com_123456789_2",
+          "col_123456789_559"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Gutiérrez, Salomé"
+          },
+          "abstract" : "Documentación lingüística del popoluca de texistepec. Una lengua en muy alto riesgo de desaparición. Conversación/ entrevista realizada por el maestro Salomé Gutierrez a Filemón Lara Seferino, habitante de la comunidad de Texistepec. Audio y video grabado en la comunidad de Texitepec, municipio de Texistepec, Veracruz.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA"
+          },
+          "titleInfo" : {
+            "title" : "Documentación lingüística del popoluca de texistepec. Una lengua en muy alto riesgo de desaparición."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-05-17"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-05-17T18:59:16Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-05-17T18:59:16Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Mixe-zoque"
+            },
+            {
+              "languageTerm" : "texistepequeño"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/690"
+          },
+          "genre" : "Entrevista"
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/690",
+        "datestamp" : "2017-05-18T08:00:08Z",
+        "setSpec" : [
+          "com_123456789_688",
+          "com_123456789_9",
+          "col_123456789_689"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Embriz Osorio, Arnulfo"
+          },
+          "abstract" : "Con esta imagen podemos conocer algunos aspectos de la vida cotidiana de algunos wixárika al observar su atuendo tradicional. Podemos inferir relaciones de parentesco ya que una mujer carga a un niño, por lo que podemos decir que probablemente se trata de una madre y su hijo.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Relaciones personales::Relaciones y grupos sociales"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Vestidos::Vestido habitual"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Relaciones personales::Relaciones y grupos sociales"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Atuendo tradicional : wixárika (del este) : Jalisco"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2016-11-28"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T19:30:12Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T19:30:12Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Yuto-nahua"
+            },
+            {
+              "languageTerm" : "huichol"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/675"
+          },
+          "genre" : [
+            "Etnografía",
+            "Fotografía"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/675",
+        "datestamp" : "2016-11-29T09:00:10Z",
+        "setSpec" : [
+          "com_123456789_501",
+          "com_123456789_2",
+          "col_123456789_502"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : [
+            {
+              "namePart" : "Vázquez, Armando"
+            },
+            {
+              "namePart" : "Vargas, Rodrigo"
+            },
+            {
+              "namePart" : "Guitérrez, América"
+            },
+            {
+              "namePart" : "Figueroa, Ricardo"
+            },
+            {
+              "namePart" : "López, Erik"
+            },
+            {
+              "namePart" : "Valenzuela, Belén"
+            }
+          ],
+          "abstract" : "Desde siempre el ser humano ha explicado el mundo que le rodea: los fenómenos naturales, el origen de la vida y del hombre. Así, cada pueblo crea una cosmovisión única e irrepetible, moldeada por la percepción individual y colectiva de sus integrantes, los lugares en que ha habitado o transitado, las ideas, creencias y conocimientos acumulados de generación en generación. Para los pueblos indígenas de México, esos conocimientos y experiencias se han transmitido de padres a hijos, de abuelos a nietos, con la lengua materna como el vehículo fidedigno del saber, sentir, pensar y ser indígena.&#13;Para el pueblo wirarika (huichol) la noble responsabilidad de la transmisión y enseñanza de los saberes wixaritari a las nuevas generaciones reside en sólo unos hombres sabios, cantadores, curanderos y chamanes: los marakate. Ellos enseñan y cantan los mitos de creación del mundo, inculcando en sus descendientes el respeto por la naturaleza, por el hombre el tiempo y lo sagrado . en nuestros días, el pueblo huichol cuenta con músicos, escritores, artistas plásticos, investigadores y profesionistas que promueven la lengua y el arte huicholes.&#13;De esta manera, la lengua wirarika goza de gran vitalidad. No obstante, una de las cuatro variantes lingüísticas de este idioma, se encuentra en muy alto riesgo de desaparición.&#13;Ante esta amenaza, la creación y difusión del cortometraje animado, \"Memuti Autsiemieme / El Diluvio\", se torna de gran importancia para dar a conocer al público hablante y no hablante, la riqueza lingüística y cosmovisión wixaritari, contribuyendo así a su fortalecimiento y desarrollo.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Mitos y cosmovisión::Leyendas, cuentos y mitos"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Mitos y cosmovisión::Tradiciones orales"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Cortometraje animado \"Memuti Autisiemieme / El Diluvio\" : wixárika (del norte)"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2016-11-23"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T16:06:34Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T16:06:34Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Oto-mangue"
+            },
+            {
+              "languageTerm" : "huichol"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/673"
+          },
+          "genre" : "Narrativa"
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/673",
+        "datestamp" : "2016-11-29T09:00:11Z",
+        "setSpec" : [
+          "com_123456789_501",
+          "com_123456789_2",
+          "col_123456789_505"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Embriz Osorio, Arnulfo"
+          },
+          "abstract" : "Con estas dos imágenes podemos conocer algunos aspectos identiarios y culturales de los Seris, al observar la pintura tradicional que llevan algunas mujeres en su rostro, así como su atuendo tradicional.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Relaciones personales::Relaciones y grupos sociales"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Procesos rituales::Arreglos rituales"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Procesos rituales::Elementos rituales"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Mujeres seri :  cmiique iitom : Sonora"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2016-11-28"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T20:21:36Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T20:21:36Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Seri"
+            },
+            {
+              "languageTerm" : "seri"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/679"
+          },
+          "genre" : [
+            "Etnografía",
+            "Fotografía"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/679",
+        "datestamp" : "2016-11-29T09:00:11Z",
+        "setSpec" : [
+          "com_123456789_4",
+          "col_123456789_247"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Embriz Osorio, Arnulfo"
+          },
+          "abstract" : "Con esta serie fotográfica podemos conocer algunos aspectos de la vida tradicional de los Tepehuanos del sur, al observar a algunos músicos, sus instrumentos musicales y su indumentaria.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Música::Músicos"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Música::Instrumentos tradicionales"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Música::Indumentaria tradicional"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Músicos :  au’dam : Nayarit"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2016-11-28"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T20:14:38Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T20:14:38Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Yuto-nahua"
+            },
+            {
+              "languageTerm" : "tepehuano del sur"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/678"
+          },
+          "genre" : [
+            "Etnografía",
+            "Fotografía"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/678",
+        "datestamp" : "2016-11-29T09:00:13Z",
+        "setSpec" : [
+          "com_123456789_67",
+          "com_123456789_2",
+          "col_123456789_68"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Embriz Osorio, Arnulfo"
+          },
+          "abstract" : "En esta fotografía observamos el retrato de un indígena Cora en su comunidad, lleva un morral y al fondo vemos una casa hecha con adobe y techos de palma. Estos elementos permiten conocer algunos aspectos de la vida cotidiana, de la arquitectura de sus casas.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Nivel de vida y rutina diaria::Rutina diaria"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Casas tradicionales::Materiales"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Retrato : rosaríìtu : Rosamorada, Nayarit"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2016-11-28"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T18:38:11Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T18:38:11Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Yuto-nahua"
+            },
+            {
+              "languageTerm" : "cora"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/674"
+          },
+          "genre" : [
+            "Etnografía",
+            "Fotografía"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/674",
+        "datestamp" : "2016-11-29T09:00:15Z",
+        "setSpec" : [
+          "com_123456789_489",
+          "com_123456789_2",
+          "col_123456789_490"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Embriz Osorio, Arnulfo"
+          },
+          "abstract" : "Esta serie fotográfica aporta elementos para conocer algunos aspectos de la vida y del contexto de los Purépechas de Yunuen, al observar imágenes del paisaje, de sus casas y de su medio ambiente",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Casas tradicionales::Materiales"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Paisaje::Contexto biológico-biodiversidad"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Paisaje y casas : p’urhepecha : Yunuen, Pátzcuaro, Michoacán."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2016-11-28"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T20:45:01Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2016-11-28T20:45:01Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Tarasca"
+            },
+            {
+              "languageTerm" : "tarasco"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/680"
+          },
+          "genre" : [
+            "Etnografía",
+            "Fotografía"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/680",
+        "datestamp" : "2016-11-29T09:00:19Z",
+        "setSpec" : [
+          "com_123456789_590",
+          "com_123456789_8",
+          "col_123456789_591"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Santa Catarina Ixtepeji"
+          },
+          "abstract" : "Documental  \"El zapoteco de Santa Catarina Ixtepeji\" que documenta vocabulario en lengua tizariu (zapoteco serrano del oeste) ya que se encuentra en muy alto riesgo de desaparición.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES::Educación::Sistema educación"
+            },
+            {
+              "topic" : "Documental"
+            },
+            {
+              "topic" : "Lenguas en riesgo"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Léxico"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Documental \"El zapoteco de Santa Catarina Ixtepeji\" : tizáriù / xhtisariú : Oaxaca"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-02-14"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-02-14T22:23:45Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-02-14T22:23:45Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Oto-mangue"
+            },
+            {
+              "languageTerm" : "zapoteco"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/687"
+          },
+          "genre" : [
+            "Conversación",
+            "Entrevista",
+            "Etnografía"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/687",
+        "datestamp" : "2017-05-22T19:15:26Z",
+        "setSpec" : [
+          "com_123456789_129",
+          "com_123456789_5",
+          "col_123456789_160"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Gutiérrez, Salomé"
+          },
+          "abstract" : "Documentación lingüística del popoluca de oluta. Una lengua en muy alto riesgo de desaparición. Conversación/ entrevista realizada por el maestro Salomé Gutierrez a Diosgoro Prisiliano Esteban, habitante de la comunidad de Texistepec. Audio y video grabado en la comunidad de Oluta, municipio de Oluta, Veracruz.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA"
+          },
+          "titleInfo" : {
+            "title" : "Documentación lingüística del popoluca de oluta. Una lengua en muy alto riesgo de desaparición."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-05-22"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-05-22T19:46:38Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-05-22T19:46:38Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Mixe-zoque"
+            },
+            {
+              "languageTerm" : "oluteco"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/691"
+          },
+          "genre" : "Entrevista"
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/691",
+        "datestamp" : "2017-05-23T08:00:08Z",
+        "setSpec" : [
+          "com_123456789_196",
+          "com_123456789_9",
+          "col_123456789_197"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "García Martín, Evaristo"
+          },
+          "abstract" : "Lista de Yolanda Lastra elicitada a informante masculino en la comunidad de La Magdalena en Temascalcingo, Estado de México.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Léxico"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Niveles de la lengua::Nivel Léxico-Semántico"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Niveles de la lengua::Nivel Fónico"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Lista de Yolanda Lastra : hñähñu (del centro) : Temascalcingo, Estado de México"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-01-31"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-01-31T18:52:49Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-01-31T18:52:49Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Oto-mangue"
+            },
+            {
+              "languageTerm" : "otomí"
+            }
+          ],
+          "identifier" : [
+            {
+              "type" : "other",
+              "content" : "OT13_15_11_H_EGM_Y_2015"
+            },
+            {
+              "type" : "uri",
+              "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/686"
+            }
+          ],
+          "genre" : [
+            "Elicitación",
+            "Léxico",
+            "Lista de palabras",
+            "Transcripcion"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/686",
+        "datestamp" : "2017-05-28T13:36:01Z",
+        "setSpec" : [
+          "com_123456789_105",
+          "com_123456789_5",
+          "col_123456789_106"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "García Martín, Evaristo"
+          },
+          "abstract" : "Lista de Yolanda Lastra de informante femenino de la comunidad de La Magdalena, Temascalcingo, Estado de México",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Léxico"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Niveles de la lengua::Nivel Léxico-Semántico"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Lista de Yolanda Lastra : hñähñu (del centro) : Temascalcingo, Estado de México"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-01-26"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-01-26T22:44:04Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-01-26T22:44:04Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Oto-mangue"
+            },
+            {
+              "languageTerm" : "otomí"
+            }
+          ],
+          "identifier" : [
+            {
+              "type" : "other",
+              "content" : "OT13_15_11_M_EGM_Y_2015"
+            },
+            {
+              "type" : "uri",
+              "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/685"
+            }
+          ],
+          "genre" : [
+            "Elicitación",
+            "Léxico",
+            "Lista de palabras",
+            "Transcripcion"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/685",
+        "datestamp" : "2017-05-28T13:36:50Z",
+        "setSpec" : [
+          "com_123456789_105",
+          "com_123456789_5",
+          "col_123456789_106"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Ruiz Felipe, Julio"
+          },
+          "abstract" : "Cédula de Smith elicitada a informante femenino de la comunidad de La Cañada en Temoaya, Estado de México",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Ciencias de la lengua::Fonética"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Ciencias de la lengua::Fonología"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Ciencias de la lengua::Sintaxis"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Ciencias de la lengua::Morfología"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Cédula de Smith : hñähñu (del centro) : Temoaya, Estado de México"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-01-26"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-01-26T20:57:47Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-01-26T20:57:47Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Oto-mangue"
+            },
+            {
+              "languageTerm" : "otomí"
+            }
+          ],
+          "identifier" : [
+            {
+              "type" : "other",
+              "content" : "OT13_15_09_M_JRF_CS_2013"
+            },
+            {
+              "type" : "uri",
+              "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/684"
+            }
+          ],
+          "genre" : [
+            "Elicitación",
+            "Léxico",
+            "Lista de palabras",
+            "Transcripcion"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/684",
+        "datestamp" : "2017-05-28T13:38:08Z",
+        "setSpec" : [
+          "com_123456789_105",
+          "com_123456789_5",
+          "col_123456789_106"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Ruiz Felipe, Julio"
+          },
+          "abstract" : "Lista de HAspelmath elicitada a informante femenino de la comunidad de la Cañada, Temoaya, Estado de México.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Léxico"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Niveles de la lengua::Nivel Léxico-Semántico"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Ciencias de la lengua::Fonología"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Lista de Haspelmath : hñähñu (del centro) : Temoaya, Estado de México"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-01-17"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-01-17T21:58:33Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-01-17T21:58:33Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Oto-mangue"
+            },
+            {
+              "languageTerm" : "otomí"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/683"
+          },
+          "genre" : [
+            "Elicitación",
+            "Léxico",
+            "Lista de palabras",
+            "Transcripcion"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/683",
+        "datestamp" : "2017-05-28T13:38:54Z",
+        "setSpec" : [
+          "com_123456789_105",
+          "com_123456789_5",
+          "col_123456789_106"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Villalpando Quiñonez, Jesús"
+          },
+          "abstract" : "Archivos de audio de la lista de Haspelmath, correspondientes a la localidad de Ejido Huepaco, en el municipio de El Fuerte, Sinaloa. Datos de hombre.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "lengua mayo, Lista de haspelmath"
+          },
+          "titleInfo" : {
+            "title" : "Lista de Haspelmath: Lengua yorem-nokki <mayo> del Estado de Sinaloa"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-05-31"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-06-05T19:29:04Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-06-05T19:29:04Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Yuto-nahua"
+            },
+            {
+              "languageTerm" : "mayo"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/692"
+          },
+          "genre" : "Elicitación"
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/692",
+        "datestamp" : "2017-06-06T08:00:08Z",
+        "setSpec" : [
+          "com_123456789_12",
+          "com_123456789_2",
+          "col_123456789_38"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "López Corona, Georgete Aimmé"
+          },
+          "abstract" : "Esta serie de videos parten del Proyecto “Saberes Gastronómicos Tradicionales de la comunidad de San Pablo Güilá” del municipio de San Dionisio Ocotepec, Oaxaca. Dicho Proyecto fue coordinado por la Mtra. Georgete Aimmé López Corona con el fin de documentar en video y texto escrito la preparación y narración de comidas tradicionales de la comunidad de San Pablo Güilá, Valle de Oaxaca.  Se presenta la grabación de cuatro recetas; se documentó la preparación del nìs kwâan bàasit (pipián blanco con pescado), el gìndòo’ byáa’ (amarillo de nopales), el gètgúu’ gìndòo’ (tamal de amarillo) y el gètgúu’ bsàa’ (tamal de ojo o de frijol). Como colaboradores se contó con la participación de Luz Alba Santiago Morales y Ana Mey Maricela Morales Cruz, hablantes de zapoteco.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "Recetas,Saberes Gastronómicos,"
+          },
+          "titleInfo" : {
+            "title" : "Saberes gastronómicos tradicionales de la comunidad de San Pablo Güilá, Estado de Oaxaca."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-06-21"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-06-21T16:19:57Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-06-21T16:19:57Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "other"
+            },
+            {
+              "languageTerm" : "Oto-mangue"
+            },
+            {
+              "languageTerm" : "zapoteco"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/694"
+          },
+          "genre" : "Receta"
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/694",
+        "datestamp" : "2017-06-22T08:00:09Z",
+        "setSpec" : [
+          "com_123456789_129",
+          "com_123456789_5",
+          "col_123456789_152"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Comité Académico de la Lengua Úza’, (CALU)"
+          },
+          "abstract" : "En esta serie clips de video podemos ver el proceso que se lleva a cabo para realizar la fiesta “El encuentro” y la fiesta de la Santa Cruz. Algunos vecinos nos cuentan acerca del proceso de cada fiesta en lengua Úza’, en la comunidad  de Misión de Chichimecas. Mensaje de los autores: Se agradece infinitamente a la comunidad de Misión de Chichimecas en general por su invaluable participación, ya sea de manera directa o indirecta, igualmente gracias a nuestros antepasados éza’r por habernos heredado nuestra lengua, nuestra danza, nuestras tradiciones y costumbres que son lo que nos dan la certeza de una identidad. &#13;&#13;Agradecemos también al Instituto Nacional de Lenguas Indigenas (INALI) por esa labor tan noble de gestionar y apoyar el fortalecimiento, desarrollo y preservación de nuestra lengua y cultura úza’.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "Fiesta \"El encuentro\", Misión de chichimecas, Lengua Úza’"
+          },
+          "titleInfo" : {
+            "title" : "Fiesta “El encuentro”; comunidad de Misión de Chichimecas, Municipio de San Luis de la Paz, Guanajuato."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-06-12"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-06-12T17:13:42Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-06-12T17:13:42Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Oto-mangue"
+            },
+            {
+              "languageTerm" : "chichimeco jonaz"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/693"
+          },
+          "genre" : [
+            "Ceremonia",
+            "Entrevista"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/693",
+        "datestamp" : "2017-06-28T15:18:14Z",
+        "setSpec" : [
+          "com_123456789_498",
+          "com_123456789_5",
+          "col_123456789_599"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : [
+            {
+              "namePart" : "Guzmán Vazquéz, Alejandro H."
+            },
+            {
+              "namePart" : "Alcántara Gómez, Epifanio Noé"
+            },
+            {
+              "namePart" : "Gómez Hernández, Roberto"
+            }
+          ],
+          "abstract" : "Los siguientes materiales son producto del proyecto de “Documentación y fortalecimiento de la lengua Ayöök, variante de Totontepec, Oaxaca.” Coordinado por la Asociación civil “Anyukojmit Jayu A.C.” La documentación se realizó con migrantes de Totontepec que residen actualmente en la Ciudad de México, en las Delegaciones de Iztapalapa y Cuauhtémoc .  La documentación consta de:&#13;&#13;Documentos en pdf:&#13;-\tCanciones populares en lengua Ayöök.&#13;-\tFolleto básico de vocales y consonantes para leer y escribir en lengua Ayöök.&#13;-\t1er taller de lecto-escritura en lengua Ayöök.&#13;&#13;Videos en formato mp4: &#13;-\t“Entrevista: De Totontepec a la Ciudad de México, vivencias” este material esta en lengua Ayöök; dos videos, uno con subtítulos en Ayöök y otra con subtítulos en español. &#13;Canciones (mp4): &#13;-\tTodas las canciones constan de dos videos; uno en lengua ayöök y otro en español.  Lista de canciones: Hermoso cariño, La Totontepecana, Muchacha de Totontepec  y Nuestra lengua.&#13;-Vocales y ejecicios en ayöök (mp4).",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "Lengua ayöök, música ayöök,"
+          },
+          "titleInfo" : {
+            "title" : "Documentación y fortalecimiento de la Lengua Ayöök, variante de Totontepec, Oaxaca."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-06-22"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-06-22T17:09:38Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-06-22T17:09:38Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "Mixe-zoque"
+            },
+            {
+              "languageTerm" : "mixe"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/696"
+          },
+          "genre" : [
+            "Cantos",
+            "Conversación",
+            "Entrevista",
+            "Testimonio"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/696",
+        "datestamp" : "2017-06-29T08:00:08Z",
+        "setSpec" : [
+          "com_123456789_189",
+          "com_123456789_9",
+          "col_123456789_695"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Cano Sosaya, José Concepción"
+          },
+          "abstract" : "Lista de Haspelmath y Tadmor  (2009) elicitada en la localidad de Xlapak, municipio de Yaxcabá, en el Estado de Yucatán. Audios de informante femenino. La lista de haspelmat y Tadmor consta de por lo menos de 1500 entradas léxicas, las cuales están divididas en 24 campos semánticos.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "lengua maya"
+          },
+          "titleInfo" : {
+            "title" : "Lista de Haspelmath: Maaya/ maaya t’ann/ maayáa <maya>>; Localidad Xlapak, Yucatán."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-07-31"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-07-31T17:19:09Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-07-31T17:19:09Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "other"
+            },
+            {
+              "languageTerm" : "Maya"
+            },
+            {
+              "languageTerm" : "maya"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/699"
+          },
+          "genre" : "Elicitación"
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/699",
+        "datestamp" : "2017-08-03T08:00:07Z",
+        "setSpec" : [
+          "com_123456789_13",
+          "com_123456789_6",
+          "col_123456789_27"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Polian, Gilles"
+          },
+          "abstract" : "Esta grabación se realizó el 5 de febrero del 2008 en el municipio de San Juan Cancuc, con el equipo de trabajo de campo siguiente: Gilles Polian, Pedro López Gómez y María de Jesús Gómez Sánchez. Pedro López Gómez un colaborador del proyecto fue quien nos invitó a grabar en la casa de sus abuelos (doña María Martínez Cruz y don Pedro López Cruz) ya que ellos aún saben la historia de la siembra, cosecha y procesamiento del algodón, hace muchos años con eso sobrevivían, por lo mismo que anteriormente no sembraban mucho el café. Aparte de que eso lo elaboraban para su ropa porque no había ropa como en la actualidad, por lo tanto a eso se dedicaban diariamente las mujeres y los hombres sólo se encargaban de cortar el algodón. Comenta doña María lo laborioso que es trabajar el algodón y como hace muchos años que se dejó de practicar. Y luego muestran el corte y explican el proceso del hilado del algodón, platican la forma en que se trabajaba y se comercializaba. Y también explica don Pedro López Cruz cómo anteriormente fueron maltratados por los mestizos.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "algodón, bats’il k’op"
+          },
+          "titleInfo" : {
+            "title" : "Conversación/entrevista sobre el algodón y su aprovechamiento: bats’il k’op (del occidente) : San Juan Cancuc, Chiapas."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-06-29"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-06-29T17:28:35Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-06-29T17:28:35Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "Maya"
+            },
+            {
+              "languageTerm" : "tseltal"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/697"
+          },
+          "genre" : [
+            "Conversación",
+            "Entrevista"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/697",
+        "datestamp" : "2017-08-07T16:01:20Z",
+        "setSpec" : [
+          "com_123456789_198",
+          "com_123456789_6",
+          "col_123456789_252"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Gilles, Polian"
+          },
+          "abstract" : "En la localidad de Bachajón, municipio de Chilón, Chiapas. Don Ricardo Silvano nos plática acerca del uso del trapiche (molino para la caña de azúcar) que se utilizaba y continúa utilizándose actualmente, aunque ya no es frecuente, por algunos tseltales de esa comunidad. Su función es extraer el jugo de la caña que se usa para preparar la panela. Gaspar Silvano explica la función de cada una de las partes del trapiche; asimismo, indica el modo de manejarlas y lo peligroso  que puede resultar en caso de estar distraído mientras se trabaja con ésta. De acuerdo con don Gaspar, cada uno de los engranes debe estar bien enjabonado, (no usan grasa como normalmente sucede con las máquinas industriales), para suavizar las maderas que al girar van extrayendo el jugo de las cañas. Una vez obtenido el jugo se lleva al horno en una tinaja y luego de unas cinco o seis queda listo para darle forma a la panela.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "tseltal, trapiche, Plática"
+          },
+          "titleInfo" : {
+            "title" : "Plática sobre el trapiche en Bachajón; bats’il k’op (del norte)."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-08-09"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-08-09T17:00:10Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-08-09T17:00:10Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "other"
+            },
+            {
+              "languageTerm" : "Maya"
+            },
+            {
+              "languageTerm" : "tseltal"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/700"
+          },
+          "genre" : [
+            "Conversación",
+            "Instrucciones"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/700",
+        "datestamp" : "2017-08-10T08:00:08Z",
+        "setSpec" : [
+          "com_123456789_198",
+          "com_123456789_6",
+          "col_123456789_535"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : [
+            {
+              "namePart" : "Polian, Gilles"
+            },
+            {
+              "namePart" : "Rocío, Sandra"
+            },
+            {
+              "namePart" : "Mendez, Juan"
+            }
+          ],
+          "abstract" : "Esta grabación se realizó el 12 de agosto del 2006 en la casa del señor Esteban quien prepara el tababo, Oxchuc. Con la asociación \"xmuxuk' balumilal\", Gilles Polian y Sandra Rocio (de Oxchuc), Juan Méndez Girón (de Tenejapa) colaboradores del proyecto. Se obtuvo este video por la invitación de don Manuel K'ulub el presidente de la asociación, con la finalidad de hacer una demostración de la preparación del tabaco (en tseltal maya). Ya que hasta hoy en la fecha se sigue utilizando como protección espiritual y como medicina. También se platica la historia del trabajo y cómo se ha venido usando, junto con otras historias.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "Tabaco, historia, lengua bats’il k’op"
+          },
+          "titleInfo" : {
+            "title" : "Plática sobre el tabaco; bats’il k’op <tseltal del occidente>, Chiapas."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-08-09"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-08-09T19:17:16Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-08-09T19:17:16Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "other"
+            },
+            {
+              "languageTerm" : "Maya"
+            },
+            {
+              "languageTerm" : "tseltal"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/701"
+          },
+          "genre" : [
+            "Conversación",
+            "Encuentro"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/701",
+        "datestamp" : "2017-08-11T08:00:09Z",
+        "setSpec" : [
+          "com_123456789_198",
+          "com_123456789_6",
+          "col_123456789_252"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "name" : {
+            "namePart" : "Polian, Gilles"
+          },
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-08-10"
+            }
+          },
+          "abstract" : "La señora Micaela Sáragos (médico tradicional de Yulub Max, Bachajón) explica qué tipo de plantas se utiliza y cuáles son sus propiedades curativas. Así mismo explica también cómo aprendió a usar las plantas medicinales.",
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-08-10T16:58:45Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-08-10T16:58:45Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "other"
+            },
+            {
+              "languageTerm" : "Álgica"
+            },
+            {
+              "languageTerm" : "tseltal"
+            }
+          ],
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/702"
+          },
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "CATEGORÍAS TEMÁTICAS::CLASIFICACIÓN DE DATOS CULTURALES"
+          },
+          "titleInfo" : {
+            "title" : "Plática sobre hierbas medicinales en la localidad de Bachajón; bats’il k’op (tseltal del norte) Chiapas."
+          }
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/702",
+        "datestamp" : "2017-08-11T08:00:09Z",
+        "setSpec" : [
+          "com_123456789_198",
+          "com_123456789_6",
+          "col_123456789_535"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : [
+            {
+              "namePart" : "Olivares, Amador T."
+            },
+            {
+              "namePart" : "Galindo, Salvador"
+            },
+            {
+              "namePart" : "Ruiz, Juan G."
+            },
+            {
+              "namePart" : "González, René O."
+            }
+          ],
+          "abstract" : "Para contribuir en los procesos de fortalecimiento y desarrollo de las lenguas indígenas de Oaxaca, la Coordinación de Investigación Lingüística del Centro de Estudios para el Desarrollo de las Lenguas Indígenas de Oaxaca (CEDELIO) se propuso documentar 9 lenguas en alto riesgo de extinción. Esto con el objetivo principal de cubrir parte de las lenguas indígenas que conforman la geografía lingüística de Oaxaca, por lo cual se presenta el proyecto Xjuani: vocabulario ilustrado e interactivo en mixteco, chocholteco, ixcateco, cuicateco, mazateco, chinanteco, chatino, mixe y huave. Este material interactivo integra 9 lenguas indígenas de los siguientes campos semánticos: partes del cuerpo, parentesco, casa-hogar, flora y fauna.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "Material educativo, Material interactivo"
+          },
+          "titleInfo" : {
+            "title" : "Proyecto: Xjuani; vocabulario ilustrado e interactivo en mixteco, chocholteco, ixcateco, cuicateco, mazateco, chinanteco, chatino, mixe y huave; Lenguas del Estado de Oaxaca."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-08-22"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-08-22T17:15:28Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-08-22T17:15:28Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "Chontal de Oaxaca"
+            },
+            {
+              "languageTerm" : "chontal de Oaxaca"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/706"
+          },
+          "genre" : "Material educativo"
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/706",
+        "datestamp" : "2017-08-24T08:00:07Z",
+        "setSpec" : [
+          "com_123456789_704",
+          "com_123456789_703",
+          "col_123456789_705"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Ruiz Felipe, Julio"
+          },
+          "abstract" : "Cédula de Smith elicitada en la comunidad de San Pedro Arriba, Temoaya, Estado de México a informante masculino",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : [
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Ciencias de la lengua::Sintaxis"
+            },
+            {
+              "topic" : "CATEGORÍAS TEMÁTICAS::ESTUDIO DE LA LENGUA::Niveles de la lengua::Nivel Sintáctico"
+            }
+          ],
+          "titleInfo" : {
+            "title" : "Cédula de Smith : hñähñu (del centro) : Temoaya, Estado de México"
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-01-10"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-01-10T22:29:15Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-01-10T22:29:15Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Oto-mangue"
+            },
+            {
+              "languageTerm" : "otomí"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/682"
+          },
+          "genre" : [
+            "Léxico",
+            "Lista de palabras",
+            "Transcripcion"
+          ]
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/682",
+        "datestamp" : "2017-08-24T08:00:09Z",
+        "setSpec" : [
+          "com_123456789_105",
+          "com_123456789_5",
+          "col_123456789_106"
+        ]
+      }
+    }
+  },
+  {
+    "record" : {
+      "metadata" : {
+        "mods" : {
+          "xmlns:doc" : "http://www.lyncode.com/xoai",
+          "name" : {
+            "namePart" : "Pérez Pérez, Noel"
+          },
+          "abstract" : "Lista de Haslpemath elicitada en la comunidad de Santa María Apipilhuasco, municipio de Ixhuatlán de Madero, Veracruz. Cabe mencionar que se trata de una variante perteneciente al Otomí de la Sierra. Informantes; Hombre y Mujer.",
+          "xsi:schemaLocation" : "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd",
+          "xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+          "subject" : {
+            "topic" : "ñüju, otomí de la sierra"
+          },
+          "titleInfo" : {
+            "title" : "Lista de Haspelmath: Lengua ñuju/ ñoju/ yühu <otomí de la Sierra>, Santa María Apipilhuasco, Ixhuatlán de Madero, Veracruz."
+          },
+          "xmlns:mods" : "http://www.loc.gov/mods/v3",
+          "originInfo" : {
+            "dateIssued" : {
+              "encoding" : "iso8601",
+              "content" : "2017-07-11"
+            }
+          },
+          "extension" : [
+            {
+              "dateAvailable" : {
+                "encoding" : "iso8601",
+                "content" : "2017-07-11T19:47:11Z"
+              }
+            },
+            {
+              "dateAccessioned" : {
+                "encoding" : "iso8601",
+                "content" : "2017-07-11T19:47:11Z"
+              }
+            }
+          ],
+          "language" : [
+            {
+              "languageTerm" : "es"
+            },
+            {
+              "languageTerm" : "Oto-mangue"
+            },
+            {
+              "languageTerm" : "otomí"
+            }
+          ],
+          "identifier" : {
+            "type" : "uri",
+            "content" : "http://alin.inali.gob.mx:80/xmlui/handle/123456789/698"
+          },
+          "genre" : "Elicitación"
+        }
+      },
+      "header" : {
+        "identifier" : "oai:alin.inali.gob.mx:123456789/698",
+        "datestamp" : "2017-08-24T08:00:10Z",
+        "setSpec" : [
+          "com_123456789_105",
+          "com_123456789_5",
+          "col_123456789_111"
+        ]
+      }
+    }
+  }
+]

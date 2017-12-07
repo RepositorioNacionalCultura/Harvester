@@ -29,9 +29,9 @@
     }
 %>        
         <h2>Paths</h2>
-        <div><a href="/demo/clientes.html">Clientes</a></div>
-        <div><a href="/demo/catalogos.html">Catalogos</a></div>
-        <div><a href="/demo/notas.html">Notas</a></div>
-        <div><a href="/demo/server.jsp">Server</a></div>
+        <div><a href="/login">/login</a></div>
+        <div><a href="/register">/register</a></div>
+        <div><a href="/utils/users.html">/utils/users.html</a></div>
+        <div><a href="/vquery/visualsearch.jsp">/vquery/visualsearch.jsp</a></div>
     </body>
 </html>
