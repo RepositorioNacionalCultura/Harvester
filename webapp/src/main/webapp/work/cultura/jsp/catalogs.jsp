@@ -11,7 +11,7 @@
         <script src="/platform/js/eng.js" type="text/javascript"></script>
         <link href="css/dac_page.css" rel="stylesheet">	
         <script type="text/javascript">
-            eng.initPlatform("datasources.js", false);
+            eng.initPlatform("/work/cultura/jsp/datasources.js", false);
         </script> 
     </head>
     <body>
