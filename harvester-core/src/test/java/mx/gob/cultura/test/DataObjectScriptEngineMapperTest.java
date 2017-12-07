@@ -18,7 +18,7 @@ public class DataObjectScriptEngineMapperTest {
     private static DataObjectScriptEngineMapper mapper;
 
     public DataObjectScriptEngineMapperTest() {
-        InputStream scriptis = getClass().getClassLoader().getResourceAsStream("script.js");
+        InputStream scriptis = getClass().getClassLoader().getResourceAsStream("script_inali_mods.js");
         String scriptsrc = readFile(scriptis);
 
         ScriptEngineManager factory = new ScriptEngineManager();
@@ -28,7 +28,7 @@ public class DataObjectScriptEngineMapperTest {
 
     @Test
     public void testConvert() {
-        InputStream datais = getClass().getClassLoader().getResourceAsStream("data.json");
+        InputStream datais = getClass().getClassLoader().getResourceAsStream("data_inali_mods.json");
         String jsonData = readFile(datais);
 
         if (null != jsonData && !jsonData.isEmpty()) {
