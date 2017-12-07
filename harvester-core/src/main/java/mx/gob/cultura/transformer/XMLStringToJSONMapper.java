@@ -11,6 +11,6 @@ public class XMLStringToJSONMapper implements Mapper<String, JSONObject> {
 
     @Override
     public JSONObject map(String source) {
-        return XML.toJSONObject(source);
+        return XML.toJSONObject(source, true);
     }
 }
