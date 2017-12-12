@@ -18,7 +18,7 @@ eng.config={
 eng.dataStores["mongodb"]={
     host:"localhost",
     port:27017,
-    class: "org.semanticwb.datamanager.datastore.DataStoreMongo",
+    class: "org.semanticwb.datamanager.datastore.DataStoreMongo"
 };
 /*
 eng.dataStores["ts_leveldb"]={
@@ -41,8 +41,8 @@ eng.dataSources["User"]={
         {name:"password",title:"Contraseña",type:"password"},
         {name:"email",title:"Correo electrónico",type:"string", validators: [{type:"isUnique"}]},
         {name:"roles",title:"Roles",stype:"select", valueMap:roles,multiple:true},
-        {name:"groups",title:"Grupos",stype:"select", valueMap:groups,multiple:true},
-    ],
+        {name:"groups",title:"Grupos",stype:"select", valueMap:groups,multiple:true}
+    ]
 };
 
 eng.dataSources["Permission"]={
@@ -52,8 +52,8 @@ eng.dataSources["Permission"]={
     displayField: "name",
     fields:[
         {name:"name",title:"Nombre",type:"string"},
-        {name:"roles",title:"Roles",stype:"select", valueMap:roles,multiple:true},
-    ],
+        {name:"roles",title:"Roles",stype:"select", valueMap:roles,multiple:true}
+    ]
 };
 
 /******* DataProcessors ************/
@@ -76,10 +76,11 @@ eng.routes["global"]={
     routeList:[
         { routePath: "login", forwardTo: "/work/config/login.jsp", isRestricted: "false", zindex:1 },
         { routePath: "register", forwardTo: "/work/config/register.jsp", isRestricted: "false" },
-        { routePath: "", forwardTo: "/index.jsp", isRestricted: "false"},
+        { routePath: "", forwardTo: "/work/config/login.jsp", isRestricted: "false"},
         { routePath: "work", isRestricted: "true"},
         { routePath: "work/*", jspMapTo: "/work/jsp/", isRestricted: "true" },
+        { routePath: "cultura/*", jspMapTo: "/work/cultura/jsp/", isRestricted: "true" },
         { routePath: "ds", forwardTo: "/platform/jsp/datasource.jsp", isRestricted: "true" },
-        { routePath: "ex", forwardTo: "/platform/jsp/export.jsp", isRestricted: "true" },
-    ],
+        { routePath: "ex", forwardTo: "/platform/jsp/export.jsp", isRestricted: "true" }
+    ]
 };
