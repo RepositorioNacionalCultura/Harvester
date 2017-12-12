@@ -7,15 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="harvester-core" />
-        <module name="SWBForms (1) (org.semanticwb.swbforms)" />
         <module name="webapp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="harvester" target="1.5" />
       <module name="harvester-core" target="1.8" />
-      <module name="SWBForms" target="1.5" />
-      <module name="SWBForms (1) (org.semanticwb.swbforms)" target="1.8" />
       <module name="webapp" target="1.8" />
     </bytecodeTargetLevel>
   </component>

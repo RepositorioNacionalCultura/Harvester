@@ -5,25 +5,24 @@
  */
 package mx.gob.cultura.extractor;
 
-import java.util.logging.Logger;
-import org.json.XML;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import org.json.JSONObject;
+import mx.gob.cultura.commons.Util;
 import org.json.JSONArray;
-import java.util.Date;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-
-import mx.gob.cultura.util.Util;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
 import org.semanticwb.datamanager.DataObject;
 import org.semanticwb.datamanager.SWBDataSource;
 import org.semanticwb.datamanager.SWBScriptEngine;
+
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  *
@@ -298,7 +297,7 @@ public class OAIExtractor extends ExtractorBase {
                                     DataObject rec = new DataObject();
                                     rec.put("oaiid", nid);
                                     rec.put("body", DataObject.parseJSON(nodeAsString));
-                                    BasicDBObject bjson = Util.toBasicDBObject(rec);
+                                    BasicDBObject bjson = Util.SWBForms.toBasicDBObject(rec);
                                     objects.insert(bjson);
 //                                    } else {
 //                                        numalready++;

@@ -1,7 +1,7 @@
 package mx.gob.cultura.indexer;
 
+import mx.gob.cultura.commons.exception.IndexException;
 import mx.gob.cultura.datasource.DataSource;
-import mx.gob.cultura.exception.IndexException;
 
 import java.util.Properties;
 

@@ -1,7 +1,7 @@
 package mx.gob.cultura.test;
 
-import mx.gob.cultura.util.URLBuilder;
-import mx.gob.cultura.util.URLBuilderBase;
+import mx.gob.cultura.commons.URLBuilder;
+import mx.gob.cultura.commons.URLBuilderBase;
 import mx.gob.cultura.util.oai.OAIPMHURLBuilder;
 import org.junit.Test;
 
