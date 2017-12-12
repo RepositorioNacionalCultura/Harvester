@@ -46,7 +46,7 @@ public class DataObjectScriptEngineMapperTest {
     private String readFile(InputStream is) {
         StringBuilder json = new StringBuilder();
         if (null != is) {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(is)) ) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8")) ) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     json.append(line);
