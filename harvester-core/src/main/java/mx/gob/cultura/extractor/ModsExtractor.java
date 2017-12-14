@@ -216,7 +216,7 @@ public class ModsExtractor extends ExtractorBase {
                     try {
 
                         jsonstr = Util.makeRequest(theUrl, true);
-                        jsonstr = Util.SWBForms.replaceOccurrences(hm, jsonstr);
+                        jsonstr = Util.TEXT.replaceOccurrences(hm, jsonstr);
 
                         if (jsonstr.contains("resumptionToken")) {
                             tknFound = true;
