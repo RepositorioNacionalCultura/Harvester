@@ -13,9 +13,9 @@
           <element id="archive" name="harvester-core.jar">
             <element id="module-output" name="harvester-core" />
           </element>
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/RepositorioNacionalCultura/Commons/master-ad26816538-1/Commons-master-ad26816538-1.jar" output-file-name="Commons.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/client/elasticsearch-rest-high-level-client/6.0.0/elasticsearch-rest-high-level-client-6.0.0.jar" output-file-name="elasticsearch-rest-high-level-client.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/elasticsearch/6.0.0/elasticsearch-6.0.0.jar" output-file-name="elasticsearch.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/RepositorioNacionalCultura/Commons/master-c3c5eacf10-1/Commons-master-c3c5eacf10-1.jar" output-file-name="Commons.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/client/elasticsearch-rest-high-level-client/6.0.1/elasticsearch-rest-high-level-client-6.0.1.jar" output-file-name="elasticsearch-rest-high-level-client.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/elasticsearch/6.0.1/elasticsearch-6.0.1.jar" output-file-name="elasticsearch.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/lucene/lucene-core/7.0.1/lucene-core-7.0.1.jar" output-file-name="lucene-core.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/lucene/lucene-analyzers-common/7.0.1/lucene-analyzers-common-7.0.1.jar" output-file-name="lucene-analyzers-common.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/lucene/lucene-backward-codecs/7.0.1/lucene-backward-codecs-7.0.1.jar" output-file-name="lucene-backward-codecs.jar" />
@@ -31,7 +31,7 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/lucene/lucene-spatial-extras/7.0.1/lucene-spatial-extras-7.0.1.jar" output-file-name="lucene-spatial-extras.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/lucene/lucene-spatial3d/7.0.1/lucene-spatial3d-7.0.1.jar" output-file-name="lucene-spatial3d.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/lucene/lucene-suggest/7.0.1/lucene-suggest-7.0.1.jar" output-file-name="lucene-suggest.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/securesm/1.1/securesm-1.1.jar" output-file-name="securesm.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/securesm/1.2/securesm-1.2.jar" output-file-name="securesm.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/net/sf/jopt-simple/jopt-simple/5.0.2/jopt-simple-5.0.2.jar" output-file-name="jopt-simple.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/com/carrotsearch/hppc/0.7.1/hppc-0.7.1.jar" output-file-name="hppc.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/joda-time/joda-time/2.9.5/joda-time-2.9.5.jar" output-file-name="joda-time.jar" />
@@ -44,15 +44,15 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hdrhistogram/HdrHistogram/2.1.9/HdrHistogram-2.1.9.jar" output-file-name="HdrHistogram.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-api/2.9.1/log4j-api-2.9.1.jar" output-file-name="log4j-api.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/jna/4.4.0-1/jna-4.4.0-1.jar" output-file-name="jna.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/client/elasticsearch-rest-client/6.0.0/elasticsearch-rest-client-6.0.0.jar" output-file-name="elasticsearch-rest-client.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/client/elasticsearch-rest-client/6.0.1/elasticsearch-rest-client-6.0.1.jar" output-file-name="elasticsearch-rest-client.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.jar" output-file-name="httpclient.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.4.5/httpcore-4.4.5.jar" output-file-name="httpcore.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpasyncclient/4.1.2/httpasyncclient-4.1.2.jar" output-file-name="httpasyncclient.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore-nio/4.4.5/httpcore-nio-4.4.5.jar" output-file-name="httpcore-nio.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.10/commons-codec-1.10.jar" output-file-name="commons-codec.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3.jar" output-file-name="commons-logging.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/plugin/parent-join-client/6.0.0/parent-join-client-6.0.0.jar" output-file-name="parent-join-client.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/plugin/aggs-matrix-stats-client/6.0.0/aggs-matrix-stats-client-6.0.0.jar" output-file-name="aggs-matrix-stats-client.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/plugin/parent-join-client/6.0.1/parent-join-client-6.0.1.jar" output-file-name="parent-join-client.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/plugin/aggs-matrix-stats-client/6.0.1/aggs-matrix-stats-client-6.0.1.jar" output-file-name="aggs-matrix-stats-client.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/json/json/20160810/json-20160810.jar" output-file-name="json.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-fileupload/commons-fileupload/1.3.2/commons-fileupload-1.3.2.jar" output-file-name="commons-fileupload.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-io/commons-io/2.2/commons-io-2.2.jar" output-file-name="commons-io.jar" />

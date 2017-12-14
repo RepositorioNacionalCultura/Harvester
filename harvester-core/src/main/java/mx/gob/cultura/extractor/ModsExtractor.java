@@ -204,7 +204,7 @@ public class ModsExtractor extends ExtractorBase {
                 System.out.println("Making request " + theUrl.toString());
                 extractorDef.put("lastExecution", sdf.format(new Date()));
 
-                HashMap<String, String> hm = Util.loadOccurrences(engine);
+                HashMap<String, String> hm = Util.SWBForms.loadOccurrences(engine);
 
                 boolean tknFound = false;
                 int numextract = 0;
@@ -216,7 +216,7 @@ public class ModsExtractor extends ExtractorBase {
                     try {
 
                         jsonstr = Util.makeRequest(theUrl, true);
-                        jsonstr = Util.replaceOccurrences(hm, jsonstr);
+                        jsonstr = Util.SWBForms.replaceOccurrences(hm, jsonstr);
 
                         if (jsonstr.contains("resumptionToken")) {
                             tknFound = true;
