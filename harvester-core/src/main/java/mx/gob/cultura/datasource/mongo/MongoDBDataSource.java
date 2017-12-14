@@ -6,7 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import mx.gob.cultura.datasource.Cursor;
 import mx.gob.cultura.datasource.DataSource;
-import mx.gob.cultura.util.Util;
+import mx.gob.cultura.commons.Util;
 import org.bson.Document;
 
 /**

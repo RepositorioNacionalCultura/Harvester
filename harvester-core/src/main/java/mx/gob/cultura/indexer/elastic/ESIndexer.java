@@ -1,10 +1,10 @@
 package mx.gob.cultura.indexer.elastic;
 
+import mx.gob.cultura.commons.Util;
+import mx.gob.cultura.commons.exception.IndexException;
 import mx.gob.cultura.datasource.Cursor;
 import mx.gob.cultura.datasource.DataSourceObject;
-import mx.gob.cultura.exception.IndexException;
 import mx.gob.cultura.indexer.IndexerBase;
-import mx.gob.cultura.util.Util;
 import org.bson.Document;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;

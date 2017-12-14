@@ -1,8 +1,6 @@
 package mx.gob.cultura.indexer;
 
-import mx.gob.cultura.exception.IndexException;
-
-import java.util.Properties;
+import mx.gob.cultura.commons.exception.IndexException;
 
 /**
  * Interface to encapsulate different {@link Indexer} implementations
