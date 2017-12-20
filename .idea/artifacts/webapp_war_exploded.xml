@@ -8,12 +8,12 @@
         </element>
         <element id="directory" name="lib">
           <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/swbforms/SWBFormsCore/jitpack-dependencies-1.0-SNAPSHOT-ga14399e-1/SWBFormsCore-jitpack-dependencies-1.0-SNAPSHOT-ga14399e-1.jar" output-file-name="SWBFormsCore.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/swbforms/SWBDataManager/master-1.0-SNAPSHOT-g1a5f0a4-7/SWBDataManager-master-1.0-SNAPSHOT-g1a5f0a4-7.jar" output-file-name="SWBDataManager.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/swbforms/SWBDataManager/master-1.0-SNAPSHOT-g362e8de-8/SWBDataManager-master-1.0-SNAPSHOT-g362e8de-8.jar" output-file-name="SWBDataManager.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/mongodb/mongo-java-driver/2.13.0/mongo-java-driver-2.13.0.jar" output-file-name="mongo-java-driver.jar" />
           <element id="archive" name="harvester-core.jar">
             <element id="module-output" name="harvester-core" />
           </element>
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/RepositorioNacionalCultura/Commons/master-c3c5eacf10-1/Commons-master-c3c5eacf10-1.jar" output-file-name="Commons.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/RepositorioNacionalCultura/Commons/master-9a36ebe86e-1/Commons-master-9a36ebe86e-1.jar" output-file-name="Commons.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/client/elasticsearch-rest-high-level-client/6.0.1/elasticsearch-rest-high-level-client-6.0.1.jar" output-file-name="elasticsearch-rest-high-level-client.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/elasticsearch/6.0.1/elasticsearch-6.0.1.jar" output-file-name="elasticsearch.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/lucene/lucene-core/7.0.1/lucene-core-7.0.1.jar" output-file-name="lucene-core.jar" />

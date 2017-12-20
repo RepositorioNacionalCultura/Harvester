@@ -62,4 +62,9 @@ public class IndexerBase implements Indexer {
     public void index() throws IndexException {
         throw new UnsupportedOperationException("Method not implemented");
     }
+
+    @Override
+    public String index(Object o) {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
 }

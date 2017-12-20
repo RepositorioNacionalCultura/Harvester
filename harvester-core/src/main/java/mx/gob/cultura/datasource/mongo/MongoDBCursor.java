@@ -3,6 +3,7 @@ package mx.gob.cultura.datasource.mongo;
 import com.mongodb.client.MongoCursor;
 import mx.gob.cultura.datasource.Cursor;
 import mx.gob.cultura.datasource.DataSourceObject;
+import mx.gob.cultura.transformer.Mapper;
 import org.bson.Document;
 
 /**
@@ -10,7 +11,7 @@ import org.bson.Document;
  * @author Hasdai Pacheco
  */
 public class MongoDBCursor implements Cursor {
-    MongoCursor<Document> cur;
+    private MongoCursor<Document> cur;
 
     /**
      * Constructor. Creates a new instance of {@link MongoDBCursor}
@@ -41,6 +42,11 @@ public class MongoDBCursor implements Cursor {
             @Override
             public Document getData() {
                 return d;
+            }
+
+            @Override
+            public Object transform(Mapper mapper) {
+                return mapper.map(d);
             }
         };
 

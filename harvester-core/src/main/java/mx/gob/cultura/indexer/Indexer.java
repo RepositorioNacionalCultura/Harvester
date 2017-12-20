@@ -12,4 +12,11 @@ public interface Indexer {
      * @throws IndexException if index process fails.
      */
     void index() throws IndexException;
+
+    /**
+     * Indexes one object.
+     * @param o Object to index.
+     * @return ID of indexed object, null if indexing fails.
+     */
+    String index(Object o);
 }

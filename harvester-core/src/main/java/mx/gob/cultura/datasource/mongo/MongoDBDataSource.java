@@ -14,8 +14,8 @@ import org.bson.Document;
  * @author Hasdai Pacheco
  */
 public class MongoDBDataSource implements DataSource {
-    String collName;
-    String dbName;
+    private String collName;
+    private String dbName;
 
     /**
      * Constructor. Creates a new instance of {@link MongoDBDataSource} with given database name and collection.
@@ -29,7 +29,7 @@ public class MongoDBDataSource implements DataSource {
 
     @Override
     public Cursor fetch(String filter) {
-        MongoClient client = Util.DB.getMongoClient();
+        MongoClient client = Util.MONGODB.getMongoClient();
         MongoDatabase db = client.getDatabase(dbName);
         MongoCollection coll = db.getCollection(collName);
 
