@@ -57,14 +57,14 @@ function(data) {
     }
     /*objeto digital*/
     var digitalObjcts = new Array();
-//    digitalObjcts.push({
+/*    digitalObjcts.push({
 //            url : modsData.identifier.content,
 //            format : modsData.physicalDescription ? 
 //                     modsData.physicalDescription.physicalDescription.internetMediaType ?
 //                     modsData.physicalDescription.physicalDescription.internetMediaType : "" :
 //                     "",
 //            rights : modsData.accessCondition ? modsData.accessCondition : ""
-//        });
+        });*/
     if (digitalObjcts.length > 0) {
         ret.digitalObject = digitalObjcts;
         if (!digitalObjcts[0].url) {
