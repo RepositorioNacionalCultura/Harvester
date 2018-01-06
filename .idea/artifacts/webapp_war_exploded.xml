@@ -7,8 +7,8 @@
           <element id="module-output" name="webapp" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: com.github.SWBForms:SWBFormsCore:jitpack-dependencies-1.0-SNAPSHOT-gd31a271-1" />
-          <element id="library" level="project" name="Maven: com.github.SWBForms:SWBDataManager:1.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: com.github.SWBForms:SWBFormsCore:jitpack-dependencies-1.0-SNAPSHOT-ga14399e-1" />
+          <element id="library" level="project" name="Maven: com.github.SWBForms:SWBDataManager:master-1.0-SNAPSHOT-g362e8de-8" />
           <element id="archive" name="harvester-core-1.0-SNAPSHOT.jar">
             <element id="module-output" name="harvester-core" />
           </element>
