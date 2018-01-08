@@ -34,7 +34,7 @@
                     title: "Extractor",
                     fields: [
                     {name:"name", title:"Nombre/Modelo", type:"string", colSpan:3, width:"100%"},
-                    {name:"collection", title:"Nombre de la colección", type:"string", endRow:true},
+//                    {name:"collection", title:"Nombre de la colección", type:"string", endRow:true},
                     {name:"url", title:"URL", type:"string", colSpan:3, width:"100%"},
                     {name: "verbs", title: "Verbos"},
                     {name: "prefix", title: "MetaData PREFIX", endRow:true},
@@ -86,7 +86,7 @@
             title: "Procesar",
                     padding: "10px",
                     click: function (p1) {
-                    window.location = "process.jsp";
+                    window.location = "harvest.jsp?_id=<%=pid%>&act=PROCESS";
                     return false;
                     }
             }));

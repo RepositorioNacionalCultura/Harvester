@@ -235,6 +235,33 @@ public class ExtractorManager {
         }
         return false;
     }
+    
+    /**
+     * Calls process method on a particular extractor
+     *
+     * @param extractorId
+     * @return
+     */
+    public boolean processExtractor(String extractorId) {
+        //throw new UnsupportedOperationException();
+        Extractor ret;
+        if (null != extractorId) {
+            ret = hmExtractor.get(extractorId);
+            //revisando si se puede procesar el extractor
+            System.out.println("Process..."+(null!=ret&&null!=ret.getStatus()?ret.getStatus():"No Status"));
+            if (null != ret && (ret.getStatus().equals("STOPPED")|| ret.getStatus().equals("LOADED"))) {
+                try {
+                   ret.process(); 
+                } catch (Exception e) {
+                    System.out.println("Error al ejecutar el process del Extractor...");
+                    e.printStackTrace();
+                }
+
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
 

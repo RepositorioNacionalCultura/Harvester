@@ -24,6 +24,8 @@ public interface Extractor {
     public String getType();  //From DB, From EndPoint ???
     
     public String getScript();
+    
+    public void process() throws Exception;
 
     public void extract() throws Exception;
 
