@@ -10,19 +10,15 @@ import org.json.XML;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import java.io.InputStream;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import java.util.Date;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
@@ -117,6 +113,8 @@ public class OAIExtractor extends ExtractorBase {
     @Override
     public void extract() throws Exception {
 
+        System.out.println("\n\n\n>>>>>>>>>>>> EXTRACTING <<<<<<<<<<<<<<\n\n\n");
+
         //2017-12-01T13:05:00.000
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         //DataObject do_extrac = null;
@@ -140,6 +138,8 @@ public class OAIExtractor extends ExtractorBase {
         int ext_r2process = 0;
         int ext_process = 0;
         int ext_cursor = 0;
+        String ext_pfxExtracted = null;
+        String ext_pfxActual = null;
 
         String pid = extractorDef.getId();
 
@@ -184,6 +184,23 @@ public class OAIExtractor extends ExtractorBase {
                 ext_r2process = extractorDef.getInt("rows2Processed", -1);
                 ext_process = extractorDef.getInt("processed", 0);
                 ext_cursor = extractorDef.getInt("cursor", -1);
+                ext_pfxExtracted = extractorDef.getString("pfxExtracted", null);
+                ext_pfxActual = extractorDef.getString("pfxActual", null);
+
+                String[] pfxDone = null;
+                HashMap<String, String> hmPfxs = new HashMap();
+
+                if (ext_pfxExtracted != null) {
+                    if (ext_pfxExtracted.contains(",")) {
+                        pfxDone = ext_pfxExtracted.split(",");
+                    } else {
+                        pfxDone = new String[1];
+                        pfxDone[0] = ext_pfxExtracted;
+                    }
+                    for (String pfx : pfxDone) {
+                        hmPfxs.put(pfx, pfx);
+                    }
+                }
 
                 extractorDef.put("status", "STARTED");
                 dsExtract.updateObj(extractorDef);
@@ -198,19 +215,26 @@ public class OAIExtractor extends ExtractorBase {
 
                 HashMap<String, String> hm = Util.loadOccurrences(engine);
                 boolean isResumeExtract = false;
+                if (ext_pfxActual != null) {
+                    isResumeExtract = true;
+                }
 
                 if (null != ext_prefix) {
                     try {
-
+                        long itemsExtracted = 0;
+                        Date startTime = new Date();
                         for (String pfx : ext_prefix) {
+
+                            if (hmPfxs.get(pfx) != null) {
+                                continue;
+                            }
+
+                            if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                                break;
+                            }
                             System.out.println("\n\nEmpezando con:...." + pfx);
                             // creando la colección por prefijo
                             DBCollection objects = db.getCollection(pfx);
-                            try {
-                                objects.dropIndex("oaiid");
-                            } catch (Exception e) {
-                                System.out.println("Error al eliminar el indice de la colección...");
-                            }
                             objects.createIndex("oaiid");
 
                             String urlConn = ext_url + "?verb=" + ext_verbs + "&metadataPrefix=" + pfx;
@@ -219,18 +243,19 @@ public class OAIExtractor extends ExtractorBase {
                                 urlConn = ext_url + "?verb=" + ext_verbs + "&metadataPrefix=" + pfx + "&from=" + ext_lastExec;
                             }
 
-                            if ((null != ext_status && ext_status.equals("EXTRACTING") || (null != ext_resTknVal && !ext_resTknVal.equals("0") && ext_resTknVal.length() > 0)) && resTkn_str != null) {
+                            if (isResumeExtract || (null != ext_status && ext_status.equals("EXTRACTING") || (null != ext_resTknVal && !ext_resTknVal.equals("0") && ext_resTknVal.length() > 0)) && resTkn_str != null) {
                                 urlConn = ext_url + "?verb=" + ext_verbs + "&resumptionToken=" + resTkn_str;
                                 resTkn_str = ext_resTknVal;
                                 listSize = ext_r2harvest;
                                 cursor = ext_cursor;
-                                isResumeExtract = true;
                             }
 
                             URL theUrl = new URL(urlConn);
 
                             System.out.println("Making request " + theUrl.toString());
                             extractorDef.put("lastExecution", sdf.format(new Date()));
+                            extractorDef.put("pfxActual", pfx);
+                            dsExtract.updateObj(extractorDef);
 
                             boolean tknFound = false;
                             int numextract = 0;
@@ -242,31 +267,41 @@ public class OAIExtractor extends ExtractorBase {
                                 try {
 
                                     jsonstr = Util.makeRequest(theUrl, true);
+                                    if (jsonstr != null && jsonstr.startsWith("#Error") && jsonstr.endsWith("#")) {
+                                        System.out.println(jsonstr.substring(1, jsonstr.length() - 1));
+                                        break;
+                                    }
                                     jsonstr = Util.replaceOccurrences(hm, jsonstr);
 
                                     if (jsonstr.contains("resumptionToken")) {
                                         tknFound = true;
                                     }
 
-                                    if (jsonstr != null && jsonstr.startsWith("#Error") && jsonstr.endsWith("#")) {
-                                        System.out.println(jsonstr.substring(1, jsonstr.length() - 1));
-                                        break;
-                                    }
-
                                     JSONObject json = XML.toJSONObject(jsonstr);
-                                    //System.out.println("JSON:"+json.toString());
+                                    //System.out.println("\n\n\nJSON:" + json.toString());
                                     JSONObject jsonroot = json.getJSONObject("OAI-PMH");
+                                    
+                                    Object objtmp = null;
+                                    try{
+                                        objtmp = jsonroot.get("ListRecords");
+                                    }catch(Exception excp){
+                                        
+                                    }
+                                    if(null==objtmp) {
+                                        retries++;
+                                        continue;
+                                    }
                                     JSONObject jsonLst = jsonroot.getJSONObject("ListRecords");
 
                                     JSONObject jsonTkn = null;
                                     if (tknFound) {
 
                                         try {
-                                            System.out.println("Buscando token...");
+                                            //System.out.println("Buscando token...");
                                             jsonTkn = jsonLst.getJSONObject("resumptionToken");
 
                                             if (null != jsonTkn) {
-                                                System.out.println("Token encontrado...");
+                                                //System.out.println("Token encontrado...");
                                                 resTkn_str = jsonTkn.getString("content");
                                                 listSize_str = jsonTkn.getString("completeListSize");
                                                 cursor_str = jsonTkn.getString("cursor");
@@ -316,20 +351,25 @@ public class OAIExtractor extends ExtractorBase {
                                             nid = jsonhdr.getString("identifier");
 
                                             try {
-//                                    BasicDBObject dbQuery = new BasicDBObject("oaiid", nid);
-//                                    DBObject dbres = objects.findOne(dbQuery);
-//                                    if (null == dbres) {
-                                                numextract++;
-                                                String nodeAsString = jsonRd.getJSONObject(i).toString();
-                                                DataObject rec = new DataObject();
-                                                rec.put("oaiid", nid);
-                                                rec.put("body", DataObject.parseJSON(nodeAsString));
-                                                BasicDBObject bjson = Util.toBasicDBObject(rec);
-                                                objects.insert(bjson);
-//                                    } else {
-//                                        numalready++;
-//                                        //System.out.println("Already Extracted...");
-//                                    }
+
+                                                DBObject dbres = null;
+                                                if (isResumeExtract) {
+                                                    BasicDBObject dbQuery = new BasicDBObject("oaiid", nid);
+                                                    dbres = objects.findOne(dbQuery);
+                                                }
+                                                if (null == dbres) {
+                                                    numextract++;
+                                                    String nodeAsString = jsonRd.getJSONObject(i).toString();
+                                                    DataObject rec = new DataObject();
+                                                    rec.put("oaiid", nid);
+                                                    rec.put("body", DataObject.parseJSON(nodeAsString));
+                                                    BasicDBObject bjson = Util.toBasicDBObject(rec);
+                                                    objects.insert(bjson);
+                                                    itemsExtracted++;
+                                                } else {
+                                                    numalready++;
+//                                        //        System.out.println("Already Extracted...");
+                                                }
 
                                             } catch (Exception e) {
                                                 System.out.println("Error..." + e.toString());
@@ -358,22 +398,29 @@ public class OAIExtractor extends ExtractorBase {
                                 if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
                                     break;
                                 }
-                                if (numextract % 100 == 0 && numextract > 0) {
+                                if (numextract % 1000 == 0 && numextract > 0) {
                                     System.out.println("Extracted ==>" + numextract);
                                 }
-                                if (numalready % 100 == 0 && numalready > 0) {
+                                if (numalready % 1000 == 0 && numalready > 0) {
                                     System.out.println("Already ==>" + numalready + "(" + listSize + ")");
                                 }
                                 if (retries > 0) {
                                     System.out.println("Retries ==>" + retries);
                                 }
-
-                                System.out.println("Retries(" + retries + ")Token(" + tmpTkn + "), List(" + listSize + "), Extracted(" + numextract + "),Existing(" + numalready + ")");
+                                if (itemsExtracted % 1000 == 0 && itemsExtracted > 0) {
+                                    System.out.println("Retries(" + retries + ")Token(" + tmpTkn + "), List(" + listSize + "), Extracted(" + numextract + "),Existing(" + numalready + "), Total Extracted(" + itemsExtracted + ")");
+                                }
                                 tmpTkn = null;
                             } while (retries < 5 && tknFound && listSize > (numextract + numalready));  //(listSize > numextract && listSize > numalready) && 
                             update = false;
-                            extractorDef.put("status", "STOPPED");
-                            extracting = false;
+                            //extractorDef.put("status", "STOPPED");
+                            //extracting = false;
+                            if (null == ext_pfxExtracted) {
+                                ext_pfxExtracted = pfx;
+                            } else {
+                                ext_pfxExtracted = ext_pfxExtracted + "," + pfx;
+                            }
+                            extractorDef.put("pfxExtracted", ext_pfxExtracted);
                             dsExtract.updateObj(extractorDef);
                             ExtractorManager.hmExtractorDef.put(pid, extractorDef);
                             ExtractorManager.getInstance().loadExtractor(extractorDef);
@@ -382,10 +429,26 @@ public class OAIExtractor extends ExtractorBase {
                             numalready = 0;
                             listSize = 0;
                             resTkn_str = null;
+                            isResumeExtract = false;
 
                         }
+                        extractorDef.put("harvestered", itemsExtracted);
+                        extractorDef.put("rows2Processed", itemsExtracted);
+                        extractorDef.put("status", getStatus());
+                        if (getStatus().equals("STOPPED")) {
+                            extracting = false;
+                        }
+                        extractorDef.put("rows2harvest", 0);
+                        extractorDef.put("cursor", 0);
+                        extractorDef.put("pfxExtracted", null);
+                        extractorDef.put("tokenValue", null);
+                        extractorDef.put("pfxActual", null);
+                        dsExtract.updateObj(extractorDef);
+                        ExtractorManager.hmExtractorDef.put(pid, extractorDef);
+                        ExtractorManager.getInstance().loadExtractor(extractorDef);
                     } catch (Exception e) {
-
+                        System.out.println("Error extracción de metadatos");
+                        e.printStackTrace();
                     }
                 }
 
@@ -443,111 +506,156 @@ public class OAIExtractor extends ExtractorBase {
 
     @Override
     public void process() throws Exception {
-
+        System.out.println("\n\n\n>>>>>>>>>> PROCESSING <<<<<<<<<<<<<<<<<\n\n\n");
         String scriptsrc = extractorDef.getString("script");
         ScriptEngineManager factory = new ScriptEngineManager();
 
-        if (null != scriptsrc && scriptsrc.trim().length() > 0) 
-        {
+        long numItems = 0;
+        long numAlready = 0;
 
+        if (null != scriptsrc && scriptsrc.trim().length() > 0) {
+
+            extractorDef.put("status", "PROCESSING");
+            dsExtract.updateObj(extractorDef);
             ScriptEngine engine = factory.getEngineByName("JavaScript");
             DataObjectScriptEngineMapper mapper = new DataObjectScriptEngineMapper(engine, scriptsrc);
 
             DataList dlpfx = extractorDef.getDataList("prefix");
             System.out.println("num items:" + dlpfx.size());
             String[] ext_prefix = new String[dlpfx.size()];
-            ConcurrentHashMap<String, ConcurrentHashMap<String, DataObject>> hm = new ConcurrentHashMap();
-            for (int i = 0; i < dlpfx.size(); i++) {
-                ext_prefix[i] = dlpfx.getString(i);
-                System.out.println("prefix:" + ext_prefix[i]);
-                //cargar los hashmap por metadataPrefix
-                ConcurrentHashMap<String, DataObject> hmpfx = Util.loadMetadataPrefixCollection(extractorDef.getString("name"), ext_prefix[i]);
-                hm.put(ext_prefix[i], hmpfx);
-                System.out.println("Prefix:" + ext_prefix[i] + " size:" + hmpfx.size());
-            }
+//            ConcurrentHashMap<String, String> hm = new ConcurrentHashMap();
+//            for (int i = 0; i < dlpfx.size(); i++) {
+//                ext_prefix[i] = dlpfx.getString(i);
+//                System.out.println("prefix:" + ext_prefix[i]);
+//                //cargar los hashmap por metadataPrefix
+//                numItems += Util.collectionSize(extractorDef.getString("name"), ext_prefix[i]);
+//
+////                int blockSize = 300;
+//                if (numItems > 0) {
+//                    // calcular el número de páginas por bloques de 300 elementos para el procesamiento
+//                    //ConcurrentHashMap<String, DataObject> hmpfx = Util.loadMetadataPrefixCollection(extractorDef.getString("name"), ext_prefix[i]);
+//                    ConcurrentHashMap<String, String> hmreq = Util.loadMetadataPrefixCollection(extractorDef.getString("name"), ext_prefix[i]);
+//                    Iterator<String> it = hmreq.keySet().iterator();
+//                    while (it.hasNext()) {
+//                        String next = it.next();
+//                        hm.put(next, next);
+//                    }
+//
+//                    System.out.println("Prefix:" + ext_prefix[i] + " size:" + hm.size());
+//                }
+//
+//            }
             //Generar el nuevo DataObject combinado por cada prefix
             try {
                 MongoClient client = new MongoClient("localhost", 27017);
                 DB db = client.getDB(extractorDef.getString("name").toUpperCase());
                 DBCollection objects = db.getCollection("fullobjects");
-                HashMap<String, DataObject> hmfull = new HashMap();
-                
-                for (String pfx : ext_prefix) {
-                    ConcurrentHashMap<String, DataObject> hmpfx = hm.get(pfx);
-                    Iterator<String> it = hmpfx.keySet().iterator();
-                    System.out.println("Processing PREFIX: "+pfx+" num items: "+hmpfx.size());
-                    while (it.hasNext()) {
-                        String key = it.next();
-                        DataObject data = hmpfx.get(key);
-                        DataObject dobj = hmfull.get(key);
-                        boolean hdrLoaded = false;
-                        if (null != data) {
-                            if (null == dobj) {
-                                dobj = new DataObject();
-                                dobj.put("oaiid", key);
-                            }
-                            DataObject tmpObj = (DataObject) DataObject.parseJSON(data.get("body").toString());
-                            if (null != tmpObj) {
-                                Object header = tmpObj.get("header");
-                                if (null != header) {
-                                    dobj.put("header", header);
-                                    hdrLoaded = true;
+                objects.createIndex("oaiid");
+//                HashMap<String, DataObject> hmfull = new HashMap();
+                boolean hdrLoaded = false;
+                DataObject dobj = null;
+
+                for (int i = 0; i < dlpfx.size(); i++) {
+                    if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                        break;
+                    }
+                    String pfx = dlpfx.getString(i).trim();
+                    System.out.println("Revisando colección: " + pfx);
+
+//                    if (null != db) {
+                        try {
+                            DBCollection datasource = db.getCollection(pfx);
+                            DBCursor cursor = datasource.find();
+                            System.out.println(pfx + " cursor size: " + (null != cursor ? cursor.count() : "NULO"));
+                            while (null != cursor && cursor.hasNext()) {
+                                if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                                    break;
+                                }
+                                DBObject next = cursor.next();
+                                String key = (String) next.get("oaiid");
+                                boolean isDODeleted = false;
+                                boolean add2DB = false;
+                                hdrLoaded = false;
+                                //Revisar si existe en fullobjects
+                                BasicDBObject dbQuery = new BasicDBObject("oaiid", key);
+                                DBObject dbres = objects.findOne(dbQuery);
+                                if (null == dbres) {
+                                    add2DB = true;
+                                    dobj = new DataObject();
+                                    dobj.put("oaiid", key);
+                                }
+                                if (null != dbres) {
+                                    //Existe en la DB
+
+                                    dobj = (DataObject) DataObject.parseJSON(dbres.toString()); //hmfull.get(key.trim());
+                                    if (dobj.get("header") != null) {
+                                        hdrLoaded = true;
+                                    }
+                                    if (dobj.get(pfx) != null) {
+                                        numAlready++;
+                                        continue;
+                                    }
+                                }
+
+                                DataObject tmpObj = (DataObject) DataObject.parseJSON(next.get("body").toString());
+                                if (!hdrLoaded) {
+                                    if (null != tmpObj) {
+                                        Object header = tmpObj.get("header");
+                                        if (null != header) {
+                                            dobj.put("header", header);
+                                            hdrLoaded = true;
+                                        }
+                                    }
                                 }
                                 Object metadata = tmpObj.get("metadata");
                                 if (null != metadata) {
                                     dobj.put(pfx, metadata);
                                     //System.out.println(metadata.toString());
-                                }
-                            }
-                            for (String pfx2 : ext_prefix) {
-                                if (!pfx2.equals(pfx)) {
-                                    ConcurrentHashMap<String, DataObject> hmpfx2 = hm.get(pfx2);
-                                    DataObject data2 = hmpfx2.get(key);
-                                    if (null != data2) {
-                                        Object body = data2.get("body");
-                                        DataObject tmpObj2 = (DataObject) DataObject.parseJSON(body.toString());
-                                        if (null != tmpObj2) {
-                                            if (!hdrLoaded) {
-                                                Object header2 = tmpObj2.get("header");
-                                                if (null != header2) {
-                                                    dobj.put("header", header2);
-                                                    hdrLoaded = true;
-                                                }
-                                            }
-                                            Object metadata2 = tmpObj2.get("metadata");
-                                            if (null != metadata2) {
-                                                dobj.put(pfx2, metadata2);
-                                                //System.out.println(metadata2.toString());
+                                } else {
+                                    DataObject doHdr = (DataObject) DataObject.parseJSON(tmpObj.get("header").toString());
+                                    if (null != doHdr) {
+                                        if (doHdr.getString("status") != null) {
+                                            dobj.put("status", doHdr.getString("status"));
+                                            if (doHdr.getString("status").equals("deleted")) {
+                                                isDODeleted = true;
                                             }
                                         }
                                     }
-                                    hmpfx2.remove(key);
                                 }
+                                //hmfull.put(key.trim(), dobj);
+                                //} 
+                                // Esta parte sólo es para verificar como forma los objetos completos.
+                                BasicDBObject bjson = Util.toBasicDBObject(dobj);
+                                if (add2DB) {
+                                    objects.insert(bjson);
+                                } else {
+                                    objects.update(dbQuery, bjson);
+                                }
+                                numItems++;
+                                if (numItems % 1000 == 0 && numItems > 0) {
+                                    System.out.println("Items Processed: " + numItems);
+                                }
+                                //Se tiene que hacer el llamado al proceso de transformación validando si el objeto está eliminado "deleted"
+//                    DataObject result = mapper.map(dobj);
+//                    //System.out.println(result);
+//                    //Que se hace con el result??? mandarlo al mapeo e indexación
+//
+
                             }
-                            hmfull.put(key, dobj);
+                        } catch (Exception e) {
+                            System.out.println("Error al cargar el DataSource. " + e.getMessage());
+                            e.printStackTrace(System.out);
                         }
-                        
-                        
-                        
-                        boolean isDODeleted = false;
-                        
-                        //Se tiene que hacer el llamado al proceso de transformación validando si el objeto está eliminado "deleted"
-                        DataObject result = mapper.map(dobj);
-                        System.out.println(result);
-                        //Que se hace con el result??? mandarlo al mapeo e indexación
-                        
-
-                        // Esta parte sólo es para verificar como forma los objetos completos.
-                        BasicDBObject bjson = Util.toBasicDBObject(dobj);
-                        objects.insert(bjson);
-                        
-                        
-                        hmpfx.remove(key);
-                    }
-                    hm.remove(pfx);
+//                    } else {
+//                        System.out.println("Error al cargar el DataSource al HashMap, falta inicializar el engine.");
+//
+//                    }
                 }
+                extractorDef.put("status", "STOPPED");
+                extractorDef.put("processed", numItems);
+                dsExtract.updateObj(extractorDef);
 
-                System.out.println("hm --completo--- size ---" + hmfull.size());
+//                System.out.println("hm --completo--- size ---" + hmfull.size());
 //            Iterator<String> itstr = hmfull.keySet().iterator();
 //            while (itstr.hasNext()) {
 //                String key = itstr.next();
@@ -558,9 +666,15 @@ public class OAIExtractor extends ExtractorBase {
             } catch (Exception e) {
                 System.out.println("Error al procesar la Base de Datos");
                 e.printStackTrace();
+                extractorDef.put("processed", numItems);
+                dsExtract.updateObj(extractorDef);
             }
         }
 
+    }
+
+    public DataObject getDefinitionObject() {
+        return extractorDef;
     }
 
 }

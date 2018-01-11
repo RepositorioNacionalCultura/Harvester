@@ -241,30 +241,29 @@ public final class Util {
      * @param dbName Nombre de la base de datos en donde se encuentra la
      * colección
      * @param metadataPrefix Nombre del prefijo de metadatos a cargar
+     * @param hm HashMap con los id de la colección
      * @return ConcurrentHashMap con la colección cargada en memoria.
      */
-    public static ConcurrentHashMap<String, DataObject> loadMetadataPrefixCollection(String dbName, String metadataPrefix) {
+    public static ConcurrentHashMap<String, String> loadMetadataPrefixCollection(String dbName, String metadataPrefix) {
 
-        ConcurrentHashMap<String, DataObject> hm = new ConcurrentHashMap();
+        ConcurrentHashMap<String, String> hm = new ConcurrentHashMap();
         MongoClient client = new MongoClient("localhost", 27017);
         com.mongodb.DB db = client.getDB(dbName.toUpperCase());
 
         if (null != db) {
             try {
                 DBCollection datasource = db.getCollection(metadataPrefix);
-                DataObject r = new DataObject();
-                DataObject data = new DataObject();
-                r.put("data", data);
-
                 DBCursor cursor = datasource.find();
+                System.out.println(metadataPrefix+ " cursor size: "+cursor.count());
                 while (cursor.hasNext()) {
                     DBObject next = cursor.next();
                     String key = (String) next.get("oaiid");
-                    DataObject dataO = new DataObject();
-                    dataO.put("oaiid", key);
-                    dataO.put("body", next.get("body"));
-                    hm.put(key, dataO);
+//                    DataObject dataO = new DataObject();
+//                    dataO.put("oaiid", key);
+//                    dataO.put("body", next.get("body"));
+                    hm.put(key.trim(), key);
                 }
+                System.out.println("copiados al HM: "+hm.size());
             } catch (Exception e) {
                 System.out.println("Error al cargar el DataSource. " + e.getMessage());
                 e.printStackTrace(System.out);
@@ -274,6 +273,36 @@ public final class Util {
             return null;
         }
         return hm;
+    }
+    
+    /**
+     * Regresa el número de elementos en la colección
+     * long
+     *
+     * @param dbName Nombre de la base de datos en donde se encuentra la
+     * colección
+     * @param metadataPrefix Nombre del prefijo de metadatos a cargar
+     * @return long con eltamaño de la colección.
+     */
+    public static long collectionSize(String dbName, String metadataPrefix) {
+
+        long collSize = -1;
+        //ConcurrentHashMap<String, DataObject> hm = new ConcurrentHashMap();
+        MongoClient client = new MongoClient("localhost", 27017);
+        com.mongodb.DB db = client.getDB(dbName.toUpperCase());
+
+        if (null != db) {
+            try {
+                DBCollection datasource = db.getCollection(metadataPrefix);
+                collSize = datasource.count();
+            } catch (Exception e) {
+                System.out.println("Error while trying to get collection size. " + e.getMessage());
+                e.printStackTrace(System.out);
+            }
+        } else {
+            System.out.println("Error DB no encontrada.");
+        }
+        return collSize;
     }
 
     /**
@@ -334,10 +363,11 @@ public final class Util {
                         ioex.printStackTrace();
                     }
                 } else {
-                    //throw new ServerErrorException();
+                    errorMsg = "#Error: No se puede conectar al servidor#";
+                    throw new Exception();
                 }
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 if (null != con) {
                     con.disconnect();
                 }
@@ -356,6 +386,97 @@ public final class Util {
             }
         } while (isConnOk == false && retries < 5);
         return errorMsg != null ? errorMsg : response.toString();
+    }
+    
+    /**
+     * Format milliseconds long number in days, hours, minutes, seconds and milliseconds
+     * @param elapsedTime time to determinate in days, hours, minutes, seconds and milliseconds takes.
+     * @return a text in days, hours, minutes, seconds and milliseconds format
+     */
+    public static String getElapsedTime(long elapsedTime) {
+        String etime = elapsedTime + "ms";
+        long seg = 1000;
+        long min = 60 * seg;
+        long hr = 60 * min;
+        long day = 24 * hr;
+
+        long ndays = 0;
+        long nhr = 0;
+        long nmin = 0;
+        long nseg = 0;
+        long nms = 0;
+
+        if (elapsedTime > day) {
+            ndays = elapsedTime / day;
+            if (ndays > 0 && (elapsedTime % day) > 0) {
+                nhr = ((elapsedTime % day)) / hr;
+            }
+            if (nhr > 0 && (((elapsedTime % day)) % hr) > 0) {
+                nmin = ((elapsedTime % day) % hr) / min;
+            }
+            if (nmin > 0 && (((elapsedTime % day) % hr) % min) > 0) {
+                nseg = (((elapsedTime % day) % hr) % min) / seg;
+            }
+            if (nseg > 0 && ((((elapsedTime % day) % hr) % min) % seg) > 0) {
+                nms = (((elapsedTime % day) % hr) % min) % seg;
+            }
+
+        } else if (elapsedTime > hr) {
+            nhr = elapsedTime / hr;
+            if (nhr > 0 && (elapsedTime % hr) > 0) {
+                nmin = (elapsedTime % hr) / min;
+            }
+            if (nmin > 0 && ((elapsedTime % hr) % min) > 0) {
+                nseg = ((elapsedTime % hr) % min) / seg;
+            }
+            if (nseg > 0 && (((elapsedTime % hr) % min) % seg) > 0) {
+                nms = (((elapsedTime % hr) % min) % seg);
+            }
+        } else if (elapsedTime > min) {
+            nmin = elapsedTime / min;
+            if (nmin > 0 && (elapsedTime % min) > 0) {
+                nseg = ((elapsedTime % min)) / seg;
+            }
+            if (nseg > 0 && (((elapsedTime % min) % seg)) > 0) {
+                nms = ((elapsedTime % min) % seg);
+            }
+
+        } else if (elapsedTime > seg) {
+            nseg = elapsedTime / seg;
+        } else {
+            nms = elapsedTime;
+        }
+
+        etime = "";
+        if (ndays > 0) {
+            etime = ndays + "dias ";
+        }
+        if (nhr > 0) {
+            if (nhr < 10) {
+                etime += "0" + nhr + "hrs ";
+            } else {
+                etime += nhr + "hrs ";
+            }
+        }
+        if (nmin > 0) {
+            if (nmin < 10) {
+                etime += "0" + nmin + "min ";
+            } else {
+                etime += nmin + "min ";
+            }
+        }
+        if (nseg > 0) {
+            if (nseg < 10) {
+                etime += "0" + nseg + "sec ";
+            } else {
+                etime += nseg + "sec ";
+            }
+        }
+        if (nms > 0) {
+            etime += nms+ "ms";
+        }
+
+        return etime;
     }
 
 }
