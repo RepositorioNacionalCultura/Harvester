@@ -12,6 +12,7 @@
           <element id="archive" name="harvester-core.jar">
             <element id="module-output" name="harvester-core" />
           </element>
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/RepositorioNacionalCultura/Commons/master-aab3a7c524-1/Commons-master-aab3a7c524-1.jar" output-file-name="Commons.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/json/json/20160810/json-20160810.jar" output-file-name="json.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/mongodb/mongo-java-driver/3.5.0/mongo-java-driver-3.5.0.jar" output-file-name="mongo-java-driver.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/elasticsearch/client/elasticsearch-rest-high-level-client/6.0.0/elasticsearch-rest-high-level-client-6.0.0.jar" output-file-name="elasticsearch-rest-high-level-client.jar" />

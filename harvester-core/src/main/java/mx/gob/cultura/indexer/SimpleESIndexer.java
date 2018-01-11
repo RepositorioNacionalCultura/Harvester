@@ -1,6 +1,6 @@
 package mx.gob.cultura.indexer;
 
-import mx.gob.cultura.util.Util;
+import mx.gob.cultura.commons.Util;
 import org.elasticsearch.client.RestHighLevelClient;
 
 /**
@@ -20,7 +20,7 @@ public class SimpleESIndexer {
      * @param typeName Name of index type.
      */
     public SimpleESIndexer (String host, int port, String indexName, String typeName) {
-        client = Util.DB.getElasticClient(host, port);
+        client = Util.ELASTICSEARCH.getElasticClient(host, port);
         this.indexName = indexName;
         this.indexType = typeName;
     }
@@ -40,6 +40,6 @@ public class SimpleESIndexer {
      * @return ID of indexed object or null if indexing fails.
      */
     public String index(String objectJson) {
-        return Util.DB.indexObject(client, indexName, indexType, null, objectJson);
+        return Util.ELASTICSEARCH.indexObject(client, indexName, indexType, null, objectJson);
     }
 }
