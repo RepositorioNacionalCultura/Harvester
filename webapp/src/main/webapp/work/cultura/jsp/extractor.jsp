@@ -50,6 +50,8 @@
                     {name: "harvestered", title: "Registros cosechados", type: "int"},
                     {name: "rows2Processed", title: "Registros por procesar", type: "int"},
                     {name: "processed", title: "Registros procesados", type: "int", endRow:true},
+                    {name:"pfxExtracted",title:"Prefijos extraidos",type:"string"},
+                    {name:"pfxActual",title:"Prefijo actual",type:"string"},
                     {name:"script", title:"Script de transformación", startRow:true, type:"textArea", width:"100%", colSpan:5}
             <%}%>
                     ]

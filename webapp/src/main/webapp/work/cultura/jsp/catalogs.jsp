@@ -52,16 +52,16 @@
             }, "MetaData_Prefix");
         </script> 
 
-        <h3>EndPoint</h3>
+<!--        <h3>EndPoint</h3>
         <script type="text/javascript">
-            var endPoint = eng.createGrid({
-                left: "-10",
-                margin: "10px",
-                width: "100%",
-                height: 200,
-                canEdit: true,
-                canRemove: false,
-                canAdd: true,
+//            var endPoint = eng.createGrid({
+//                left: "-10",
+//                margin: "10px",
+//                width: "100%",
+//                height: 200,
+//                canEdit: true,
+//                canRemove: false,
+//                canAdd: true,
 //                recordDoubleClick: function (grid, record)
 //                {
 //                    window.location = "endPoint.jsp?_id=" + record._id;
@@ -73,8 +73,8 @@
 //                    window.location = "endPoint.jsp";
 //                    return false;
 //                },
-            }, "EndPoint");
-        </script>
+            //}, "EndPoint");
+        </script>-->
 
         <h3>Definición de Mapeo</h3>
         <script type="text/javascript">

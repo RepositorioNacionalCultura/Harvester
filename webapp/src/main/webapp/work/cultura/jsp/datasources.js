@@ -95,18 +95,18 @@ eng.dataSources["MetaData_Prefix"]={
 
 var vals_meta = eng.getDataSource("MetaData_Prefix").toValueMap("cve","name");
 /********** EndPoint ********/
-eng.dataSources["EndPoint"]={
-    scls: "EndPoint",
-    modelid: "Cultura",
-    dataStore: "mongodb",
-    displayField:"name",
-    fields:[
-        {name:"name",title:"Nombre/Modelo",type:"string"},
-        {name:"url",title:"URL",type:"string"},
-        
-        {name:"created",title:"Fecha",type:"date"}
-    ]     
-};
+//eng.dataSources["EndPoint"]={
+//    scls: "EndPoint",
+//    modelid: "Cultura",
+//    dataStore: "mongodb",
+//    displayField:"name",
+//    fields:[
+//        {name:"name",title:"Nombre/Modelo",type:"string"},
+//        {name:"url",title:"URL",type:"string"},
+//        
+//        {name:"created",title:"Fecha",type:"date"}
+//    ]     
+//};
 
 
 
@@ -164,6 +164,8 @@ eng.dataSources["Extractor"]={
         valueMap:vals_meta, multiple:true, defaultValue:"mods"}, 
         {name:"resumptionToken",title:"Soporta Resumption Token",type:"boolean", defaultValue:false},
         {name:"tokenValue",title:"Token",type:"string"},
+        {name:"pfxExtracted",title:"Prefijos extraidos",type:"string"},
+        {name:"pfxActual",title:"Prefijo actual",type:"string"},
         {name:"class",title:"Nombre de la Clase a utilizar",type:"string"},
         {name:"periodicity",title:"Periodicidad",type:"boolean"},
         {name:"interval",title:"Intervalo de tiempo (días)", type:"int"},

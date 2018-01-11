@@ -3,6 +3,9 @@
     Created on : 23-nov-2017, 12:37:52
     Author     : juan.fernandez
 --%>
+<%@page import="mx.gob.cultura.util.Util"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 <%@page import="mx.gob.cultura.extractor.ExtractorManager"%>
 <%@page import="mx.gob.cultura.extractor.OAIExtractor"%>
 <%@page import="org.semanticwb.datamanager.DataObject"%>
@@ -14,7 +17,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Extractor action</title>
         <script type="text/javascript">
             function updateInfo(listSize, extracted) {
                 var ele = document.getElementById("res");
@@ -32,6 +35,7 @@
             String pid = id;
             String status = "";
             String action = request.getParameter("act");
+            long numItems = 0;
 
             if (null == action) {
                 action = "";
@@ -43,17 +47,27 @@
         %>
         <h1>JSON Extractor (<%=dobj.getString("name")%>)</h1>
         <div id="res">
-            <%
+            <%  SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+                long startTime = System.currentTimeMillis();
+
+                long endTime = 0;
                 if (action.equals("EXTRACT")) {
                     if (null != pid) {
+
                         ExtractorManager extMgr = ExtractorManager.getInstance();
                         extMgr.loadExtractor(dobj);
-                        status = extMgr.getStatus(id);
+//                        status = extMgr.getStatus(id);
                         extMgr.startExtractor(id);
                         dobj = datasource.fetchObjById(id);
+                        endTime = System.currentTimeMillis();
+
+                        //System.out.println("Tiempo de extracción de datos:"+sdfTime.format(new Date(endTime.getTime()-startTime.getTime())));
+                        status = dobj.getString("status");
+                        numItems = dobj.getInt("harvestered");
             %>
-            <strong>Status:<%=status%></strong><br>
-            <strong>Records extracted:0</strong><br>
+            <strong>Status: <%=status%></strong><br>
+            <strong>Extracted Records: <%=numItems%></strong><br>
+            <strong>Extraction time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
             <%
                 }
             } else if (action.equals("STOP")) {
@@ -61,10 +75,12 @@
                     ExtractorManager extMgr = ExtractorManager.getInstance();
                     extMgr.stopExtractor(id);
                     status = extMgr.getStatus(id);
-
+                    endTime = System.currentTimeMillis();
             %>
             <strong>Status:<%=status%></strong><br>
             <strong>Se detuvo el extractor.</strong><br>
+            <strong>Stopping time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
+            
             <%
                 }
             } else if (action.equals("REPLACE")) {
@@ -72,13 +88,17 @@
                     ExtractorManager extMgr = ExtractorManager.getInstance();
                     extMgr.loadExtractor(dobj);
                     extMgr.replaceExtractor(id);
-                    status = extMgr.getStatus(id);
+//                    status = extMgr.getStatus(id);
                     dobj = datasource.fetchObjById(id);
+                    status = dobj.getString("status");
+                    numItems = dobj.getInt("harvestered");
+                    endTime = System.currentTimeMillis();
             %>
             <strong>Status:<%=status%></strong><br>
             <strong>Se limpió la base de datos</strong><br>
             <strong>Se reinició la extracción de datos.</strong><br>
-            <strong>Records extracted:0</strong><br>
+            <strong>Extracted Records: <%=numItems%></strong><br>
+            <strong>Extraction time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
             <%
 
                 }
@@ -87,25 +107,34 @@
                     ExtractorManager extMgr = ExtractorManager.getInstance();
                     extMgr.loadExtractor(dobj);
                     extMgr.processExtractor(id);
-                    status = extMgr.getStatus(id);
+                    endTime = System.currentTimeMillis();
+//                    status = extMgr.getStatus(id);
                     dobj = datasource.fetchObjById(id);
+                    status = dobj.getString("status");
+                    numItems = dobj.getInt("processed");
             %>
             <strong>Status:<%=status%></strong><br>
             <strong>Se procesaron los metadatos.</strong><br>
             <strong>Se concluyó la indexación.</strong><br>
-            <%                    
+            <strong>Processed Records: <%=numItems%></strong><br>
+            <strong>Processing time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
+            <%
                 }
             } else if (action.equals("UPDATE")) {
                 if (null != pid) {
                     ExtractorManager extMgr = ExtractorManager.getInstance();
                     extMgr.loadExtractor(dobj);
                     extMgr.updateExtractor(pid);
-                    status = extMgr.getStatus(id);
+                    endTime = System.currentTimeMillis();
+//                    status = extMgr.getStatus(id);
                     dobj = datasource.fetchObjById(id);
+                    status = dobj.getString("status");
+                    numItems = dobj.getInt("processed");
             %>
             <strong>Status:<%=status%></strong><br>
             <strong>Se actualizaron los datos.</strong><br>
-            <strong>Records updated:0</strong><br>
+            <strong>Updated Records: <%=numItems%></strong><br>
+            <strong>Updating time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
             <%
                     }
                 }
