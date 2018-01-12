@@ -5,6 +5,7 @@
  */
 package mx.gob.cultura.extractor;
 
+import com.mongodb.MongoClient;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,6 +30,7 @@ public class ExtractorManager {
     private static SWBScriptEngine engine = null;
     private static ExtractorManager instance = null; //  Instancia del ExtractorManager
     private long TIME_INTERVAL_REVIEW = 60000; //Se ejecutará cada 60 segundos la revisión de todos los extractores con periodicidad
+    protected static MongoClient client = null;
 
     public ExtractorManager() {
     }
@@ -46,7 +48,7 @@ public class ExtractorManager {
      * Initializes extractor manager
      */
     public void init() {
-        
+        client = new MongoClient("localhost", 27017);
         engine = DataMgr.getUserScriptEngine("/work/cultura/jsp/datasources.js", null);
         //engine = DataMgr.initPlatform(null);
         try {
@@ -261,6 +263,16 @@ public class ExtractorManager {
             }
         }
         return false;
+    }
+    
+    
+    /**
+     * Gets MongoClient to MongoDB
+     * @return client
+     */
+    public static MongoClient getMongoClient(){
+
+        return client;
     }
 
 }
