@@ -1,0 +1,1905 @@
+[
+    {
+        "header": {
+            "datestamp": "2016-03-31T00:19:38Z",
+            "identifier": "oai:mediateca.inah.gob.mx:archivohistorico_21512",
+            "setSpec": "inah_archivohistorico"
+        },
+        "metadata": {
+            "mods_mods": {
+                "abstract": {
+                    "content": "2 oficios del señor virrey de México, expediente con 2 documentos del virrey Juan Ruiz de Apodaca al ayuntamiento constitucional de Taxco, México, 13 de febrero y 12 de marzo de 1821",
+                    "displayLabel": "Resumen:",
+                    "type": "summary"
+                },
+                "accessCondition": {
+                    "content": "Creative Commons (by-nc-nd)",
+                    "href": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/",
+                    "type": "useAndReproduction"
+                },
+                "extension": {
+                    "location": {
+                        "url": {
+                            "content": "http://vocabularios.inah.gob.mx/adscripcion/48",
+                            "note": "adscripcion"
+                        }
+                    }
+                },
+                "genre": {
+                    "authority": "mediateca-genero",
+                    "authorityURI": "http://vocabularios.inah.gob.mx/mediateca/genero/",
+                    "content": "Archivo histórico",
+                    "valueURI": "http://vocabularios.inah.gob.mx/mediateca/genero/arh"
+                },
+                "identifier": {
+                    "content": "48_20130802-094000:162",
+                    "type": "mediateca"
+                },
+                "language": {
+                    "languageTerm": [
+                        {
+                            "authority": "iso639-2b",
+                            "content": "Español",
+                            "type": "text"
+                        },
+                        {
+                            "authority": "iso639-2b",
+                            "content": "spa",
+                            "type": "code"
+                        }
+                    ]
+                },
+                "location": {
+                    "physicalLocation": "Archivo Municipal de Taxco",
+                    "shelfLocator": "caja 4, expediente 23"
+                },
+                "mods_PID": "http://mediateca.inah.gob.mx/islandora_74/islandora/object/archivohistorico%3A21512",
+                "originInfo": {
+                    "dateCreated": {
+                        "content": "1821-02-13 y 1821-03-12",
+                        "encoding": "w3cdtf"
+                    },
+                    "place": {
+                        "placeTerm": {
+                            "content": "Taxco de Alarcón, Guerrero",
+                            "type": "text"
+                        }
+                    }
+                },
+                "physicalDescription": {
+                    "digitalOrigin": "reformatted digital",
+                    "extent": "3 fojas",
+                    "form": [
+                        {
+                            "authority": "gmd",
+                            "content": "manuscript"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "ataque_fungico",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/frg"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "decoloración de tintas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/hmd"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "manchas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/mch"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "roturas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/rot"
+                        }
+                    ],
+                    "internetMediaType": "application/pdf",
+                    "reformatingQuality": "access"
+                },
+                "recordInfo": {
+                    "languageOfCataloging": {
+                        "languageTerm": [
+                            {
+                                "authority": "iso639-2b",
+                                "content": "Español",
+                                "type": "text"
+                            },
+                            {
+                                "authority": "iso639-2b",
+                                "content": "spa",
+                                "type": "code"
+                            }
+                        ]
+                    },
+                    "recordContentSource": "Instituto Nacional de Antropología e Historia"
+                },
+                "relatedItem": [
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Centro de Enseñanza para Extranjeros (CEPE-TAXCO), UNAM",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "original"
+                    },
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Archivo Municipal de Taxco",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "host"
+                    }
+                ],
+                "subject": {
+                    "geographic": "Taxco de Alarcón, Guerrero, México",
+                    "hierarchicalGeographic": {
+                        "city": "Taxco de Alarcón",
+                        "continent": "North America",
+                        "country": "México",
+                        "state": {
+                            "authority": "inah-entidad",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/entidad/",
+                            "content": "Guerrero",
+                            "valueURI": "http://vocabularios.inah.gob.mx/entidad/12"
+                        }
+                    },
+                    "temporal": "1804-1821",
+                    "topic": {
+                        "authority": "archivohistorico-seccion",
+                        "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/seccion/",
+                        "content": "Colonial",
+                        "valueURI": "http://vocabularios.inah.gob.mx/mediateca/seccion/"
+                    }
+                },
+                "titleInfo": {
+                    "title": {
+                        "content": "2 oficios del señor virrey de México, expediente con 2 documentos del virrey Juan Ruiz de Apodaca al ayuntamiento constitucional de Taxco, México",
+                        "lang": "Español",
+                        "xml_lang": "es"
+                    }
+                },
+                "typeOfResource": "text",
+                "xmlns": "http://www.loc.gov/mods/v3",
+                "xmlns_dcterms": "http://purl.org/dc/terms/",
+                "xmlns_mods": "http://www.loc.gov/mods/v3",
+                "xmlns_xlink": "http://www.w3.org/1999/xlink",
+                "xmlns_xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi_schemaLocation": "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
+            }
+        }
+    },
+    {
+        "header": {
+            "datestamp": "2016-03-31T00:19:38Z",
+            "identifier": "oai:mediateca.inah.gob.mx:archivohistorico_21497",
+            "setSpec": "inah_archivohistorico"
+        },
+        "metadata": {
+            "mods_mods": {
+                "abstract": {
+                    "content": "Actas de elección y credenciales de electores de parroquia de: Taxco, Cacalotenango, Acamixtla, Chontalcuatlan, Pilcayan, Tepecoacuilco, Huitzuco, Cocula y Noxtepec, 1820",
+                    "displayLabel": "Resumen:",
+                    "type": "summary"
+                },
+                "accessCondition": {
+                    "content": "Creative Commons (by-nc-nd)",
+                    "href": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/",
+                    "type": "useAndReproduction"
+                },
+                "extension": {
+                    "location": {
+                        "url": {
+                            "content": "http://vocabularios.inah.gob.mx/adscripcion/48",
+                            "note": "adscripcion"
+                        }
+                    }
+                },
+                "genre": {
+                    "authority": "mediateca-genero",
+                    "authorityURI": "http://vocabularios.inah.gob.mx/mediateca/genero/",
+                    "content": "Archivo histórico",
+                    "valueURI": "http://vocabularios.inah.gob.mx/mediateca/genero/arh"
+                },
+                "identifier": {
+                    "content": "48_20130802-094000:157",
+                    "type": "mediateca"
+                },
+                "language": {
+                    "languageTerm": [
+                        {
+                            "authority": "iso639-2b",
+                            "content": "Español",
+                            "type": "text"
+                        },
+                        {
+                            "authority": "iso639-2b",
+                            "content": "spa",
+                            "type": "code"
+                        }
+                    ]
+                },
+                "location": {
+                    "physicalLocation": "Archivo Municipal de Taxco",
+                    "shelfLocator": "caja 4, expediente 18"
+                },
+                "mods_PID": "http://mediateca.inah.gob.mx/islandora_74/islandora/object/archivohistorico%3A21497",
+                "originInfo": {
+                    "dateCreated": {
+                        "content": "1820",
+                        "encoding": "w3cdtf"
+                    },
+                    "place": {
+                        "placeTerm": {
+                            "content": "Taxco de Alarcón, Guerrero",
+                            "type": "text"
+                        }
+                    }
+                },
+                "physicalDescription": {
+                    "digitalOrigin": "reformatted digital",
+                    "extent": "164 fojas",
+                    "form": [
+                        {
+                            "authority": "gmd",
+                            "content": "manuscript"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "ataque_fungico",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/frg"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "doblado",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/dbl"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "decoloración de tintas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/hmd"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "manchas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/mch"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "perforaciones por insectos",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/ppi"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "roturas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/rot"
+                        }
+                    ],
+                    "internetMediaType": "application/pdf",
+                    "reformatingQuality": "access"
+                },
+                "recordInfo": {
+                    "languageOfCataloging": {
+                        "languageTerm": [
+                            {
+                                "authority": "iso639-2b",
+                                "content": "Español",
+                                "type": "text"
+                            },
+                            {
+                                "authority": "iso639-2b",
+                                "content": "spa",
+                                "type": "code"
+                            }
+                        ]
+                    },
+                    "recordContentSource": "Instituto Nacional de Antropología e Historia"
+                },
+                "relatedItem": [
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Centro de Enseñanza para Extranjeros (CEPE-TAXCO), UNAM",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "original"
+                    },
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Archivo Municipal de Taxco",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "host"
+                    }
+                ],
+                "subject": {
+                    "geographic": "Taxco de Alarcón, Guerrero, México",
+                    "hierarchicalGeographic": {
+                        "city": "Taxco de Alarcón",
+                        "continent": "North America",
+                        "country": "México",
+                        "state": {
+                            "authority": "inah-entidad",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/entidad/",
+                            "content": "Guerrero",
+                            "valueURI": "http://vocabularios.inah.gob.mx/entidad/12"
+                        }
+                    },
+                    "temporal": "1804-1821",
+                    "topic": {
+                        "authority": "archivohistorico-seccion",
+                        "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/seccion/",
+                        "content": "Colonial",
+                        "valueURI": "http://vocabularios.inah.gob.mx/mediateca/seccion/"
+                    }
+                },
+                "titleInfo": {
+                    "title": {
+                        "content": "Actas de elección y credenciales de electores de parroquia de: Taxco, Cacalotenango, Acamixtla, Chontalcuatlan, Pilcayan, Tepecoacuilco, Huitzuco, Cocula y Noxtepec",
+                        "lang": "Español",
+                        "xml_lang": "es"
+                    }
+                },
+                "typeOfResource": "text",
+                "xmlns": "http://www.loc.gov/mods/v3",
+                "xmlns_dcterms": "http://purl.org/dc/terms/",
+                "xmlns_mods": "http://www.loc.gov/mods/v3",
+                "xmlns_xlink": "http://www.w3.org/1999/xlink",
+                "xmlns_xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi_schemaLocation": "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
+            }
+        }
+    },
+    {
+        "header": {
+            "datestamp": "2016-03-31T00:19:39Z",
+            "identifier": "oai:mediateca.inah.gob.mx:archivohistorico_21680",
+            "setSpec": "inah_archivohistorico"
+        },
+        "metadata": {
+            "mods_mods": {
+                "abstract": {
+                    "content": "Bando de cédula real que confirma la del 5 de abril de 1764, sobre que los encargados de la justicia secular pueden y deben perseguir a los reos en cualquier parte y extraerlos de los lugares sagrados en donde se hayan refugiado asegurándolos en las cárceles reales, sin que puedan ser amparados por los obispos y jueces eclesiásticos, virrey Carlos Francisco de Croix, México, 22 de abril de 1769",
+                    "displayLabel": "Resumen:",
+                    "type": "summary"
+                },
+                "accessCondition": {
+                    "content": "Creative Commons (by-nc-nd)",
+                    "href": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/",
+                    "type": "useAndReproduction"
+                },
+                "extension": {
+                    "location": {
+                        "url": {
+                            "content": "http://vocabularios.inah.gob.mx/adscripcion/48",
+                            "note": "adscripcion"
+                        }
+                    }
+                },
+                "genre": {
+                    "authority": "mediateca-genero",
+                    "authorityURI": "http://vocabularios.inah.gob.mx/mediateca/genero/",
+                    "content": "Archivo histórico",
+                    "valueURI": "http://vocabularios.inah.gob.mx/mediateca/genero/arh"
+                },
+                "identifier": {
+                    "content": "48_20130802-094000:53",
+                    "type": "mediateca"
+                },
+                "language": {
+                    "languageTerm": [
+                        {
+                            "authority": "iso639-2b",
+                            "content": "Español",
+                            "type": "text"
+                        },
+                        {
+                            "authority": "iso639-2b",
+                            "content": "spa",
+                            "type": "code"
+                        }
+                    ]
+                },
+                "location": {
+                    "physicalLocation": "Archivo Municipal de Taxco",
+                    "shelfLocator": "caja 1, expediente 53"
+                },
+                "mods_PID": "http://mediateca.inah.gob.mx/islandora_74/islandora/object/archivohistorico%3A21680",
+                "originInfo": {
+                    "dateCreated": {
+                        "content": "1769-04-22",
+                        "encoding": "w3cdtf"
+                    },
+                    "place": {
+                        "placeTerm": {
+                            "content": "Taxco de Alarcón, Guerrero",
+                            "type": "text"
+                        }
+                    }
+                },
+                "physicalDescription": {
+                    "digitalOrigin": "reformatted digital",
+                    "extent": "3 fojas",
+                    "form": [
+                        {
+                            "authority": "gmd",
+                            "content": "manuscript"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "doblado",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/dbl"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "decoloración de tintas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/hmd"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "manchas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/mch"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "perforaciones por insectos",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/ppi"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "roturas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/rot"
+                        }
+                    ],
+                    "internetMediaType": "application/pdf",
+                    "reformatingQuality": "access"
+                },
+                "recordInfo": {
+                    "languageOfCataloging": {
+                        "languageTerm": [
+                            {
+                                "authority": "iso639-2b",
+                                "content": "Español",
+                                "type": "text"
+                            },
+                            {
+                                "authority": "iso639-2b",
+                                "content": "spa",
+                                "type": "code"
+                            }
+                        ]
+                    },
+                    "recordContentSource": "Instituto Nacional de Antropología e Historia"
+                },
+                "relatedItem": [
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Centro de Enseñanza para Extranjeros (CEPE-TAXCO), UNAM",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "original"
+                    },
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Archivo Municipal de Taxco",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "host"
+                    }
+                ],
+                "subject": {
+                    "geographic": "Taxco de Alarcón, Guerrero, México",
+                    "hierarchicalGeographic": {
+                        "city": "Taxco de Alarcón",
+                        "continent": "North America",
+                        "country": "México",
+                        "state": {
+                            "authority": "inah-entidad",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/entidad/",
+                            "content": "Guerrero",
+                            "valueURI": "http://vocabularios.inah.gob.mx/entidad/12"
+                        }
+                    },
+                    "temporal": "1666-1769",
+                    "topic": {
+                        "authority": "archivohistorico-seccion",
+                        "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/seccion/",
+                        "content": "Colonial",
+                        "valueURI": "http://vocabularios.inah.gob.mx/mediateca/seccion/"
+                    }
+                },
+                "titleInfo": {
+                    "title": {
+                        "content": "Bando de cédula real que confirma la del 5 de abril de 1764, sobre que los encargados de la justicia secular pueden y deben perseguir a los reos en cualquier parte y extraerlos de los lugares sagrados en donde se hayan refugiado asegurándolos en las cárceles reales, sin que puedan ser amparados por los obispos y jueces eclesiásticos, virrey Carlos Francisco de Croix, México",
+                        "lang": "Español",
+                        "xml_lang": "es"
+                    }
+                },
+                "typeOfResource": "text",
+                "xmlns": "http://www.loc.gov/mods/v3",
+                "xmlns_dcterms": "http://purl.org/dc/terms/",
+                "xmlns_mods": "http://www.loc.gov/mods/v3",
+                "xmlns_xlink": "http://www.w3.org/1999/xlink",
+                "xmlns_xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi_schemaLocation": "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
+            }
+        }
+    },
+    {
+        "header": {
+            "datestamp": "2016-03-31T00:19:39Z",
+            "identifier": "oai:mediateca.inah.gob.mx:archivohistorico_21563",
+            "setSpec": "inah_archivohistorico"
+        },
+        "metadata": {
+            "mods_mods": {
+                "abstract": {
+                    "content": "Bando de cédula real del nuevo arancel o tarifa por servicios, virrey Miguel de la Grúa Talamanca y Branciforte, México, 24 de julio de 1795",
+                    "displayLabel": "Resumen:",
+                    "type": "summary"
+                },
+                "accessCondition": {
+                    "content": "Creative Commons (by-nc-nd)",
+                    "href": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/",
+                    "type": "useAndReproduction"
+                },
+                "extension": {
+                    "location": {
+                        "url": {
+                            "content": "http://vocabularios.inah.gob.mx/adscripcion/48",
+                            "note": "adscripcion"
+                        }
+                    }
+                },
+                "genre": {
+                    "authority": "mediateca-genero",
+                    "authorityURI": "http://vocabularios.inah.gob.mx/mediateca/genero/",
+                    "content": "Archivo histórico",
+                    "valueURI": "http://vocabularios.inah.gob.mx/mediateca/genero/arh"
+                },
+                "identifier": {
+                    "content": "48_20130802-094000:116",
+                    "type": "mediateca"
+                },
+                "language": {
+                    "languageTerm": [
+                        {
+                            "authority": "iso639-2b",
+                            "content": "Español",
+                            "type": "text"
+                        },
+                        {
+                            "authority": "iso639-2b",
+                            "content": "spa",
+                            "type": "code"
+                        }
+                    ]
+                },
+                "location": {
+                    "physicalLocation": "Archivo Municipal de Taxco",
+                    "shelfLocator": "caja 3, expediente 45"
+                },
+                "mods_PID": "http://mediateca.inah.gob.mx/islandora_74/islandora/object/archivohistorico%3A21563",
+                "originInfo": {
+                    "dateCreated": {
+                        "content": "1795-07-24",
+                        "encoding": "w3cdtf"
+                    },
+                    "place": {
+                        "placeTerm": {
+                            "content": "Taxco de Alarcón, Guerrero",
+                            "type": "text"
+                        }
+                    }
+                },
+                "physicalDescription": {
+                    "digitalOrigin": "reformatted digital",
+                    "extent": "1 foja",
+                    "form": [
+                        {
+                            "authority": "gmd",
+                            "content": "manuscript"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "doblado",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/dbl"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "manchas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/mch"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "roturas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/rot"
+                        }
+                    ],
+                    "internetMediaType": "application/pdf",
+                    "reformatingQuality": "access"
+                },
+                "recordInfo": {
+                    "languageOfCataloging": {
+                        "languageTerm": [
+                            {
+                                "authority": "iso639-2b",
+                                "content": "Español",
+                                "type": "text"
+                            },
+                            {
+                                "authority": "iso639-2b",
+                                "content": "spa",
+                                "type": "code"
+                            }
+                        ]
+                    },
+                    "recordContentSource": "Instituto Nacional de Antropología e Historia"
+                },
+                "relatedItem": [
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Centro de Enseñanza para Extranjeros (CEPE-TAXCO), UNAM",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "original"
+                    },
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Archivo Municipal de Taxco",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "host"
+                    }
+                ],
+                "subject": {
+                    "geographic": "Taxco de Alarcón, Guerrero, México",
+                    "hierarchicalGeographic": {
+                        "city": "Taxco de Alarcón",
+                        "continent": "North America",
+                        "country": "México",
+                        "state": {
+                            "authority": "inah-entidad",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/entidad/",
+                            "content": "Guerrero",
+                            "valueURI": "http://vocabularios.inah.gob.mx/entidad/12"
+                        }
+                    },
+                    "temporal": "1783-1803",
+                    "topic": {
+                        "authority": "archivohistorico-seccion",
+                        "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/seccion/",
+                        "content": "Colonial",
+                        "valueURI": "http://vocabularios.inah.gob.mx/mediateca/seccion/"
+                    }
+                },
+                "titleInfo": {
+                    "title": {
+                        "content": "Bando de cédula real del nuevo arancel o tarifa por servicios, virrey Miguel de la Grúa Talamanca y Branciforte, México",
+                        "lang": "Español",
+                        "xml_lang": "es"
+                    }
+                },
+                "typeOfResource": "text",
+                "xmlns": "http://www.loc.gov/mods/v3",
+                "xmlns_dcterms": "http://purl.org/dc/terms/",
+                "xmlns_mods": "http://www.loc.gov/mods/v3",
+                "xmlns_xlink": "http://www.w3.org/1999/xlink",
+                "xmlns_xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi_schemaLocation": "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
+            }
+        }
+    },
+    {
+        "header": {
+            "datestamp": "2016-03-31T00:19:39Z",
+            "identifier": "oai:mediateca.inah.gob.mx:archivohistorico_21533",
+            "setSpec": "inah_archivohistorico"
+        },
+        "metadata": {
+            "mods_mods": {
+                "abstract": {
+                    "content": "Actas de elección y credenciales de electores de parroquia de: Taxco, Tuzpa, Mexcala, Tepecoacuilco, Chontalcuatlan, Tecalpulco, Cocula, Huitzuco, Teticpac, Mayanalan, Huiztac y Pilcaya, 1821",
+                    "displayLabel": "Resumen:",
+                    "type": "summary"
+                },
+                "accessCondition": {
+                    "content": "Creative Commons (by-nc-nd)",
+                    "href": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/",
+                    "type": "useAndReproduction"
+                },
+                "extension": {
+                    "location": {
+                        "url": {
+                            "content": "http://vocabularios.inah.gob.mx/adscripcion/48",
+                            "note": "adscripcion"
+                        }
+                    }
+                },
+                "genre": {
+                    "authority": "mediateca-genero",
+                    "authorityURI": "http://vocabularios.inah.gob.mx/mediateca/genero/",
+                    "content": "Archivo histórico",
+                    "valueURI": "http://vocabularios.inah.gob.mx/mediateca/genero/arh"
+                },
+                "identifier": {
+                    "content": "48_20130802-094000:169",
+                    "type": "mediateca"
+                },
+                "language": {
+                    "languageTerm": [
+                        {
+                            "authority": "iso639-2b",
+                            "content": "Español",
+                            "type": "text"
+                        },
+                        {
+                            "authority": "iso639-2b",
+                            "content": "spa",
+                            "type": "code"
+                        }
+                    ]
+                },
+                "location": {
+                    "physicalLocation": "Archivo Municipal de Taxco",
+                    "shelfLocator": "caja 4, expediente 30"
+                },
+                "mods_PID": "http://mediateca.inah.gob.mx/islandora_74/islandora/object/archivohistorico%3A21533",
+                "originInfo": {
+                    "dateCreated": {
+                        "content": "1821",
+                        "encoding": "w3cdtf"
+                    },
+                    "place": {
+                        "placeTerm": {
+                            "content": "Taxco de Alarcón, Guerrero",
+                            "type": "text"
+                        }
+                    }
+                },
+                "physicalDescription": {
+                    "digitalOrigin": "reformatted digital",
+                    "extent": "29 fojas",
+                    "form": [
+                        {
+                            "authority": "gmd",
+                            "content": "manuscript"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "ataque_fungico",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/frg"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "doblado",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/dbl"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "decoloración de tintas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/hmd"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "manchas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/mch"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "perforaciones por insectos",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/ppi"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "roturas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/rot"
+                        }
+                    ],
+                    "internetMediaType": "application/pdf",
+                    "reformatingQuality": "access"
+                },
+                "recordInfo": {
+                    "languageOfCataloging": {
+                        "languageTerm": [
+                            {
+                                "authority": "iso639-2b",
+                                "content": "Español",
+                                "type": "text"
+                            },
+                            {
+                                "authority": "iso639-2b",
+                                "content": "spa",
+                                "type": "code"
+                            }
+                        ]
+                    },
+                    "recordContentSource": "Instituto Nacional de Antropología e Historia"
+                },
+                "relatedItem": [
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Centro de Enseñanza para Extranjeros (CEPE-TAXCO), UNAM",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "original"
+                    },
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Archivo Municipal de Taxco",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "host"
+                    }
+                ],
+                "subject": {
+                    "geographic": "Taxco de Alarcón, Guerrero, México",
+                    "hierarchicalGeographic": {
+                        "city": "Taxco de Alarcón",
+                        "continent": "North America",
+                        "country": "México",
+                        "state": {
+                            "authority": "inah-entidad",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/entidad/",
+                            "content": "Guerrero",
+                            "valueURI": "http://vocabularios.inah.gob.mx/entidad/12"
+                        }
+                    },
+                    "temporal": "1804-1821",
+                    "topic": {
+                        "authority": "archivohistorico-seccion",
+                        "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/seccion/",
+                        "content": "Colonial",
+                        "valueURI": "http://vocabularios.inah.gob.mx/mediateca/seccion/"
+                    }
+                },
+                "titleInfo": {
+                    "title": {
+                        "content": "Actas de elección y credenciales de electores de parroquia de: Taxco, Tuzpa, Mexcala, Tepecoacuilco, Chontalcuatlan, Tecalpulco, Cocula, Huitzuco, Teticpac, Mayanalan, Huiztac y Pilcaya",
+                        "lang": "Español",
+                        "xml_lang": "es"
+                    }
+                },
+                "typeOfResource": "text",
+                "xmlns": "http://www.loc.gov/mods/v3",
+                "xmlns_dcterms": "http://purl.org/dc/terms/",
+                "xmlns_mods": "http://www.loc.gov/mods/v3",
+                "xmlns_xlink": "http://www.w3.org/1999/xlink",
+                "xmlns_xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi_schemaLocation": "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
+            }
+        }
+    },
+    {
+        "header": {
+            "datestamp": "2016-03-31T00:19:39Z",
+            "identifier": "oai:mediateca.inah.gob.mx:archivohistorico_21522",
+            "setSpec": "inah_archivohistorico"
+        },
+        "metadata": {
+            "mods_mods": {
+                "abstract": {
+                    "content": "Bando de cédula real que comunica el fallecimiento del rey Luis Primero; mandato para que se hagan las demostraciones de luto que se acostumbran por las personas reales, virrey Juan de Acuña, México, 2 de abril de 1725; y acta sobre la publicación del deceso y manifestaciones de duelo, Toribio del Campillo, Real y Minas de Taxco, 22 de mayo de 1725",
+                    "displayLabel": "Resumen:",
+                    "type": "summary"
+                },
+                "accessCondition": {
+                    "content": "Creative Commons (by-nc-nd)",
+                    "href": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/",
+                    "type": "useAndReproduction"
+                },
+                "extension": {
+                    "location": {
+                        "url": {
+                            "content": "http://vocabularios.inah.gob.mx/adscripcion/48",
+                            "note": "adscripcion"
+                        }
+                    }
+                },
+                "genre": {
+                    "authority": "mediateca-genero",
+                    "authorityURI": "http://vocabularios.inah.gob.mx/mediateca/genero/",
+                    "content": "Archivo histórico",
+                    "valueURI": "http://vocabularios.inah.gob.mx/mediateca/genero/arh"
+                },
+                "identifier": {
+                    "content": "48_20130802-094000:27",
+                    "type": "mediateca"
+                },
+                "language": {
+                    "languageTerm": [
+                        {
+                            "authority": "iso639-2b",
+                            "content": "Español",
+                            "type": "text"
+                        },
+                        {
+                            "authority": "iso639-2b",
+                            "content": "spa",
+                            "type": "code"
+                        }
+                    ]
+                },
+                "location": {
+                    "physicalLocation": "Archivo Municipal de Taxco",
+                    "shelfLocator": "caja 1, expediente 27"
+                },
+                "mods_PID": "http://mediateca.inah.gob.mx/islandora_74/islandora/object/archivohistorico%3A21522",
+                "originInfo": {
+                    "dateCreated": {
+                        "content": "1725-05-22",
+                        "encoding": "w3cdtf"
+                    },
+                    "place": {
+                        "placeTerm": {
+                            "content": "Taxco de Alarcón, Guerrero",
+                            "type": "text"
+                        }
+                    }
+                },
+                "physicalDescription": {
+                    "digitalOrigin": "reformatted digital",
+                    "extent": "4 fojas",
+                    "form": [
+                        {
+                            "authority": "gmd",
+                            "content": "manuscript"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "doblado",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/dbl"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "decoloración de tintas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/hmd"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "manchas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/mch"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "perforaciones por insectos",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/ppi"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "roturas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/rot"
+                        }
+                    ],
+                    "internetMediaType": "application/pdf",
+                    "reformatingQuality": "access"
+                },
+                "recordInfo": {
+                    "languageOfCataloging": {
+                        "languageTerm": [
+                            {
+                                "authority": "iso639-2b",
+                                "content": "Español",
+                                "type": "text"
+                            },
+                            {
+                                "authority": "iso639-2b",
+                                "content": "spa",
+                                "type": "code"
+                            }
+                        ]
+                    },
+                    "recordContentSource": "Instituto Nacional de Antropología e Historia"
+                },
+                "relatedItem": [
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Centro de Enseñanza para Extranjeros (CEPE-TAXCO), UNAM",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "original"
+                    },
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Archivo Municipal de Taxco",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "host"
+                    }
+                ],
+                "subject": {
+                    "geographic": "Taxco de Alarcón, Guerrero, México",
+                    "hierarchicalGeographic": {
+                        "city": "Taxco de Alarcón",
+                        "continent": "North America",
+                        "country": "México",
+                        "state": {
+                            "authority": "inah-entidad",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/entidad/",
+                            "content": "Guerrero",
+                            "valueURI": "http://vocabularios.inah.gob.mx/entidad/12"
+                        }
+                    },
+                    "temporal": "1666-1769",
+                    "topic": {
+                        "authority": "archivohistorico-seccion",
+                        "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/seccion/",
+                        "content": "Colonial",
+                        "valueURI": "http://vocabularios.inah.gob.mx/mediateca/seccion/"
+                    }
+                },
+                "titleInfo": {
+                    "title": {
+                        "content": "Bando de cédula real que comunica el fallecimiento del rey Luis Primero; mandato para que se hagan las demostraciones de luto que se acostumbran por las personas reales, virrey Juan de Acuña, México",
+                        "lang": "Español",
+                        "xml_lang": "es"
+                    }
+                },
+                "typeOfResource": "text",
+                "xmlns": "http://www.loc.gov/mods/v3",
+                "xmlns_dcterms": "http://purl.org/dc/terms/",
+                "xmlns_mods": "http://www.loc.gov/mods/v3",
+                "xmlns_xlink": "http://www.w3.org/1999/xlink",
+                "xmlns_xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi_schemaLocation": "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
+            }
+        }
+    },
+    {
+        "header": {
+            "datestamp": "2016-03-31T00:19:39Z",
+            "identifier": "oai:mediateca.inah.gob.mx:archivohistorico_21513",
+            "setSpec": "inah_archivohistorico"
+        },
+        "metadata": {
+            "mods_mods": {
+                "abstract": {
+                    "content": "Bando de cédula real para que en todos los minerales se pague el diezmo de derechos del oro y plata en lugar del quinto, virrey Juan de Acuña, México, 25 de octubre de 1723",
+                    "displayLabel": "Resumen:",
+                    "type": "summary"
+                },
+                "accessCondition": {
+                    "content": "Creative Commons (by-nc-nd)",
+                    "href": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/",
+                    "type": "useAndReproduction"
+                },
+                "extension": {
+                    "location": {
+                        "url": {
+                            "content": "http://vocabularios.inah.gob.mx/adscripcion/48",
+                            "note": "adscripcion"
+                        }
+                    }
+                },
+                "genre": {
+                    "authority": "mediateca-genero",
+                    "authorityURI": "http://vocabularios.inah.gob.mx/mediateca/genero/",
+                    "content": "Archivo histórico",
+                    "valueURI": "http://vocabularios.inah.gob.mx/mediateca/genero/arh"
+                },
+                "identifier": {
+                    "content": "48_20130802-094000:24",
+                    "type": "mediateca"
+                },
+                "language": {
+                    "languageTerm": [
+                        {
+                            "authority": "iso639-2b",
+                            "content": "Español",
+                            "type": "text"
+                        },
+                        {
+                            "authority": "iso639-2b",
+                            "content": "spa",
+                            "type": "code"
+                        }
+                    ]
+                },
+                "location": {
+                    "physicalLocation": "Archivo Municipal de Taxco",
+                    "shelfLocator": "caja 1, expediente 24"
+                },
+                "mods_PID": "http://mediateca.inah.gob.mx/islandora_74/islandora/object/archivohistorico%3A21513",
+                "originInfo": {
+                    "dateCreated": {
+                        "content": "1723-10-25",
+                        "encoding": "w3cdtf"
+                    },
+                    "place": {
+                        "placeTerm": {
+                            "content": "Taxco de Alarcón, Guerrero",
+                            "type": "text"
+                        }
+                    }
+                },
+                "physicalDescription": {
+                    "digitalOrigin": "reformatted digital",
+                    "extent": "2 fojas",
+                    "form": [
+                        {
+                            "authority": "gmd",
+                            "content": "manuscript"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "doblado",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/dbl"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "decoloración de tintas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/hmd"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "manchas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/mch"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "perforaciones por insectos",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/ppi"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "roturas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/rot"
+                        }
+                    ],
+                    "internetMediaType": "application/pdf",
+                    "reformatingQuality": "access"
+                },
+                "recordInfo": {
+                    "languageOfCataloging": {
+                        "languageTerm": [
+                            {
+                                "authority": "iso639-2b",
+                                "content": "Español",
+                                "type": "text"
+                            },
+                            {
+                                "authority": "iso639-2b",
+                                "content": "spa",
+                                "type": "code"
+                            }
+                        ]
+                    },
+                    "recordContentSource": "Instituto Nacional de Antropología e Historia"
+                },
+                "relatedItem": [
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Centro de Enseñanza para Extranjeros (CEPE-TAXCO), UNAM",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "original"
+                    },
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Archivo Municipal de Taxco",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "host"
+                    }
+                ],
+                "subject": {
+                    "geographic": "Taxco de Alarcón, Guerrero, México",
+                    "hierarchicalGeographic": {
+                        "city": "Taxco de Alarcón",
+                        "continent": "North America",
+                        "country": "México",
+                        "state": {
+                            "authority": "inah-entidad",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/entidad/",
+                            "content": "Guerrero",
+                            "valueURI": "http://vocabularios.inah.gob.mx/entidad/12"
+                        }
+                    },
+                    "temporal": "1666-1769",
+                    "topic": {
+                        "authority": "archivohistorico-seccion",
+                        "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/seccion/",
+                        "content": "Colonial",
+                        "valueURI": "http://vocabularios.inah.gob.mx/mediateca/seccion/"
+                    }
+                },
+                "titleInfo": {
+                    "title": {
+                        "content": "Bando de cédula real para que en todos los minerales se pague el diezmo de derechos del oro y plata en lugar del quinto, virrey Juan de Acuña, México",
+                        "lang": "Español",
+                        "xml_lang": "es"
+                    }
+                },
+                "typeOfResource": "text",
+                "xmlns": "http://www.loc.gov/mods/v3",
+                "xmlns_dcterms": "http://purl.org/dc/terms/",
+                "xmlns_mods": "http://www.loc.gov/mods/v3",
+                "xmlns_xlink": "http://www.w3.org/1999/xlink",
+                "xmlns_xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi_schemaLocation": "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
+            }
+        }
+    },
+    {
+        "header": {
+            "datestamp": "2016-03-31T00:19:39Z",
+            "identifier": "oai:mediateca.inah.gob.mx:archivohistorico_21510",
+            "setSpec": "inah_archivohistorico"
+        },
+        "metadata": {
+            "mods_mods": {
+                "abstract": {
+                    "content": "Aprobación de los oficiales de república que fungirán en el año 1723 en el pueblo de Cacalotenango, jurisdicción de Taxco, virrey Juan de Acuña, México, 19 de diciembre de 1722",
+                    "displayLabel": "Resumen:",
+                    "type": "summary"
+                },
+                "accessCondition": {
+                    "content": "Creative Commons (by-nc-nd)",
+                    "href": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/",
+                    "type": "useAndReproduction"
+                },
+                "extension": {
+                    "location": {
+                        "url": {
+                            "content": "http://vocabularios.inah.gob.mx/adscripcion/48",
+                            "note": "adscripcion"
+                        }
+                    }
+                },
+                "genre": {
+                    "authority": "mediateca-genero",
+                    "authorityURI": "http://vocabularios.inah.gob.mx/mediateca/genero/",
+                    "content": "Archivo histórico",
+                    "valueURI": "http://vocabularios.inah.gob.mx/mediateca/genero/arh"
+                },
+                "identifier": {
+                    "content": "48_20130802-094000:23",
+                    "type": "mediateca"
+                },
+                "language": {
+                    "languageTerm": [
+                        {
+                            "authority": "iso639-2b",
+                            "content": "Español",
+                            "type": "text"
+                        },
+                        {
+                            "authority": "iso639-2b",
+                            "content": "spa",
+                            "type": "code"
+                        }
+                    ]
+                },
+                "location": {
+                    "physicalLocation": "Archivo Municipal de Taxco",
+                    "shelfLocator": "caja 1, expediente 23"
+                },
+                "mods_PID": "http://mediateca.inah.gob.mx/islandora_74/islandora/object/archivohistorico%3A21510",
+                "originInfo": {
+                    "dateCreated": {
+                        "content": "1722-12-19",
+                        "encoding": "w3cdtf"
+                    },
+                    "place": {
+                        "placeTerm": {
+                            "content": "Taxco de Alarcón, Guerrero",
+                            "type": "text"
+                        }
+                    }
+                },
+                "physicalDescription": {
+                    "digitalOrigin": "reformatted digital",
+                    "extent": "1 foja",
+                    "form": [
+                        {
+                            "authority": "gmd",
+                            "content": "manuscript"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "ataque_fungico",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/frg"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "doblado",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/dbl"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "decoloración de tintas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/hmd"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "manchas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/mch"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "perforaciones por insectos",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/ppi"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "roturas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/rot"
+                        }
+                    ],
+                    "internetMediaType": "application/pdf",
+                    "reformatingQuality": "access"
+                },
+                "recordInfo": {
+                    "languageOfCataloging": {
+                        "languageTerm": [
+                            {
+                                "authority": "iso639-2b",
+                                "content": "Español",
+                                "type": "text"
+                            },
+                            {
+                                "authority": "iso639-2b",
+                                "content": "spa",
+                                "type": "code"
+                            }
+                        ]
+                    },
+                    "recordContentSource": "Instituto Nacional de Antropología e Historia"
+                },
+                "relatedItem": [
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Centro de Enseñanza para Extranjeros (CEPE-TAXCO), UNAM",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "original"
+                    },
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Archivo Municipal de Taxco",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "host"
+                    }
+                ],
+                "subject": {
+                    "geographic": "Taxco de Alarcón, Guerrero, México",
+                    "hierarchicalGeographic": {
+                        "city": "Taxco de Alarcón",
+                        "continent": "North America",
+                        "country": "México",
+                        "state": {
+                            "authority": "inah-entidad",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/entidad/",
+                            "content": "Guerrero",
+                            "valueURI": "http://vocabularios.inah.gob.mx/entidad/12"
+                        }
+                    },
+                    "temporal": "1666-1769",
+                    "topic": {
+                        "authority": "archivohistorico-seccion",
+                        "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/seccion/",
+                        "content": "Colonial",
+                        "valueURI": "http://vocabularios.inah.gob.mx/mediateca/seccion/"
+                    }
+                },
+                "titleInfo": {
+                    "title": {
+                        "content": "Aprobación de los oficiales de república que fungirán en el año 1723 en el pueblo de Cacalotenango, jurisdicción de Taxco, virrey Juan de Acuña, México",
+                        "lang": "Español",
+                        "xml_lang": "es"
+                    }
+                },
+                "typeOfResource": "text",
+                "xmlns": "http://www.loc.gov/mods/v3",
+                "xmlns_dcterms": "http://purl.org/dc/terms/",
+                "xmlns_mods": "http://www.loc.gov/mods/v3",
+                "xmlns_xlink": "http://www.w3.org/1999/xlink",
+                "xmlns_xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi_schemaLocation": "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
+            }
+        }
+    },
+    {
+        "header": {
+            "datestamp": "2016-03-31T00:19:39Z",
+            "identifier": "oai:mediateca.inah.gob.mx:archivohistorico_21179",
+            "setSpec": "inah_archivohistorico"
+        },
+        "metadata": {
+            "mods_mods": {
+                "abstract": {
+                    "content": "Aprobación de los oficiales de república que fungirán en el año 1708 en el pueblo de Tetiopaque, jurisdicción de Taxco, virrey Francisco Fernández de la Cueva, México, diciembre de 1707",
+                    "displayLabel": "Resumen:",
+                    "type": "summary"
+                },
+                "accessCondition": {
+                    "content": "Creative Commons (by-nc-nd)",
+                    "href": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/",
+                    "type": "useAndReproduction"
+                },
+                "extension": {
+                    "location": {
+                        "url": {
+                            "content": "http://vocabularios.inah.gob.mx/adscripcion/48",
+                            "note": "adscripcion"
+                        }
+                    }
+                },
+                "genre": {
+                    "authority": "mediateca-genero",
+                    "authorityURI": "http://vocabularios.inah.gob.mx/mediateca/genero/",
+                    "content": "Archivo histórico",
+                    "valueURI": "http://vocabularios.inah.gob.mx/mediateca/genero/arh"
+                },
+                "identifier": {
+                    "content": "48_20130802-094000:9",
+                    "type": "mediateca"
+                },
+                "language": {
+                    "languageTerm": [
+                        {
+                            "authority": "iso639-2b",
+                            "content": "Español",
+                            "type": "text"
+                        },
+                        {
+                            "authority": "iso639-2b",
+                            "content": "spa",
+                            "type": "code"
+                        }
+                    ]
+                },
+                "location": {
+                    "physicalLocation": "Archivo Municipal de Taxco",
+                    "shelfLocator": "caja 1, expediente 9"
+                },
+                "mods_PID": "http://mediateca.inah.gob.mx/islandora_74/islandora/object/archivohistorico%3A21179",
+                "originInfo": {
+                    "dateCreated": {
+                        "content": "1707-12",
+                        "encoding": "w3cdtf"
+                    },
+                    "place": {
+                        "placeTerm": {
+                            "content": "Taxco de Alarcón, Guerrero",
+                            "type": "text"
+                        }
+                    }
+                },
+                "physicalDescription": {
+                    "digitalOrigin": "reformatted digital",
+                    "extent": "1 foja",
+                    "form": [
+                        {
+                            "authority": "gmd",
+                            "content": "manuscript"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "decoloración de tintas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/hmd"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "manchas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/mch"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "perforaciones por insectos",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/ppi"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "roturas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/rot"
+                        }
+                    ],
+                    "internetMediaType": "application/pdf",
+                    "reformatingQuality": "access"
+                },
+                "recordInfo": {
+                    "languageOfCataloging": {
+                        "languageTerm": [
+                            {
+                                "authority": "iso639-2b",
+                                "content": "Español",
+                                "type": "text"
+                            },
+                            {
+                                "authority": "iso639-2b",
+                                "content": "spa",
+                                "type": "code"
+                            }
+                        ]
+                    },
+                    "recordContentSource": "Instituto Nacional de Antropología e Historia"
+                },
+                "relatedItem": [
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Centro de Enseñanza para Extranjeros (CEPE-TAXCO), UNAM",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "original"
+                    },
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Archivo Municipal de Taxco",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "host"
+                    }
+                ],
+                "subject": {
+                    "geographic": "Taxco de Alarcón, Guerrero, México",
+                    "hierarchicalGeographic": {
+                        "city": "Taxco de Alarcón",
+                        "continent": "North America",
+                        "country": "México",
+                        "state": {
+                            "authority": "inah-entidad",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/entidad/",
+                            "content": "Guerrero",
+                            "valueURI": "http://vocabularios.inah.gob.mx/entidad/12"
+                        }
+                    },
+                    "temporal": "1666-1769",
+                    "topic": {
+                        "authority": "archivohistorico-seccion",
+                        "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/seccion/",
+                        "content": "Colonial",
+                        "valueURI": "http://vocabularios.inah.gob.mx/mediateca/seccion/"
+                    }
+                },
+                "titleInfo": {
+                    "title": {
+                        "content": "Aprobación de los oficiales de república que fungirán en el año 1708 en el pueblo de Tetiopaque, jurisdicción de Taxco, virrey Francisco Fernández de la Cueva, México",
+                        "lang": "Español",
+                        "xml_lang": "es"
+                    }
+                },
+                "typeOfResource": "text",
+                "xmlns": "http://www.loc.gov/mods/v3",
+                "xmlns_dcterms": "http://purl.org/dc/terms/",
+                "xmlns_mods": "http://www.loc.gov/mods/v3",
+                "xmlns_xlink": "http://www.w3.org/1999/xlink",
+                "xmlns_xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi_schemaLocation": "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
+            }
+        }
+    },
+    {
+        "header": {
+            "datestamp": "2016-03-31T00:19:39Z",
+            "identifier": "oai:mediateca.inah.gob.mx:archivohistorico_21059",
+            "setSpec": "inah_archivohistorico"
+        },
+        "metadata": {
+            "mods_mods": {
+                "abstract": {
+                    "content": "Averiguación por robo de caballos, mulas y yeguas denunciado por el común de naturales del pueblo del Santo Simón de Totoltepeque, Teloloapan, noviembre de 1677",
+                    "displayLabel": "Resumen:",
+                    "type": "summary"
+                },
+                "accessCondition": {
+                    "content": "Creative Commons (by-nc-nd)",
+                    "href": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/",
+                    "type": "useAndReproduction"
+                },
+                "extension": {
+                    "location": {
+                        "url": {
+                            "content": "http://vocabularios.inah.gob.mx/adscripcion/48",
+                            "note": "adscripcion"
+                        }
+                    }
+                },
+                "genre": {
+                    "authority": "mediateca-genero",
+                    "authorityURI": "http://vocabularios.inah.gob.mx/mediateca/genero/",
+                    "content": "Archivo histórico",
+                    "valueURI": "http://vocabularios.inah.gob.mx/mediateca/genero/arh"
+                },
+                "identifier": {
+                    "content": "48_20130802-094000:4",
+                    "type": "mediateca"
+                },
+                "language": {
+                    "languageTerm": [
+                        {
+                            "authority": "iso639-2b",
+                            "content": "Español",
+                            "type": "text"
+                        },
+                        {
+                            "authority": "iso639-2b",
+                            "content": "spa",
+                            "type": "code"
+                        }
+                    ]
+                },
+                "location": {
+                    "physicalLocation": "Archivo Municipal de Taxco",
+                    "shelfLocator": "caja 1, expediente 4"
+                },
+                "mods_PID": "http://mediateca.inah.gob.mx/islandora_74/islandora/object/archivohistorico%3A21059",
+                "originInfo": {
+                    "dateCreated": {
+                        "content": "1677-11",
+                        "encoding": "w3cdtf"
+                    },
+                    "place": {
+                        "placeTerm": {
+                            "content": "Taxco de Alarcón, Guerrero",
+                            "type": "text"
+                        }
+                    }
+                },
+                "physicalDescription": {
+                    "digitalOrigin": "reformatted digital",
+                    "extent": "12 fojas",
+                    "form": [
+                        {
+                            "authority": "gmd",
+                            "content": "manuscript"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "doblado",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/dbl"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "decoloración de tintas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/hmd"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "manchas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/mch"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "perforaciones por insectos",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/ppi"
+                        },
+                        {
+                            "authority": "archivohistorico-deterioro",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/",
+                            "content": "roturas",
+                            "type": "deterioro",
+                            "valueURI": "http://vocabularios.inah.gob.mx/archivohistorico/deterioro/rot"
+                        }
+                    ],
+                    "internetMediaType": "application/pdf",
+                    "reformatingQuality": "access"
+                },
+                "recordInfo": {
+                    "languageOfCataloging": {
+                        "languageTerm": [
+                            {
+                                "authority": "iso639-2b",
+                                "content": "Español",
+                                "type": "text"
+                            },
+                            {
+                                "authority": "iso639-2b",
+                                "content": "spa",
+                                "type": "code"
+                            }
+                        ]
+                    },
+                    "recordContentSource": "Instituto Nacional de Antropología e Historia"
+                },
+                "relatedItem": [
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Centro de Enseñanza para Extranjeros (CEPE-TAXCO), UNAM",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "original"
+                    },
+                    {
+                        "titleInfo": {
+                            "title": {
+                                "content": "Archivo Municipal de Taxco",
+                                "lang": "Español",
+                                "xml_lang": "es"
+                            }
+                        },
+                        "type": "host"
+                    }
+                ],
+                "subject": {
+                    "geographic": "Taxco de Alarcón, Guerrero, México",
+                    "hierarchicalGeographic": {
+                        "city": "Taxco de Alarcón",
+                        "continent": "North America",
+                        "country": "México",
+                        "state": {
+                            "authority": "inah-entidad",
+                            "authorityURI": "http://vocabularios.inah.gob.mx/entidad/",
+                            "content": "Guerrero",
+                            "valueURI": "http://vocabularios.inah.gob.mx/entidad/12"
+                        }
+                    },
+                    "temporal": "1666-1769",
+                    "topic": {
+                        "authority": "archivohistorico-seccion",
+                        "authorityURI": "http://vocabularios.inah.gob.mx/archivohistorico/seccion/",
+                        "content": "Colonial",
+                        "valueURI": "http://vocabularios.inah.gob.mx/mediateca/seccion/"
+                    }
+                },
+                "titleInfo": {
+                    "title": {
+                        "content": "Averiguación por robo de caballos, mulas y yeguas denunciado por el común de naturales del pueblo del Santo Simón de Totoltepeque, Teloloapan",
+                        "lang": "Español",
+                        "xml_lang": "es"
+                    }
+                },
+                "typeOfResource": "text",
+                "xmlns": "http://www.loc.gov/mods/v3",
+                "xmlns_dcterms": "http://purl.org/dc/terms/",
+                "xmlns_mods": "http://www.loc.gov/mods/v3",
+                "xmlns_xlink": "http://www.w3.org/1999/xlink",
+                "xmlns_xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi_schemaLocation": "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
+            }
+        }
+    }
+]
