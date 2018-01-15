@@ -1,6 +1,7 @@
 package mx.gob.cultura.indexer;
 
 import mx.gob.cultura.commons.Util;
+import mx.gob.cultura.commons.config.AppConfig;
 import org.elasticsearch.client.RestHighLevelClient;
 
 import java.util.ArrayList;
@@ -33,7 +34,17 @@ public class SimpleESIndexer {
      * @param typeName Name of index type.
      */
     public SimpleESIndexer(String indexName, String typeName) {
-        this("http://localhost", 9200, indexName, typeName);
+        this(AppConfig.getConfigObject().getElasticHost(), AppConfig.getConfigObject().getElasticPort(), indexName, typeName);
+    }
+
+    /**
+     * Constructor. Creates a new instance of {@link SimpleESIndexer}.
+     */
+    public SimpleESIndexer() {
+        this(AppConfig.getConfigObject().getElasticHost(),
+                AppConfig.getConfigObject().getElasticPort(),
+                AppConfig.getConfigObject().getIndexName(),
+                AppConfig.getConfigObject().getIndexType());
     }
 
     /**
@@ -51,6 +62,6 @@ public class SimpleESIndexer {
      * @return {@link ArrayList} of identifiers of indexed objects.
      */
     public ArrayList<String> index (ArrayList<String> objects) {
-        return Util.ELASTICSEARCH.indexObjects(objects, client, indexName, indexType);
+        return Util.ELASTICSEARCH.indexObjects(client, indexName, indexType, objects);
     }
 }
