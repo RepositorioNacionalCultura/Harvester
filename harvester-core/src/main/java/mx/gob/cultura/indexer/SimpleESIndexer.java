@@ -3,6 +3,8 @@ package mx.gob.cultura.indexer;
 import mx.gob.cultura.commons.Util;
 import org.elasticsearch.client.RestHighLevelClient;
 
+import java.util.ArrayList;
+
 /**
  * Simple class to index objects using ElasticSearch {@link RestHighLevelClient}.
  * @author Hasdai Pacheco
@@ -41,5 +43,14 @@ public class SimpleESIndexer {
      */
     public String index(String objectJson) {
         return Util.ELASTICSEARCH.indexObject(client, indexName, indexType, null, objectJson);
+    }
+
+    /**
+     * Indexes a list of objects in ElasticSearch.
+     * @param objects {@link ArrayList} of JSON Strings for objects.
+     * @return {@link ArrayList} of identifiers of indexed objects.
+     */
+    public ArrayList<String> index (ArrayList<String> objects) {
+        return Util.ELASTICSEARCH.indexObjects(objects, client, indexName, indexType);
     }
 }
