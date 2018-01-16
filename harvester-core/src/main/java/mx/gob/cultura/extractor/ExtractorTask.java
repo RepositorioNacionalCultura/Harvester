@@ -31,12 +31,14 @@ public class ExtractorTask extends TimerTask {
         Iterator<String> it = ExtractorManager.hmExtractor.keySet().iterator();
         while (it.hasNext()) {  //
             String next = it.next();
-            System.out.println("key----"+next);
+            //System.out.println("key----"+next);
             Extractor extractor = ExtractorManager.hmExtractor.get(next);
-            System.out.println("Extractor NULL===("+(extractor==null?"TRUE":"FALSE")+")");
-             
-             System.out.println("Status:"+(extractor!=null?extractor.getStatus():"NULL"));
-             System.out.println("\n=============================================");
+            if(null!=extractor){
+                System.out.println("Extractor "+extractor.getName()+" Status:"+extractor.getStatus()+")");
+            } else {
+                System.out.println("Extractor NULL===("+(extractor==null?"TRUE":"FALSE")+")");
+            }
+            System.out.println("\n=============================================");
             if (null!=extractor && (extractor.getStatus().equals("LOADED")|| extractor.getStatus().equals("STOPPED"))) {
                 try {
                     DataObject dobj = ExtractorManager.hmExtractorDef.get(next);

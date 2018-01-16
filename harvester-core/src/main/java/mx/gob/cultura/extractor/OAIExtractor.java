@@ -18,6 +18,7 @@ import java.util.Date;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Iterator;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import mx.gob.cultura.indexer.SimpleESIndexer;
@@ -506,128 +507,153 @@ public class OAIExtractor extends ExtractorBase {
     @Override
     public void process() throws Exception {
         System.out.println("\n\n\n>>>>>>>>>> PROCESSING <<<<<<<<<<<<<<<<<\n\n\n");
-        String scriptsrc = extractorDef.getString("script");
-        ScriptEngineManager factory = new ScriptEngineManager();
 
         long numItems = 0;
         long numAlready = 0;
 
-        if (null != scriptsrc && scriptsrc.trim().length() > 0) {
+        extractorDef.put("status", "PROCESSING");
+        dsExtract.updateObj(extractorDef);
 
-            extractorDef.put("status", "PROCESSING");
+        DataList dlpfx = extractorDef.getDataList("prefix");
+        System.out.println("num items:" + dlpfx.size());
+        String[] ext_prefix = new String[dlpfx.size()];
+        //Generar el nuevo DataObject combinado por cada prefix
+        try {
+            DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
+            DBCollection objects = db.getCollection("fullobjects");
+            objects.createIndex("oaiid");
+//                HashMap<String, DataObject> hmfull = new HashMap();
+            boolean hdrLoaded = false;
+            DataObject dobj = null;
+
+            for (int i = 0; i < dlpfx.size(); i++) {
+                if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                    break;
+                }
+                String pfx = dlpfx.getString(i).trim();
+                System.out.println("Revisando colección: " + pfx);
+                try {
+                    DBCollection datasource = db.getCollection(pfx);
+                    DBCursor cursor = datasource.find();
+                    System.out.println(pfx + " cursor size: " + (null != cursor ? cursor.count() : "NULO"));
+                    while (null != cursor && cursor.hasNext()) {
+                        if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                            break;
+                        }
+                        DBObject next = cursor.next();
+                        String key = (String) next.get("oaiid");
+                        boolean isDODeleted = false;
+                        boolean add2DB = false;
+                        hdrLoaded = false;
+                        //Revisar si existe en fullobjects
+                        BasicDBObject dbQuery = new BasicDBObject("oaiid", key);
+                        DBObject dbres = objects.findOne(dbQuery);
+                        if (null == dbres) {
+                            add2DB = true;
+                            dobj = new DataObject();
+                            dobj.put("oaiid", key);
+                        }
+                        if (null != dbres) {
+                            //Existe en la DB
+
+                            dobj = (DataObject) DataObject.parseJSON(dbres.toString()); //hmfull.get(key.trim());
+                            if (dobj.get("header") != null) {
+                                hdrLoaded = true;
+                            }
+                            if (dobj.get(pfx) != null) {
+                                numAlready++;
+                                continue;
+                            }
+                        }
+
+                        DataObject tmpObj = (DataObject) DataObject.parseJSON(next.get("body").toString());
+                        if (!hdrLoaded) {
+                            if (null != tmpObj) {
+                                Object header = tmpObj.get("header");
+                                if (null != header) {
+                                    dobj.put("header", header);
+                                    hdrLoaded = true;
+                                }
+                            }
+                        }
+                        Object metadata = tmpObj.get("metadata");
+                        if (null != metadata) {
+                            dobj.put(pfx, metadata);
+                            //System.out.println(metadata.toString());
+                        } else {
+                            DataObject doHdr = (DataObject) DataObject.parseJSON(tmpObj.get("header").toString());
+                            if (null != doHdr) {
+                                if (doHdr.getString("status") != null) {
+                                    dobj.put("status", doHdr.getString("status"));
+                                    if (doHdr.getString("status").equals("deleted")) {
+                                        isDODeleted = true;
+                                    }
+                                }
+                            }
+                        }
+                        //hmfull.put(key.trim(), dobj);
+
+                        // Esta parte sólo es para verificar como forma los objetos completos.
+                        BasicDBObject bjson = Util.toBasicDBObject(dobj);
+                        if (add2DB) {
+                            objects.insert(bjson);
+                        } else {
+                            objects.update(dbQuery, bjson);
+                        }
+                        numItems++;
+                        if (numItems % 1000 == 0 && numItems > 0) {
+                            System.out.println("Items Processed: " + numItems);
+                        }
+                    }
+                    try {
+                        cursor.close();
+                    } catch (Exception e) {
+                    }
+
+                } catch (Exception e) {
+                    System.out.println("Error al cargar el DataSource. " + e.getMessage());
+                    e.printStackTrace(System.out);
+                }
+
+            }
+
+            extractorDef.put("processed", numItems);
+            extractorDef.put("status", "FINISHED");
+            dsExtract.updateObj(extractorDef);
+
+        } catch (Exception e) {
+            System.out.println("Error al procesar la Base de Datos");
+            e.printStackTrace();
+            extractorDef.put("processed", numItems);
+            dsExtract.updateObj(extractorDef);
+        }
+
+    }
+
+    @Override
+    public void index() throws Exception {
+        System.out.println("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
+        String scriptsrc = extractorDef.getString("script");
+        ScriptEngineManager factory = new ScriptEngineManager();
+        long numItemsIndexed = 0;
+        long numItemsDeleted = 0;
+
+        if (null != scriptsrc && scriptsrc.trim().length() > 0 && (getStatus().equals("STOPPED") || getStatus().equals("FINISHED")|| getStatus().equals("LOADED"))) {
+
+            scriptsrc =  scriptsrc.replace("&gt;", ">");
+            scriptsrc =  scriptsrc.replace("&lt;", "<");
+            extractorDef.put("status", "INDEXING");
             dsExtract.updateObj(extractorDef);
             ScriptEngine engine = factory.getEngineByName("JavaScript");
             DataObjectScriptEngineMapper mapper = new DataObjectScriptEngineMapper(engine, scriptsrc);
 
-            DataList dlpfx = extractorDef.getDataList("prefix");
-            System.out.println("num items:" + dlpfx.size());
-            String[] ext_prefix = new String[dlpfx.size()];
             //Generar el nuevo DataObject combinado por cada prefix
             try {
                 DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
                 DBCollection objects = db.getCollection("fullobjects");
-                objects.createIndex("oaiid");
-//                HashMap<String, DataObject> hmfull = new HashMap();
-                boolean hdrLoaded = false;
+
                 DataObject dobj = null;
 
-                for (int i = 0; i < dlpfx.size(); i++) {
-                    if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
-                        break;
-                    }
-                    String pfx = dlpfx.getString(i).trim();
-                    System.out.println("Revisando colección: " + pfx);
-                    try {
-                        DBCollection datasource = db.getCollection(pfx);
-                        DBCursor cursor = datasource.find();
-                        System.out.println(pfx + " cursor size: " + (null != cursor ? cursor.count() : "NULO"));
-                        while (null != cursor && cursor.hasNext()) {
-                            if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
-                                break;
-                            }
-                            DBObject next = cursor.next();
-                            String key = (String) next.get("oaiid");
-                            boolean isDODeleted = false;
-                            boolean add2DB = false;
-                            hdrLoaded = false;
-                            //Revisar si existe en fullobjects
-                            BasicDBObject dbQuery = new BasicDBObject("oaiid", key);
-                            DBObject dbres = objects.findOne(dbQuery);
-                            if (null == dbres) {
-                                add2DB = true;
-                                dobj = new DataObject();
-                                dobj.put("oaiid", key);
-                            }
-                            if (null != dbres) {
-                                //Existe en la DB
-
-                                dobj = (DataObject) DataObject.parseJSON(dbres.toString()); //hmfull.get(key.trim());
-                                if (dobj.get("header") != null) {
-                                    hdrLoaded = true;
-                                }
-                                if (dobj.get(pfx) != null) {
-                                    numAlready++;
-                                    continue;
-                                }
-                            }
-
-                            DataObject tmpObj = (DataObject) DataObject.parseJSON(next.get("body").toString());
-                            if (!hdrLoaded) {
-                                if (null != tmpObj) {
-                                    Object header = tmpObj.get("header");
-                                    if (null != header) {
-                                        dobj.put("header", header);
-                                        hdrLoaded = true;
-                                    }
-                                }
-                            }
-                            Object metadata = tmpObj.get("metadata");
-                            if (null != metadata) {
-                                dobj.put(pfx, metadata);
-                                //System.out.println(metadata.toString());
-                            } else {
-                                DataObject doHdr = (DataObject) DataObject.parseJSON(tmpObj.get("header").toString());
-                                if (null != doHdr) {
-                                    if (doHdr.getString("status") != null) {
-                                        dobj.put("status", doHdr.getString("status"));
-                                        if (doHdr.getString("status").equals("deleted")) {
-                                            isDODeleted = true;
-                                        }
-                                    }
-                                }
-                            }
-                            //hmfull.put(key.trim(), dobj);
-
-                            // Esta parte sólo es para verificar como forma los objetos completos.
-                            BasicDBObject bjson = Util.toBasicDBObject(dobj);
-                            if (add2DB) {
-                                objects.insert(bjson);
-                            } else {
-                                objects.update(dbQuery, bjson);
-                            }
-                            numItems++;
-                            if (numItems % 1000 == 0 && numItems > 0) {
-                                System.out.println("Items Processed: " + numItems);
-                            }
-                        }
-                        try {
-                            cursor.close();
-                        } catch (Exception e) {
-                        }
-
-                    } catch (Exception e) {
-                        System.out.println("Error al cargar el DataSource. " + e.getMessage());
-                        e.printStackTrace(System.out);
-                    }
-
-                }
-
-                extractorDef.put("status", "INDEXING");
-                extractorDef.put("processed", numItems);
-                dsExtract.updateObj(extractorDef);
-                System.out.println("\n\n\n>>>>>>>>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<<\n\n");
-                long numItemsIndexed = 0;
-                long numItemsDeleted = 0;
                 try {
                     DBCursor cursor = objects.find();
                     while (null != cursor && cursor.hasNext()) {
@@ -635,30 +661,47 @@ public class OAIExtractor extends ExtractorBase {
                             break;
                         }
                         DBObject next = cursor.next();
-//                        String key = (String) next.get("oaiid");
-//                        boolean isDODeleted = false;
 
                         String str_deleted = (String) next.get("status");
                         if (null != str_deleted && str_deleted.equals("deleted")) {
                             numItemsDeleted++;
-//                            isDODeleted = true;
                             continue;
                         }
 
+                        
 //                    //Se tiene que hacer el llamado al proceso de transformación validando si el objeto está eliminado "deleted"
-//                    DataObject result = mapper.map(dobj);
-//                    //System.out.println(result);
-//                    //Que se hace con el result??? mandarlo al mapeo e indexación
-                        // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
-                        SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
-                        //SimpleESIndexer sesidx = new SimpleESIndexer("cultura", "bic");
-                        //System.out.println("\n\n\n"+next.toString());
-                        sesidx.index(next.toString());
-                        numItemsIndexed++;
+                        dobj = (DataObject) DataObject.parseJSON(next.toString());
+                        //System.out.println("DataObject: " + dobj);
+                        try {
+                            DataObject result = mapper.map(dobj);
+                            
+                            System.out.println("PROPERTIES>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                            
+                            HashMap<String, String> hm = Util.listProps(result); 
+                            
+
+                            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<PROPERTIES");
+                            
+    //                    //System.out.println(result);
+    //                    //Que se hace con el result??? mandarlo al mapeo e indexación
+                            // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
+                            //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
+                            SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1",9200,"cultura", "bic");
+                            //System.out.println("\n\n\n"+next.toString());
+                            sesidx.index(result.toString());
+                            numItemsIndexed++;
+                        } catch (Exception e) {
+                            System.out.println("Error en el mapeo e indexación...");
+                            
+                        }
+                        
 
                         if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
                             System.out.println("Items Indexed: " + numItemsIndexed);
                         }
+//                        if (numItemsIndexed == 10) {
+//                            break;
+//                        }
                     }
                     cursor.close();
                     System.out.println("Total Items Indexed: " + numItemsIndexed);
@@ -674,11 +717,10 @@ public class OAIExtractor extends ExtractorBase {
             } catch (Exception e) {
                 System.out.println("Error al procesar la Base de Datos");
                 e.printStackTrace();
-                extractorDef.put("processed", numItems);
+                extractorDef.put("processed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
             }
         }
-
     }
 
     public DataObject getDefinitionObject() {

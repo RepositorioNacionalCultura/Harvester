@@ -62,11 +62,11 @@ public class ExtractorManager {
             DataList rdata = ret.getDataObject("response").getDataList("data");
             DataObject dobj = null;
             Extractor extractor = null;
-            System.out.println("Antes de cargar el HashMap...");
+            //System.out.println("Antes de cargar el HashMap...");
             if (!rdata.isEmpty()) {
                 for (int i = 0; i < rdata.size(); i++) { // Cargando los extractores al HashMap
                     dobj = rdata.getDataObject(i);  // DataObject del  extractor
-                    System.out.println("DataObject: "+dobj.toString());
+                    //System.out.println("DataObject: "+dobj.toString());
                     if (null != dobj) {
                         key = dobj.getString("_id");
                         className = dobj.getString("class");
@@ -256,6 +256,27 @@ public class ExtractorManager {
                    ret.process(); 
                 } catch (Exception e) {
                     System.out.println("Error al ejecutar el process del Extractor...");
+                    e.printStackTrace();
+                }
+
+                return true;
+            }
+        }
+        return false;
+    }
+    
+       public boolean indexExtractor(String extractorId) {
+        //throw new UnsupportedOperationException();
+        Extractor ret;
+        if (null != extractorId) {
+            ret = hmExtractor.get(extractorId);
+            //revisando si se puede procesar el extractor
+            System.out.println("Indexing..."+(null!=ret&&null!=ret.getStatus()?ret.getStatus():"No Status"));
+            if (null != ret && (ret.getStatus().equals("PROCESSED")|| ret.getStatus().equals("STOPPED") || ret.getStatus().equals("FINISHED")|| ret.getStatus().equals("LOADED"))) {
+                try {
+                   ret.index(); 
+                } catch (Exception e) {
+                    System.out.println("Error al ejecutar el index del Extractor...");
                     e.printStackTrace();
                 }
 

@@ -1,5 +1,7 @@
 package mx.gob.cultura.extractor;
 
+import org.semanticwb.datamanager.DataObject;
+
 /**
  *
  * @author juan.fernandez
@@ -24,6 +26,10 @@ public interface Extractor {
     public String getType();  //From DB, From EndPoint ???
     
     public String getScript();
+    
+    public DataObject getDefinitionObject();
+    
+    public void index() throws Exception;
     
     public void process() throws Exception;
 

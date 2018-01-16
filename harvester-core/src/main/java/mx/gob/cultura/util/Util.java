@@ -254,7 +254,7 @@ public final class Util {
             try {
                 DBCollection datasource = db.getCollection(metadataPrefix);
                 DBCursor cursor = datasource.find();
-                System.out.println(metadataPrefix+ " cursor size: "+cursor.count());
+                System.out.println(metadataPrefix + " cursor size: " + cursor.count());
                 while (cursor.hasNext()) {
                     DBObject next = cursor.next();
                     String key = (String) next.get("oaiid");
@@ -263,7 +263,7 @@ public final class Util {
 //                    dataO.put("body", next.get("body"));
                     hm.put(key.trim(), key);
                 }
-                System.out.println("copiados al HM: "+hm.size());
+                System.out.println("copiados al HM: " + hm.size());
             } catch (Exception e) {
                 System.out.println("Error al cargar el DataSource. " + e.getMessage());
                 e.printStackTrace(System.out);
@@ -274,10 +274,9 @@ public final class Util {
         }
         return hm;
     }
-    
+
     /**
-     * Regresa el número de elementos en la colección
-     * long
+     * Regresa el número de elementos en la colección long
      *
      * @param dbName Nombre de la base de datos en donde se encuentra la
      * colección
@@ -387,10 +386,13 @@ public final class Util {
         } while (isConnOk == false && retries < 5);
         return errorMsg != null ? errorMsg : response.toString();
     }
-    
+
     /**
-     * Format milliseconds long number in days, hours, minutes, seconds and milliseconds
-     * @param elapsedTime time to determinate in days, hours, minutes, seconds and milliseconds takes.
+     * Format milliseconds long number in days, hours, minutes, seconds and
+     * milliseconds
+     *
+     * @param elapsedTime time to determinate in days, hours, minutes, seconds
+     * and milliseconds takes.
      * @return a text in days, hours, minutes, seconds and milliseconds format
      */
     public static String getElapsedTime(long elapsedTime) {
@@ -473,10 +475,58 @@ public final class Util {
             }
         }
         if (nms > 0) {
-            etime += nms+ "ms";
+            etime += nms + "ms";
         }
 
         return etime;
+    }
+
+    /**
+     * Carga en el hm todas las propiedades del DataObject
+     *
+     * @param prop DataObject a revisar para obtener la lista de propiedades
+     * existentes
+     * @param propName Nombre de la propiedad actual que se revisa
+     * @param hm HashMap con la lista de propiedades
+     */
+    private static void loadProps(DataObject prop, String propName, HashMap<String, String> hm) {
+        Iterator<String> it = prop.keySet().iterator();
+        while (it.hasNext()) {
+            String next = it.next();
+            Object obj = prop.get(next);
+            String key = propName + "." + next;
+            if (null != obj && obj instanceof DataObject) {
+                loadProps((DataObject) obj, key, hm);
+            } else {
+                hm.put(key, key);
+            }
+        }
+    }
+
+    /**
+     * Carga en el hm todas las propiedades del DataObject
+     *
+     * @param prop DataObject a revisar para obtener la lista de propiedades
+     * existentes
+     * @param propName Nombre de la propiedad actual que se revisa
+     * @param hm HashMap con la lista de propiedades
+     */
+    public static HashMap<String, String> listProps(DataObject prop) {
+
+        HashMap<String, String> hm = new HashMap();
+
+        Iterator<String> it = prop.keySet().iterator();
+        while (it.hasNext()) {
+            String next1 = it.next();
+
+            Object obj = prop.get(next1);
+            if (null != obj && obj instanceof DataObject) {
+                loadProps((DataObject) obj, next1, hm);
+            } else {
+                hm.put(next1, next1);
+            }
+        }
+        return hm;
     }
 
 }
