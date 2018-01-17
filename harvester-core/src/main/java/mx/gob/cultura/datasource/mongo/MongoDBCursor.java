@@ -1,5 +1,6 @@
 package mx.gob.cultura.datasource.mongo;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 import mx.gob.cultura.datasource.Cursor;
 import mx.gob.cultura.datasource.DataSourceObject;
@@ -14,35 +15,37 @@ public class MongoDBCursor implements Cursor {
 
     /**
      * Constructor. Creates a new instance of {@link MongoDBCursor}
-     * @param cursor MongoCursor object with fetch results from database.
+     * @param iterable MongoCursor object with fetch results from database.
      */
-    public MongoDBCursor(MongoCursor cursor) {
-        this.cur = cursor;
+    public MongoDBCursor(FindIterable<Document> iterable) {
+        if (null != iterable) {
+            cur = iterable.iterator();
+        }
     }
 
     @Override
     public boolean hasNext() {
-        return cur.hasNext();
+        return null != cur && cur.hasNext();
     }
 
     @Override
     public DataSourceObject next() {
-        Document d = cur.next();
-
-        //Wrap mongo document in DataSourceObject instance
-        return new DataSourceObject<Document>() {
-            String id = d.get("_id").toString();
-
-            @Override
-            public String getId() {
-                return id;
+        if (null != cur) {
+            Document doc = cur.next();
+            if (null != doc) {
+                return MongoDBDataSource.toDataSourceObject(doc);
             }
+        }
+        return null;
+    }
 
-            @Override
-            public Document getData() {
-                return d;
-            }
-        };
+    @Override
+    public Object getNativeCursor() {
+        return cur;
+    }
 
+    @Override
+    public void close() throws Exception {
+        if (null != cur) cur.close();
     }
 }
