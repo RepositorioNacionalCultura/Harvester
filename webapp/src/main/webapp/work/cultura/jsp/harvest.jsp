@@ -73,6 +73,7 @@
             } else if (action.equals("STOP")) {
                 if (null != pid) {
                     ExtractorManager extMgr = ExtractorManager.getInstance();
+                    //extMgr.loadExtractor(dobj);
                     extMgr.stopExtractor(id);
                     status = extMgr.getStatus(id);
                     endTime = System.currentTimeMillis();
@@ -106,6 +107,7 @@
                 if (null != pid) {
                     ExtractorManager extMgr = ExtractorManager.getInstance();
                     extMgr.loadExtractor(dobj);
+//System.out.println("dobj: \n"+dobj.toString());
                     extMgr.processExtractor(id);
                     endTime = System.currentTimeMillis();
 //                    status = extMgr.getStatus(id);
@@ -115,9 +117,27 @@
             %>
             <strong>Status:<%=status%></strong><br>
             <strong>Se procesaron los metadatos.</strong><br>
-            <strong>Se concluyó la indexación.</strong><br>
             <strong>Processed Records: <%=numItems%></strong><br>
             <strong>Processing time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
+            <%
+                }
+            } else if (action.equals("INDEX")) {
+                if (null != pid) {
+                    ExtractorManager extMgr = ExtractorManager.getInstance();
+                    extMgr.loadExtractor(dobj);
+//System.out.println("dobj: \n"+dobj.toString());
+                    extMgr.indexExtractor(id);
+                    endTime = System.currentTimeMillis();
+//                    status = extMgr.getStatus(id);
+                    dobj = datasource.fetchObjById(id);
+                    status = dobj.getString("status");
+                    numItems = dobj.getInt("indexed");
+            %>
+            <strong>Status:<%=status%></strong><br>
+            <strong>Se indexaron los metadatos.</strong><br>
+            <strong>Se concluyó la indexación.</strong><br>
+            <strong>Indexed Records: <%=numItems%></strong><br>
+            <strong>Indexing time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
             <%
                 }
             } else if (action.equals("UPDATE")) {

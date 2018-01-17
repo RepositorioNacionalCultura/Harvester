@@ -4,6 +4,10 @@
     Author     : juan.fernandez
 --%>
 
+<%@page import="org.semanticwb.datamanager.DataMgr"%>
+<%@page import="org.semanticwb.datamanager.DataObject"%>
+<%@page import="org.semanticwb.datamanager.SWBDataSource"%>
+<%@page import="org.semanticwb.datamanager.SWBScriptEngine"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
@@ -12,6 +16,25 @@
     if (id != null) {
         id = "\"" + id + "\"";
     }
+
+            String status = "";
+            String action = request.getParameter("act");
+            long numItems = 0;
+
+            if (null == action) {
+                action = "";
+            }
+
+//            SWBScriptEngine engine = DataMgr.initPlatform("/work/cultura/jsp/datasources.js", session);
+//            SWBDataSource datasource = engine.getDataSource("Extractor");
+//            DataObject dobj = datasource.fetchObjById(pid);
+//            String str_script = "";
+//
+//if(dobj!=null){
+//    str_script = dobj.getString("script","");
+//    str_script = str_script.replace("<","\\\\<");
+//}
+//System.out.println("SCRIPT:"+str_script);
 %>
 <html>
     <head>
@@ -41,7 +64,7 @@
                     {name:"class", title:"Nombre de la Clase a utilizar", type:"string", endRow:true},
                     {name: "periodicity", title: "Periodicidad", type: "boolean"},
                     {name: "interval", title: "Intervalo de tiempo (días)", type: "int", endRow:true},
-                    {name: "mapeo", title: "Tabla de mapeo", stype: "select", dataSource: "MapDefinition", endRow:true},
+                    {name: "mapeo", title: "Tabla de mapeo", colSpan:5, width:"100%", endRow:true},
                     {name: "status", title: "Estatus", type: "select", valueMap:{"LOADED":"LOADED", "STARTED":"STARTED", "EXTRACTING":"EXTRACTING", "STOPPED":"STOPPED", "FAILLOAD":"FAIL LOAD", "ABORTED":"ABORTED" }, defaultValue: "STOPPED", canEdit:false}, //STARTED | EXTRACTING | STOPPED
             <%if (id != null) {%>
                     {name: "created", title: "Fecha creación", type: "string", canEdit:false},
@@ -52,7 +75,7 @@
                     {name: "processed", title: "Registros procesados", type: "int", endRow:true},
                     {name:"pfxExtracted",title:"Prefijos extraidos",type:"string"},
                     {name:"pfxActual",title:"Prefijo actual",type:"string"},
-                    {name:"script", title:"Script de transformación", startRow:true, type:"textArea", width:"100%", colSpan:5}
+                    {name:"script", title:"Script de transformación", startRow:true, type:"textArea", width:"100%", height:"400", colSpan:5}
             <%}%>
                     ]
             }, <%=id%>, "Extractor");
@@ -89,6 +112,15 @@
                     padding: "10px",
                     click: function (p1) {
                     window.location = "harvest.jsp?_id=<%=pid%>&act=PROCESS";
+                    return false;
+                    }
+            }));
+            form.buttons.addMember(isc.IButton.create(
+            {
+            title: "Indexar",
+                    padding: "10px",
+                    click: function (p1) {
+                    window.location = "harvest.jsp?_id=<%=pid%>&act=INDEX";
                     return false;
                     }
             }));

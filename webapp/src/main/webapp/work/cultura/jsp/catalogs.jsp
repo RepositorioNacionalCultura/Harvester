@@ -52,57 +52,58 @@
             }, "MetaData_Prefix");
         </script> 
 
-<!--        <h3>EndPoint</h3>
+        <!--        <h3>EndPoint</h3>
+                <script type="text/javascript">
+        //            var endPoint = eng.createGrid({
+        //                left: "-10",
+        //                margin: "10px",
+        //                width: "100%",
+        //                height: 200,
+        //                canEdit: true,
+        //                canRemove: false,
+        //                canAdd: true,
+        //                recordDoubleClick: function (grid, record)
+        //                {
+        //                    window.location = "endPoint.jsp?_id=" + record._id;
+        //                    return false;
+        //                }
+        //                ,
+        //                addButtonClick: function (event)
+        //                {
+        //                    window.location = "endPoint.jsp";
+        //                    return false;
+        //                },
+                    //}, "EndPoint");
+                </script>-->
+
+<!--        <h3>Mapeos</h3>
         <script type="text/javascript">
-//            var endPoint = eng.createGrid({
+//            var mapDef = eng.createGrid({
 //                left: "-10",
 //                margin: "10px",
 //                width: "100%",
 //                height: 200,
 //                canEdit: true,
-//                canRemove: false,
+//                canRemove: true,
 //                canAdd: true,
+//                fields: [
+//                    {name: "property", title: "Propiedad", type: "string", required: true},
+//                    {name: "collName", title: "Colección / Catálogo", type: "string", required: true},
+//                    //{name: "Tipo", title: "Tipo", type: "string", required: true},
+//                ],
 //                recordDoubleClick: function (grid, record)
 //                {
-//                    window.location = "endPoint.jsp?_id=" + record._id;
+//                    window.location = "mapDefinition.jsp?_id=" + record._id;
 //                    return false;
 //                }
 //                ,
 //                addButtonClick: function (event)
 //                {
-//                    window.location = "endPoint.jsp";
+//                    window.location = "mapDefinition.jsp";
 //                    return false;
 //                },
-            //}, "EndPoint");
-        </script>-->
-
-        <h3>Definición de Mapeo</h3>
-        <script type="text/javascript">
-            var mapDef = eng.createGrid({
-                left: "-10",
-                margin: "10px",
-                width: "100%",
-                height: 200,
-                canEdit: true,
-                canRemove: true,
-                canAdd: true,
-                fields: [
-                    {name: "name", title: "Nombre", type: "string", required: true},
-                            //{name:"mapTable",title:"Tabla",stype:"grid", dataSource:"MapTable"}
-                ],
-                recordDoubleClick: function (grid, record)
-                {
-                    window.location = "mapDefinition.jsp?_id=" + record._id;
-                    return false;
-                }
-                ,
-                addButtonClick: function (event)
-                {
-                    window.location = "mapDefinition.jsp";
-                    return false;
-                },
-            }, "MapDefinition");
-        </script> 
+//            }, "MapTable");
+        </script>--> 
 
         <h3>Extractor</h3>
         <script type="text/javascript">
@@ -153,8 +154,8 @@
                 },
             }, "Extractor");
         </script>
-        
-                <h3>Reemplazar ocurrencia</h3>
+
+        <h3>Reemplazar ocurrencia</h3>
         <script type="text/javascript">
             var remplazo = eng.createGrid({
                 left: "-10",
@@ -176,6 +177,30 @@
 //                    return false;
 //                },
             }, "Replace");
+        </script>
+        
+                <h3>Catálogo de Ciudades</h3>
+        <script type="text/javascript">
+            var cities = eng.createGrid({
+                left: "-10",
+                margin: "10px",
+                width: "100%",
+                height: 200,
+                canEdit: true,
+                canRemove: true,
+                canAdd: true,
+//                recordDoubleClick: function (grid, record)
+//                {
+//                    window.location = "endPoint.jsp?_id=" + record._id;
+//                    return false;
+//                }
+//                ,
+//                addButtonClick: function (event)
+//                {
+//                    window.location = "endPoint.jsp";
+//                    return false;
+//                },
+            }, "Ciudad");
         </script>
     </body>
 </html>

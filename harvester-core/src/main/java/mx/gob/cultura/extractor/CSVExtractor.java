@@ -68,9 +68,9 @@ public class CSVExtractor extends ExtractorBase {
 
     @Override
     public void start() {
-        System.out.println("canStart(" + canStart() + ")");
+        //System.out.println("canStart(" + canStart() + ")");
         if (canStart()) {
-            log.info("ModsExtractor :: Started extractor " + getName());
+            log.info("CSVExtractor :: Started extractor " + getName());
             try {
                 extract();
             } catch (Exception ex) {
