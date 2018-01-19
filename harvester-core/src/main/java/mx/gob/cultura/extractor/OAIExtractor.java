@@ -536,6 +536,7 @@ public class OAIExtractor extends ExtractorBase {
                     DBCollection datasource = db.getCollection(pfx);
                     DBCursor cursor = datasource.find();
                     System.out.println(pfx + " cursor size: " + (null != cursor ? cursor.count() : "NULO"));
+                    
                     while (null != cursor && cursor.hasNext()) {
                         if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
                             break;
@@ -617,6 +618,7 @@ public class OAIExtractor extends ExtractorBase {
 
             }
 
+            extractorDef.put("rows2Processed", 0);
             extractorDef.put("processed", numItems);
             extractorDef.put("status", "FINISHED");
             dsExtract.updateObj(extractorDef);
@@ -633,15 +635,19 @@ public class OAIExtractor extends ExtractorBase {
     @Override
     public void index() throws Exception {
         System.out.println("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
-        String scriptsrc = extractorDef.getString("script");
+        
+        String idScript = extractorDef.getString("transScript");
+        SWBDataSource dsTScript = engine.getDataSource("TransformationScript");
+        DataObject doTS = dsTScript.fetchObjById(idScript);
+        String scriptsrc = doTS.getString("script");
         ScriptEngineManager factory = new ScriptEngineManager();
         long numItemsIndexed = 0;
         long numItemsDeleted = 0;
 
         if (null != scriptsrc && scriptsrc.trim().length() > 0 && (getStatus().equals("STOPPED") || getStatus().equals("FINISHED") || getStatus().equals("LOADED"))) {
 
-            scriptsrc = scriptsrc.replace("&gt;", ">");
-            scriptsrc = scriptsrc.replace("&lt;", "<");
+//            scriptsrc = scriptsrc.replace("&gt;", ">");
+//            scriptsrc = scriptsrc.replace("&lt;", "<");
             extractorDef.put("status", "INDEXING");
             dsExtract.updateObj(extractorDef);
             ScriptEngine scrptengine = factory.getEngineByName("JavaScript");
@@ -662,37 +668,41 @@ public class OAIExtractor extends ExtractorBase {
                         }
                         DBObject next = cursor.next();
 
+                        //Se tiene que hacer el llamado al proceso de transformación validando si el objeto está eliminado "deleted"
                         String str_deleted = (String) next.get("status");
                         if (null != str_deleted && str_deleted.equals("deleted")) {
                             numItemsDeleted++;
+                            //Si está eliminado no hace nada, continúa con el siguiente
                             continue;
                         }
 
-//                    //Se tiene que hacer el llamado al proceso de transformación validando si el objeto está eliminado "deleted"
                         dobj = (DataObject) DataObject.parseJSON(next.toString());
                         //System.out.println("DataObject: " + dobj);
                         try {
+                            
+                            //Transformación del DataObject
                             DataObject result = mapper.map(dobj);
+//                            System.out.println("DataObject:\n" + result.toString());
 
-//                            System.out.println("PROPERTIES>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                             HashMap<String, String> hmmaptable = Util.loadExtractorMapTable(engine, extractorDef);
+//                            System.out.println("PROPERTIES>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 //                            HashMap<String, String> hm = Util.listProps(result, hmmaptable);
 //                            list = new ArrayList<String>(hm.keySet());
 //                            Collections.sort(list);
-//                            System.out.println("DataObject:\n" + result.toString());
 //                            Iterator<String> it2 = list.iterator();
 //                            System.out.println("==========================\n");
 //                            while (it2.hasNext()) {
 //                                String elem = it2.next();
 //                                System.out.println(elem);
 //                            }
+
+                            // Mapeo de propiedades definidas en la tabla con los a encontrar en los catálogos 
                             // Se actualizan las propiedades del DataObject
                             Util.findProps(result, hmmaptable, engine);
-//                            System.out.println("Después del Mapeo:....\n"+result);
+                            
+//                            System.out.println("Resultado del Mapeo:....\n"+result);
 //                            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<PROPERTIES");
 
-                            //                    //System.out.println(result);
-                            //                    //Que se hace con el result??? mandarlo al mapeo e indexación
                             // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
                             //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
                             SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");
@@ -707,9 +717,7 @@ public class OAIExtractor extends ExtractorBase {
                         if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
                             System.out.println("Items Indexed: " + numItemsIndexed);
                         }
-//                        if (numItemsIndexed == 10) {
-//                            break;
-//                        }
+
                     }
                     cursor.close();
                     System.out.println("Total Items Indexed: " + numItemsIndexed);

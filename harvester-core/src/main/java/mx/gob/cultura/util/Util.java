@@ -551,7 +551,7 @@ public final class Util {
                     // Sólo puede tener un valor
                     String coll2use = collection.get(propName);
                     SWBDataSource dscoll = engine.getDataSource(coll2use);
-                    
+
                     if (null != dscoll) {
                         try {
                             DataObject r = new DataObject();
@@ -565,12 +565,16 @@ public final class Util {
                                 String replaceValue = null;
                                 for (int i = 0; i < rdata.size(); i++) {
                                     res = rdata.getDataObject(i);  // DataObject de Replace
-                                    if(replaceValue==null) replaceValue = "";
-                                    if(replaceValue.length()>0) replaceValue +=",";
+                                    if (replaceValue == null) {
+                                        replaceValue = "";
+                                    }
+                                    if (replaceValue.length() > 0) {
+                                        replaceValue += ",";
+                                    }
                                     replaceValue += res.getString("replace");
                                 }
                                 prop.put(next, replaceValue);
-                            }else{
+                            } else {
 //                                System.out.println("No se encontró valor "+obj+" en la colección..."+coll2use);
                             }
                         } catch (Exception e) {
@@ -588,10 +592,12 @@ public final class Util {
     /**
      * MApeo de propiedades definidas en el DataObject transformado
      *
-     * @param dobj DataObject para revisar propiedades y mapearlas en relación a la tabla de mapeo
-     * definida en el mismo extractor
-     * @param collection Tabla de mapeo cargada en un HashMap<String,String> definida en el extractor
-     * @param engine, para obtener el dataSource de la colección en donde se buscará el valor a sustituir, si existe.  
+     * @param dobj DataObject para revisar propiedades y mapearlas en relación a
+     * la tabla de mapeo definida en el mismo extractor
+     * @param collection Tabla de mapeo cargada en un HashMap<String,String>
+     * definida en el extractor
+     * @param engine, para obtener el dataSource de la colección en donde se
+     * buscará el valor a sustituir, si existe.
      */
     public static void findProps(DataObject dobj, HashMap<String, String> collection, SWBScriptEngine engine) {
 
@@ -611,7 +617,7 @@ public final class Util {
                     // Sólo puede tener un valor
                     String coll2use = collection.get(next1);
                     SWBDataSource dscoll = engine.getDataSource(coll2use);
-                    
+
                     if (null != dscoll) {
                         try {
                             DataObject r = new DataObject();
@@ -625,19 +631,23 @@ public final class Util {
                                 String replaceValue = null;
                                 for (int i = 0; i < rdata.size(); i++) {
                                     res = rdata.getDataObject(i);  // DataObject de Replace
-                                    if(replaceValue==null) replaceValue = "";
-                                    if(replaceValue.length()>0) replaceValue +=",";
+                                    if (replaceValue == null) {
+                                        replaceValue = "";
+                                    }
+                                    if (replaceValue.length() > 0) {
+                                        replaceValue += ",";
+                                    }
                                     replaceValue += res.getString("replace");
                                 }
                                 dobj.put(next1, replaceValue);
-                            }else{
+                            } else {
                                 //System.out.println("No se encomnró valor "+obj+" en la colección..."+coll2use);
                             }
                         } catch (Exception e) {
                             //No se encontró la propiedad con el valor actual
                             System.out.println("Error al buscar el valor en la colección");
                             e.printStackTrace();
-                            
+
                         }
 
                     }
@@ -656,32 +666,37 @@ public final class Util {
      * @return HashMap con DataSource cargado en memoria.
      */
     public static HashMap<String, String> loadExtractorMapTable(SWBScriptEngine engine, DataObject extDef) {
-
-        SWBDataSource ds = engine.getDataSource("MapTable");
         HashMap<String, String> hm = new HashMap();
+        try {
+            SWBDataSource dsMDef = engine.getDataSource("MapDefinition");
+            DataObject doMDef = dsMDef.fetchObjById(extDef.getString("mapDef"));
+            SWBDataSource ds = engine.getDataSource("MapTable");
 
-        if (null != engine && extDef!=null) {
-            try {
-                DataList dl = extDef.getDataList("mapeo");
-                if(null!=dl&&dl.size()>0){
-                    //System.out.println("MapTable");
-                    for(int i=0; i<dl.size();i++){
-                        String llave = dl.getString(i);
-                        DataObject dobj = ds.fetchObjById(llave);
-                        if(null!=dobj){
-                            //System.out.println("("+dobj.getString("property")+","+dobj.getString("collName")+")");
-                            hm.put(dobj.getString("property"), dobj.getString("collName"));
+            if (null != engine && extDef != null) {
+                try {
+                    DataList dl = doMDef.getDataList("mapTable");
+                    if (null != dl && dl.size() > 0) {
+                        //System.out.println("MapTable");
+                        for (int i = 0; i < dl.size(); i++) {
+                            String llave = dl.getString(i);
+                            DataObject dobj = ds.fetchObjById(llave);
+                            if (null != dobj) {
+                                //System.out.println("("+dobj.getString("property")+","+dobj.getString("collName")+")");
+                                hm.put(dobj.getString("property"), dobj.getString("collName"));
+                            }
                         }
                     }
+
+                } catch (Exception e) {
+                    System.out.println("Error al cargar el DataSource. " + e.getMessage());
+                    e.printStackTrace(System.out);
                 }
-                
-            } catch (Exception e) {
-                System.out.println("Error al cargar el DataSource. " + e.getMessage());
-                e.printStackTrace(System.out);
+            } else {
+                System.out.println("Error al cargar el DataSource al HashMap, falta inicializar el engine.");
+                return null;
             }
-        } else {
-            System.out.println("Error al cargar el DataSource al HashMap, falta inicializar el engine.");
-            return null;
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         return hm;
