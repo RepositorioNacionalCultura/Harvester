@@ -2,7 +2,6 @@
 
 Aplicación construida utilizando como base [SWBForms](https://github.com/SWBForms/SWBForms). Requiere un servidor de bases de datos MongoDB.
 
-
 ### Quickstart
 ````
 git clone https://github.com/RepositorioNacionalCultura/Harvester.git
