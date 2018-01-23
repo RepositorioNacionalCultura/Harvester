@@ -1,8 +1,7 @@
-
 /*
 
   SmartClient Ajax RIA system
-  Version v11.0p_2016-11-25/LGPL Deployment (2016-11-25)
+  Version v11.1p_2017-12-27/LGPL Deployment (2017-12-27)
 
   Copyright 2000 and beyond Isomorphic Software, Inc. All rights reserved.
   "SmartClient" is a trademark of Isomorphic Software, Inc.
@@ -39,7 +38,10 @@ else if(isc._preLog)isc._preLog[isc._preLog.length]=isc._pTM;
 else isc._preLog=[isc._pTM]}isc.definingFramework=true;
 
 
-//> @class isc
+if (!window.isc || typeof isc.Packager != "object") {
+
+
+//> @object isc
 // The <code>isc</code> object contains global methods and objects of the Isomorphic SmartClient
 // framework.
 // <P>
@@ -89,21 +91,21 @@ isc._start = new Date().getTime();
 
 // versioning - values of the form ${value} are replaced with user-provided values at build time.
 // Valid values are: version, date, project (not currently used)
-isc.version = "v11.0p_2016-11-25/LGPL Deployment";
-isc.versionNumber = "v11.0p_2016-11-25";
-isc.buildDate = "2016-11-25";
+isc.version = "v11.1p_2017-12-27/LGPL Deployment";
+isc.versionNumber = "v11.1p_2017-12-27";
+isc.buildDate = "2017-12-27";
 isc.expirationDate = "";
 
-isc.scVersion = "11.0p";
-isc.scVersionNumber = "11.0";
-isc.sgwtVersion = "6.0p";
-isc.sgwtVersionNumber = "6.0";
+isc.scVersion = "11.1p";
+isc.scVersionNumber = "11.1";
+isc.sgwtVersion = "6.1p";
+isc.sgwtVersionNumber = "6.1";
 
 // these reflect the latest stable version relative to the branch from which this build is
 // created.  So for example for 11.0d/6.0d, this will be 10.1/5.1.  But for 10.0/5.0 this will
 // be 10.0/5.0.
-isc.scParityStableVersionNumber = "11.0";
-isc.sgwtParityStableVersionNumber = "6.0";
+isc.scParityStableVersionNumber = "11.1";
+isc.sgwtParityStableVersionNumber = "6.1";
 
 // license template data
 isc.licenseType = "LGPL";
@@ -200,7 +202,7 @@ isc.getOptionalModule = function (module) {
 };
 
 
-isc.$a4b5c1c2d3 = function (moduleName) {
+isc.$P5hy05Xgj7AN = function (moduleName) {
     if (this.hasOptionalModule(moduleName)) return;
     var moduleEntry = isc._optionalModules[moduleName];
     if (moduleEntry) moduleEntry.present = !!moduleName + "";
@@ -264,36 +266,12 @@ if (window.addEventListener) {
 //<Offline
 
 
-if (typeof isc.Packager != "object") {
-
-
-} else {
-
-    // log a message that attempted reload of isc.Packager occurred
-    var priority = 4, // INFO; isc.Log may not be loaded
-        category = "Packager",
-        packageIndex = isc.Packager.packageIndex;
-
-    var packageCount = 0;
-    for (var loadedPackage in packageIndex) {
-        if (packageIndex.hasOwnProperty(loadedPackage)) packageCount++;
-    }
-
-    var message  = "Ignoring attempt to redefine isc.Packager containing " +
-        packageCount + " packages";
-
-
-    if (isc.Log) {
-        isc.Log.logMessage(priority, message, category);
-    } else {
-        if (!isc._preLog) isc._preLog = [];
-        isc._preLog[isc._preLog.length] = {
-            priority : priority, category: category, message: message, timestamp: new Date()
-        };
-    }
 }
 
 
+
+
+if (typeof isc.Browser != "object") {
 
 
 
@@ -531,8 +509,12 @@ isc.Browser.version = parseInt(isc.Browser.minorVersion);
 // actually means IE6 or earlier, which requires radically different optimization techniques
 isc.Browser.isIE6 = isc.Browser.isIE && isc.Browser.version <= 6;
 
+//> @classAttr Browser.supportsHTML5Audio (boolean : varies : RA)
+// Does this browser support HTML5 Audio via the &lt;AUDIO&gt; element?
+//<
+isc.Browser.supportsHTML5Audio = (document.createElement("audio") != null) ? "play" : null;
 
-//>    @classAttr    Browser.caminoVersion (string : ? : R)
+//>    @classAttr    Browser.caminoVersion (String : ? : R)
 //        For Camino-based browsers, the Camino version number.
 //<
 if (isc.Browser.isCamino) {
@@ -542,7 +524,7 @@ if (isc.Browser.isCamino) {
 }
 
 if (isc.Browser.isFirefox) {
-//>    @classAttr    Browser.firefoxVersion (string : ? : R)
+//>    @classAttr    Browser.firefoxVersion (String : ? : R)
 //        For Firefox-based browsers, the Firefox version number.
 //          - 0.10.1    is Firefox PR 1
 //      After this the version numbers reported match those in the about dialog
@@ -557,7 +539,7 @@ if (isc.Browser.isFirefox) {
     isc.Browser.firefoxMajorMinorNumber = parseFloat(majorMinorVersion);
 }
 
-//>    @classAttr    Browser.geckoVersion (integer : ? : R)
+//>    @classAttr    Browser.geckoVersion (Integer : ? : R)
 //        For Gecko-based browsers, the Gecko version number.
 //      Looks like a datestamp:
 //          - 20011019 is Netscape 6.2
@@ -713,7 +695,7 @@ isc.Browser.isIE10 = isc.Browser.isIE && isc.Browser.version >= 10;
 
 isc.Browser.isIE11 = isc.Browser.isIE && isc.Browser.version >= 11;
 
-//> @classAttr  Browser.AIRVersion (string : ? : R)
+//> @classAttr  Browser.AIRVersion (String : ? : R)
 // If this application running in the Adobe AIR environment, what version of AIR is
 // running. Will be a string, like "1.0".
 //<
@@ -1754,18 +1736,18 @@ isc.Browser.setIsDesktop = function (isDesktop) {
 
 isc.Browser.isBorderBox = (isc.Browser.isIE && !isc.Browser.isStrict);
 
-//>    @classAttr    Browser.lineFeed    (string : ? : RA)
+//>    @classAttr    Browser.lineFeed    (String : ? : RA)
 //        Linefeed for this platform
 //<
 
 isc.Browser.lineFeed = (isc.Browser.isWin ? "\r\n" : "\n");
 
-//>    @classAttr    Browser._supportsMethodTimeout    (string : ? : RA)
+//>    @classAttr    Browser._supportsMethodTimeout    (String : ? : RA)
 //        setTimeout() requires text string parameter in MacIE or IE 4
 //<
 isc.Browser._supportsMethodTimeout = false;//!(isc.Browser.isIE && (isc.Browser.isMac || isc.Browser.version == 4));
 
-//>    @classAttr    Browser.isDOM (string : ? : RA)
+//>    @classAttr    Browser.isDOM (String : ? : RA)
 //        Whether this is a DOM-compliant browser.  Indicates general compliance with DOM standards,
 //      not perfect compliance.
 //<
@@ -1803,11 +1785,23 @@ isc.Browser.seleniumPresent = (function () {
 })();
 
 //> @type Autotest
-// @value Browser.SHOWCASE autotest is targeting SmartClient or SGWT showcases
-isc.Browser.SHOWCASE = "showcase";
-// @value Browser.RUNNER autotest is targeting TestRunner-based JS tests
-isc.Browser.RUNNER = "runner";
+// @value isc.Browser.SHOWCASE autotest is targeting SmartClient or SGWT showcases
+// @value isc.Browser.RUNNER autotest is targeting TestRunner-based JS tests
 //<
+
+//> @classAttr Browser.SHOWCASE (Constant : "showcase" : [R])
+// A declared value of the enum type
+// +link{type:Autotest,Autotest}.
+// @constant
+//<
+isc.Browser.SHOWCASE = "showcase";
+
+//> @classAttr Browser.RUNNER (Constant : "runner" : [R])
+// A declared value of the enum type
+// +link{type:Autotest,Autotest}.
+// @constant
+//<
+isc.Browser.RUNNER = "runner";
 
 //> @classAttr Browser.autotest (Autotest : varies : R)
 // The current mode of the autotest system (null if not in autotest mode)
@@ -1910,9 +1904,21 @@ isc.Browser.hasNativeGetRect = (!isc.Browser.isIE &&
                                 !!(document.createRange().getBoundingClientRect));
 
 
+// isc.Browser.useClipDiv - if true we write out 2 handles for each widget
+// the content div and the clip div. This is required to allow reliable measuring of content,
+// sizing, etc. in some browsers
+
+
+isc.Browser.useClipDiv = (isc.Browser.isMoz || isc.Browser.isSafari || isc.Browser.isOpera);
+
+// _useNewSingleDivSizing: Use a single div rather than double-div structure for
+// widgets with overflow settings where this is supportable.
+// Only has an impact if useClipDiv is true.
+
 isc.Browser._useNewSingleDivSizing = !((isc.Browser.isIE && isc.Browser.version < 10 && !isc.Browser.isIE9) ||
                                        (isc.Browser.isWebKit && !(parseFloat(isc.Browser.rawSafariVersion) >= 532.3)));
-isc.Browser.useClipDiv = !isc.Browser._useNewSingleDivSizing;
+
+
 
 
 isc.Browser.hasTextOverflowEllipsis = (!isc.Browser.isMoz || isc.Browser.version >= 7) &&
@@ -1979,8 +1985,9 @@ isc.Browser._getSupportsNativeTouchScrolling = function () {
             (!(this.isIPhone || this.isIPad) || this.iOSVersion >= 6));
 };
 
-isc.Browser._supportsWebkitOverflowScrolling = ("WebkitOverflowScrolling" in document.documentElement.style &&
-                                                isc.Browser.iOSVersion >= 6);
+isc.Browser._supportsWebkitOverflowScrolling = isc.Browser.iOSVersion >= 6 &&
+                   ("webkitOverflowScrolling" in document.documentElement.style)
+;
 
 // Does the browser support CanvasRenderingContext2D.isPointInStroke()?
 isc.Browser._supportsCanvasIsPointInStroke = (function () {
@@ -2102,6 +2109,12 @@ isc.Browser.canUseAggressiveGridTimings = !isc.Browser.isAndroid;
 isc.Browser.useHighPerformanceGridTimings = window.isc_useHighPerformanceGridTimings == null ?
     isc.Browser.canUseAggressiveGridTimings : window.isc_useHighPerformanceGridTimings && isc.Browser.canUseAggressiveGridTimings;
 
+
+isc.Browser._usePointerCursorForHand =
+        isc.Browser.isMoz || (isc.Browser.isSafari && isc.Browser.isStrict) ||
+        (isc.Browser.isIE && isc.Browser.version >= 9 && isc.Browser.isStrict);
+
+}
 
 
 //--------------------------------------------------------------------------------------------------
@@ -2305,7 +2318,7 @@ if (!isc.SA_Page.isLoaded()) {
 
 
 
-//> @class History
+//> @object History
 //
 // This class provides synthetic history support.  Using this class, you can create history
 // entries at any point and be called back when the user next navigates to any of these history
@@ -2343,7 +2356,7 @@ if (!isc.SA_Page.isLoaded()) {
 //--------------------------------------------------------------------------------------------------
 isc.defineStandaloneClass("History", {
 
-//> @classMethod history.registerCallback()
+//> @staticMethod History.registerCallback()
 // Registers a callback to be called when the user navigates to a synthetic history entry.
 // <p>
 // <b>NOTE:</b> Only one primary callback can be registered at a time. Unless <code>isAdditional</code>
@@ -2390,7 +2403,7 @@ isc.defineStandaloneClass("History", {
 // When the user transitions to the history entry immediately before the first synthetic
 // history entry, the callback is fired with an id of null.
 //
-// @param callback (String or Object) The callback to invoke when the user navigates to a
+// @param callback (String | Object) The callback to invoke when the user navigates to a
 // synthetic history entry.
 // @param requiresData (boolean) If passed, this callback will only be fired if the user is
 // navigating to a history entry that was explicitly generated in this browser session.
@@ -2438,7 +2451,7 @@ registerCallback : function (callback, requiresData, isAdditional) {
     return historyId;
 },
 
-//> @classMethod history.unregisterCallback()
+//> @staticMethod History.unregisterCallback()
 // Unregisters a callback so that it will no longer be called when the user navigates to a synthetic
 // history entry.
 //
@@ -2466,7 +2479,7 @@ unregisterCallback : function (historyId) {
     return true;
 },
 
-//> @classMethod History.getCurrentHistoryId()
+//> @staticMethod History.getCurrentHistoryId()
 //
 // Returns the current history id as reflected by the current URL.
 //
@@ -2480,12 +2493,12 @@ getCurrentHistoryId : function () {
 },
 
 
-//> @classMethod History.getHistoryData()
+//> @staticMethod History.getHistoryData()
 //
 // Returns the data associated with the specified history id.
 //
 // @param id (String) The id for which to fetch history data.
-// @return (any) The data associated with the specified history id.
+// @return (Any) The data associated with the specified history id.
 // @visibility external
 //<
 getHistoryData : function (historyId) {
@@ -2493,7 +2506,7 @@ getHistoryData : function (historyId) {
 },
 
 
-//> @classMethod History.setHistoryTitle()
+//> @staticMethod History.setHistoryTitle()
 //
 // Sets the title associated with all history entries.  This is the string that appears in the
 // history drop-down.  If left unset, this default to the history id that is passed into
@@ -2509,7 +2522,7 @@ setHistoryTitle : function (title) {
     this.historyTitle = title;
 },
 
-//> @classMethod History.addHistoryEntry()
+//> @staticMethod History.addHistoryEntry()
 //
 // Call this method to add a synthetic history entry.  The new history entry is added in the
 // history stack after the currently visible page - in exactly the same way as the browser
@@ -2565,19 +2578,19 @@ setHistoryTitle : function (title) {
 // to +link{History.registerCallback()} you can suppress the callback from firing unless the stored
 // data object is actually available.
 //
-// @param id (string) The id you want to associate with this history entry.  This value will
+// @param id (String) The id you want to associate with this history entry.  This value will
 // appear as an anchor reference at the end of the URL string.  For example, if you pass in
 // "foo" as the id, the URL will then have a #foo tacked on the end of it.  This id will be
 // passed back to the callback you specified in +link{History.registerCallback} when the user
 // navigates to this history entry in the future.
 //
-// @param [title] (string) The title to show in the history drop-down for this history entry.  If
+// @param [title] (String) The title to show in the history drop-down for this history entry.  If
 // not specified, the <code>id</code> is used, unless you've set an explicit history title via
 // +link{History.setHistoryTitle}.  Note: this currently works in IE only.  You may pass a
 // title in any other browser, but it will not change what's displayed in the history
 // drop-down.
 //
-// @param [data] (any) Arbitrary data to associate with this history entry.  When the user next
+// @param [data] (Any) Arbitrary data to associate with this history entry.  When the user next
 // navigates to this history entry, this data will be provided as an argument to your callback
 // function.  Note that the SmartClient Core module is also required to be loaded on the page
 // for this particular feature to work.
@@ -2617,17 +2630,20 @@ addHistoryEntry : function (historyId, title, data) {
 
 
     // clean up the history stack if the ID of the current URL isn't at the top of the stack.
-    var currentId = this._getHistory(location.href);
+    var currentId = this._lastHistoryId;
 
     // if no data was passed in, store explicit null rather than leaving undefined
     // we use this to detect that this was a registered history entry (this session)
     var undef;
     if (data === undef) data = null;
 
-    // disallow sequentual duplicate entries - treat it as overwrite of data
-    if (currentId == historyId && this.historyState.data.hasOwnProperty(historyId)) {
-        this.historyState.data[historyId] = data;
-        this._saveHistoryState();
+    // disallow sequentual duplicate entries
+    if (currentId == historyId) {
+        // treat it as overwrite of data
+        if (this.historyState.data.hasOwnProperty(historyId)) {
+            this.historyState.data[historyId] = data;
+            this._saveHistoryState();
+        }
         return;
     }
 
@@ -2652,37 +2668,37 @@ addHistoryEntry : function (historyId, title, data) {
     }
     this.historyState.stack[this.historyState.stack.length] = historyId;
     this.historyState.data[historyId] = data;
-    //>DEBUG
-    this.logDebug("historyState[historyId]: " + (isc.echoAll ? isc.echoAll(this.historyState.data[historyId]) : String(this.historyState.data[historyId])));
-    //<DEBUG
 
     this._saveHistoryState();
 
-    if (isc.Browser.isIE) {
-        if (historyId != null && document.getElementById(historyId) != null) {
-            this.logWarn("Warning - attempt to add synthetic history entry with id that conflicts"
-                        +" with an existing DOM element node ID - this is known to break in IE");
-        }
-
-        // navigate the iframe forward
-        //
-
-        // if this is the very-first synthetic history entry, add an extra entry for the
-        // current URL
-        if (currentId == null) {
-            // the title for this first entry is the title of this page - which is the <title>
-            // if there's one on the page, or, failing that, the href of the page.
-            var initTitle = location.href;
-            var docTitle = document.getElementsByTagName("title");
-            if (docTitle.length) initTitle = docTitle[0].innerHTML;
-            this._iframeNavigate("_isc_H_init", initTitle);
-        }
-        this._iframeNavigate(historyId, title);
+    if (this.usePushState) {
+        window.history.pushState({historyId: historyId}, '', this._addHistory(location.href, historyId));
     } else {
-        // Moz/FF
-        // update the visible URL (this actually creates the history entry)
-        location.href = this._addHistory(location.href, historyId);
-        this._lastHistoryId = historyId;
+        if (isc.Browser.isIE) {
+            if (historyId != null && document.getElementById(historyId) != null) {
+                this.logWarn("Warning - attempt to add synthetic history entry with id that conflicts"
+                             +" with an existing DOM element node ID - this is known to break in IE");
+            }
+
+            // navigate the iframe forward
+            //
+
+            // if this is the very-first synthetic history entry, add an extra entry for the
+            // current URL
+            if (currentId == null) {
+                // the title for this first entry is the title of this page - which is the <title>
+                // if there's one on the page, or, failing that, the href of the page.
+                var initTitle = location.href;
+                var docTitle = document.getElementsByTagName("title");
+                if (docTitle.length) initTitle = docTitle[0].innerHTML;
+                this._iframeNavigate("_isc_H_init", initTitle);
+            }
+            this._iframeNavigate(historyId, title);
+        } else {
+            // Moz/FF
+            // update the visible URL (this actually creates the history entry)
+            location.href = this._addHistory(location.href, historyId);
+        }
     }
     this._lastURL = location.href;
 
@@ -2692,6 +2708,7 @@ addHistoryEntry : function (historyId, title, data) {
         setTimeout(this._finishAddingHistoryEntry, 0);
     }
     this._finishAddingHistoryEntryTEAScheduled = true;
+    this._lastHistoryId = historyId;
 },
 
 _finishAddingHistoryEntry : function () {
@@ -2702,7 +2719,7 @@ _finishAddingHistoryEntry : function () {
     }
 },
 
-//> @classMethod history.readyForAnotherHistoryEntry()
+//> @staticMethod History.readyForAnotherHistoryEntry()
 //
 // Can another history entry be added to the browser's history stack in the current thread?
 // <p>
@@ -2752,6 +2769,12 @@ _getIsomorphicDir : function () {
     return window.isomorphicDir ? window.isomorphicDir : "../isomorphic/";
 },
 
+// prefer pushState if browser supports it and not explicitly disabled
+usePushState: window.history != null && window.history.pushState != null && window.isc_history_usePushState !== false,
+// valid values: 'queryParam', 'hashFragment'
+pushStateMode: "hashFragment",
+pushStateQueryParamName: "hid",
+
 // this method is called before pageLoad at the end of this file
 _init : function () {
     this.logInfo("History initializing");
@@ -2792,10 +2815,30 @@ _init : function () {
     // get the form auto-fill data out.
     if (isc.Browser.isIE) {
         isc.SA_Page.onLoad(function () { this._completeInit() }, this);
-    } else if (isc.Browser.isMoz || isc.Browser.isOpera || (isc.Browser.isSafari && isc.Browser.safariVersion >= 500)) {
-        // in Moz, the form auto-fill values are available synchronously right after
-        // document.write(), but in IE the values are not present until page load.
+    } else {
         this._completeInit();
+    }
+
+    if (this.usePushState) {
+        this._initialURL = location.href;
+        window.onpopstate = function (event) {
+            // we get an onpopstate with a null state on a hash fragment change - ignore here
+            // and handle below with onhashchange
+            if (!event.state) return;
+            isc.History._fireHistoryCallback(event.state.historyId);
+        }
+        if (this.pushStateMode == "hashFragment") {
+            // also support firing callbacks on location.hash changes in this mode
+            window.onhashchange = function (event) {
+                if (event.newURL && event.newURL.indexOf("#") != -1) {
+                    var historyId = decodeURIComponent(event.newURL.substring(event.newURL.indexOf("#")+1));
+                    isc.History._fireHistoryCallback(historyId);
+                } else {
+                    this.logWarn("Unable to fire history callback onhashchange from: "
+                                 +event.oldURL+" to: " + event.newURL + "  - reason: no hash in newURL");
+                }
+            }
+        }
     }
 },
 
@@ -2884,7 +2927,10 @@ _completeInit : function () {
     // and also use anchors on the page.  User hits an anchor, hits back, and all animations
     // stop. Nice one guys.
     this._lastURL = location.href;
-    this._historyTimer = window.setInterval("isc.History._statHistory()", this._historyStatInterval);
+    if (!this.usePushState) {
+        // no need to poll if we have pushState support
+        this._historyTimer = window.setInterval("isc.History._statHistory()", this._historyStatInterval);
+    }
 
     // fire the initial history callback here
     // Note In IE we use an IFRAME to track state across page transitions.
@@ -2897,12 +2943,7 @@ _completeInit : function () {
     // In this second case we'll essentially get two calls to the history callback method.
     // We catch this by simply suppressing firing the history callback twice in a row with the
     // same history entry ID.
-
-    if (isc.Browser.isIE || isc.Browser.isMoz || isc.Browser.isOpera ||
-        (isc.Browser.isSafari && isc.Browser.safariVersion >= 500))
-    {
-        isc.SA_Page.onLoad(this._fireInitialHistoryCallback, this);
-    }
+    isc.SA_Page.onLoad(this._fireInitialHistoryCallback, this);
 },
 
 _fireInitialHistoryCallback : function () {
@@ -2925,13 +2966,32 @@ _fireInitialHistoryCallback : function () {
 // encoded/decoded by these.
 
 _addHistory : function (url, historyId) {
-    var match = url.match(/([^#]*).*/);
-    return match[1]+"#"+encodeURI(historyId);
+    if (this.usePushState && this.pushStateMode == "queryParam") {
+        url = this._initialURL;
+        var paramName = this.pushStateQueryParamName;
+        if (new RegExp("(\\?|&)"+paramName+"=").test(url)) {
+            // already contains this query param - overwrite value
+            url = url.replace(new RegExp("(\\?|&)"+paramName+"=(.*?)(&|$)"), "$1"+paramName+"="+encodeURIComponent(historyId)+"$3");
+        } else {
+            url += (url.contains("?") ? "&" : "?") + encodeURIComponent(paramName)+"="+encodeURIComponent(historyId);
+        }
+        return url;
+    } else {
+        var match = url.match(/([^#]*).*/);
+        return match[1]+"#"+encodeURI(historyId);
+    }
 },
 
 _getHistory : function (url) {
-    var match = location.href.match(/([^#]*)#(.*)/);
-    return match ? decodeURI(match[2]) : null;
+    if (this.usePushState && this.pushStateMode == "queryParam") {
+        url = this._initialURL;
+        var paramName = this.pushStateQueryParamName;
+        var match = new RegExp("(\\?|&)"+paramName+"=(.*?)(&|$)").exec(url);
+        return match ? decodeURIComponent(match[2]) : null;
+    } else {
+        var match = location.href.match(/([^#]*)#(.*)/);
+        return match ? decodeURIComponent(match[2]) : null;
+    }
 },
 
 
@@ -3072,11 +3132,10 @@ _fireHistoryCallback : function (historyId) {
 // mandatory pre-page load init
 isc.History._init();
 isc._debugModules = (isc._debugModules != null ? isc._debugModules : []);isc._debugModules.push('History');isc.checkForDebugAndNonDebugModules();isc._moduleEnd=isc._History_end=(isc.timestamp?isc.timestamp():new Date().getTime());if(isc.Log&&isc.Log.logIsInfoEnabled('loadTime'))isc.Log.logInfo('History module init time: ' + (isc._moduleEnd-isc._moduleStart) + 'ms','loadTime');delete isc.definingFramework;if (isc.Page) isc.Page.handleEvent(null, "moduleLoaded", { moduleName: 'History', loadTime: (isc._moduleEnd-isc._moduleStart)});}else{if(window.isc && isc.Log && isc.Log.logWarn)isc.Log.logWarn("Duplicate load of module 'History'.");}
-
 /*
 
   SmartClient Ajax RIA system
-  Version v11.0p_2016-11-25/LGPL Deployment (2016-11-25)
+  Version v11.1p_2017-12-27/LGPL Deployment (2017-12-27)
 
   Copyright 2000 and beyond Isomorphic Software, Inc. All rights reserved.
   "SmartClient" is a trademark of Isomorphic Software, Inc.
