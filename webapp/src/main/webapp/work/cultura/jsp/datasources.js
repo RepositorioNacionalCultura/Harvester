@@ -115,11 +115,27 @@ eng.dataSources["MapDefinition"] = {
     scls: "MapDefinition",
     modelid: "Cultura",
     dataStore: "mongodb",
-    displayField: "name",
+    displayField: "mapTable",
     fields: [
-        //{name: "extractor", title: "Extractor", stype: "select", dataSource: "Extractor", required: true},
-        {name: "name", title: "Nombre", type: "string", required: true},
-        {name: "mapTable", title: "Tabla", stype: "grid", dataSource: "MapTable"}
+        {name: "mapTable", title: "Tabla", stype: "grid", dataSource: "MapTable",width: "100%", height: "500", colSpan: 6}
+    ]
+};
+
+/********** Definición mapeo ********/
+eng.dataSources["TransformationScript"] = {
+    scls: "TransformationScript",
+    modelid: "Cultura",
+    dataStore: "mongodb",
+    displayField: "script",
+    fields: [
+        {name: "script", 
+            title: "Script", 
+            type: "textArea", 
+            width: "100%", 
+            height: "500", 
+            colSpan: 6
+            
+        }
     ]
 };
 
@@ -128,13 +144,10 @@ eng.dataSources["MapTable"] = {
     scls: "MapTable",
     modelid: "Cultura",
     dataStore: "mongodb",
-    displayField: "tagFrom+tagTo",
+    displayField: "property",
     fields: [
         {name: "property", title: "Propiedad", type: "string", required: true},
         {name: "collName", title: "Colección / Catálogo", type: "string", required: true},
-//        {name: "Tipo", title: "Tipo", type: "string", required: true},
-//        {name: "valores", title: "Valor(es)", stype: "select", dataSource: "Valores", multiple: true, required: true},
-//        {name: "valor", title: "Valor", type: "string", required: true},
     ]
 };
 /********** Tabla de mapeo ********/
@@ -153,6 +166,7 @@ eng.dataSources["Extractor"] = {
     modelid: "Cultura",
     dataStore: "mongodb",
     displayField: "endpoint",
+
     fields: [
         {name: "name", title: "Nombre/Modelo", type: "string"},
 //        {name:"collection",title:"Nombre de la colección",type:"string"},
@@ -166,11 +180,10 @@ eng.dataSources["Extractor"] = {
         {name: "tokenValue", title: "Token", type: "string"},
         {name: "pfxExtracted", title: "Prefijos extraidos", type: "string"},
         {name: "pfxActual", title: "Prefijo actual", type: "string"},
-        {name: "class", title: "Nombre de la Clase a utilizar", type: "select", valueMap: {"OAIExtractor":"OAIExtractor","CSVExtractor":"CSVExtractor"}, defaultValue: "OAIExtractor"},
-        {name: "csvfile", title: "Archvio CSV", stype: "file"},
+        {name: "class", title: "Nombre de la Clase a utilizar", type: "select", valueMap: {"OAIExtractor": "OAIExtractor", "CSVExtractor": "CSVExtractor"}, defaultValue: "OAIExtractor"},
+        {name: "csvfile", title: "Archivo CSV", stype: "file"},
         {name: "periodicity", title: "Periodicidad", type: "boolean"},
         {name: "interval", title: "Intervalo de tiempo (días)", type: "int"},
-        {name: "mapeo", title: "Tabla de mapeo", stype: "grid", dataSource: "MapTable"},
         {name: "created", title: "Fecha creación", type: "string", useTextField: true},
         {name: "lastExecution", title: "Última ejecución", type: "string", useTextField: true},
         {name: "status", title: "Estatus", type: "select", valueMap: {"LOADED": "LOADED", "STARTED": "STARTED", "EXTRACTING": "EXTRACTING", "STOPPED": "STOPPED", "FAILLOAD": "FAIL LOAD", "ABORTED": "ABORTED"}, defaultValue: "LOADED"}, //STARTED | EXTRACTING | STOPPED
@@ -179,9 +192,13 @@ eng.dataSources["Extractor"] = {
         {name: "rows2Processed", title: "Registros por procesar", type: "int"},
         {name: "processed", title: "Registros procesados", type: "int"},
         {name: "indexed", title: "Registros indexados", type: "int"},
-        {name: "cursor", title: "Tamaño del bloque", type: "int"},
-        {name: "script", title: "Script de transformación", type: "string"}
+        {name: "cursor", title: "Tamaño del bloque", type: "int"}
+    ],
+    links: [
+        {name: "mapDef", title: "Tabla de mapeo",  stype: "tab", dataSource: "MapDefinition"},
+        {name: "transScript", title: "Script transformación", stype: "tab", dataSource: "TransformationScript"},
     ]
+
 };
 
 //dataProcessor
@@ -194,11 +211,11 @@ eng.dataProcessors["dpExtractor"] = {
             request.data.created = datetimeNow();
         }
         if (action === "update") {
-            if(request.data.script){
+            if (request.data.script) {
                 print(request.data.script);
-                var str_tmp = new String(request.data.script); 
-                str_tmp = str_tmp.replace("<","&lt;");
-                str_tmp = str_tmp.replace(">","&gt;");
+                var str_tmp = new String(request.data.script);
+                str_tmp = str_tmp.replace("<", "&lt;");
+                str_tmp = str_tmp.replace(">", "&gt;");
                 print(request.data.script);
             }
 

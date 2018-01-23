@@ -536,7 +536,7 @@ public class OAIExtractor extends ExtractorBase {
                     DBCollection datasource = db.getCollection(pfx);
                     DBCursor cursor = datasource.find();
                     System.out.println(pfx + " cursor size: " + (null != cursor ? cursor.count() : "NULO"));
-                    
+
                     while (null != cursor && cursor.hasNext()) {
                         if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
                             break;
@@ -635,7 +635,7 @@ public class OAIExtractor extends ExtractorBase {
     @Override
     public void index() throws Exception {
         System.out.println("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
-        
+
         String idScript = extractorDef.getString("transScript");
         SWBDataSource dsTScript = engine.getDataSource("TransformationScript");
         DataObject doTS = dsTScript.fetchObjById(idScript);
@@ -679,7 +679,7 @@ public class OAIExtractor extends ExtractorBase {
                         dobj = (DataObject) DataObject.parseJSON(next.toString());
                         //System.out.println("DataObject: " + dobj);
                         try {
-                            
+
                             //Transformación del DataObject
                             DataObject result = mapper.map(dobj);
 //                            System.out.println("DataObject:\n" + result.toString());
@@ -698,11 +698,12 @@ public class OAIExtractor extends ExtractorBase {
 
                             // Mapeo de propiedades definidas en la tabla con los a encontrar en los catálogos 
                             // Se actualizan las propiedades del DataObject
-                            Util.findProps(result, hmmaptable, engine);
-                            
+                            if (!hmmaptable.isEmpty()) {
+                                Util.findProps(result, hmmaptable, engine);
+                            }
+
 //                            System.out.println("Resultado del Mapeo:....\n"+result);
 //                            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<PROPERTIES");
-
                             // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
                             //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
                             SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");

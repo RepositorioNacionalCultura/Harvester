@@ -72,8 +72,8 @@ public class ExtractorManager {
                         className = dobj.getString("class");
                         extractor = null;
                         if (null != className) {
-                            if (className.endsWith("ModsExtractor")) {
-                                extractor = new ModsExtractor(key,engine);
+                            if (className.endsWith("CSVExtractor")) {
+                                extractor = new CSVExtractor(key,engine);
                             } else if (className.endsWith("OAIDCExtractor")) {
                                 extractor = new OAIExtractor(key,engine);
                             }
@@ -107,8 +107,8 @@ public class ExtractorManager {
             String status = null;
             if ((null != extractor)) {  //Revisando el tipo de extractor para saber su estaus.
                
-                if (extractor instanceof ModsExtractor) {
-                    status = ((ModsExtractor) extractor).getStatus();
+                if (extractor instanceof CSVExtractor) {
+                    status = ((CSVExtractor) extractor).getStatus();
                 } else if (extractor instanceof OAIExtractor) {
                     status = ((OAIExtractor) extractor).getStatus();
                 }
@@ -118,8 +118,8 @@ public class ExtractorManager {
                         try {
                             // el extractor tiene el status de EXTRACTING, se espera 2 segundos  a que termine y se verifica el status
                             Thread.sleep(2000);
-                            if (extractor instanceof ModsExtractor) {
-                                status = ((ModsExtractor) extractor).getStatus();
+                            if (extractor instanceof CSVExtractor) {
+                                status = ((CSVExtractor) extractor).getStatus();
                             } else if (extractor instanceof OAIExtractor) {
                                 status = ((OAIExtractor) extractor).getStatus();
                             }
@@ -133,8 +133,8 @@ public class ExtractorManager {
 
             if (null != status && (status.equals("STARTED") || status.equals("STOPPED")) || null == extractor) {
                 if (null != className) { // Generando la nueva instancia del extractor
-                    if (className.endsWith("ModsExtractor")) {
-                        extractor = new ModsExtractor(extractorConfig.getId(),engine);
+                    if (className.endsWith("CSVExtractor")) {
+                        extractor = new CSVExtractor(extractorConfig.getId(),engine);
                     } else if (className.endsWith("OAIExtractor")) {
                         extractor = new OAIExtractor(extractorConfig.getId(),engine);
                     }

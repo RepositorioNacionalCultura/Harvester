@@ -127,11 +127,12 @@
                     extMgr.loadExtractor(dobj);
 //System.out.println("dobj: \n"+dobj.toString());
                     extMgr.indexExtractor(id);
+//System.out.println("End Indexing...");
                     endTime = System.currentTimeMillis();
 //                    status = extMgr.getStatus(id);
                     dobj = datasource.fetchObjById(id);
                     status = dobj.getString("status");
-                    numItems = dobj.getInt("indexed");
+                    numItems = dobj.getInt("indexed",0);
             %>
             <strong>Status:<%=status%></strong><br>
             <strong>Se indexaron los metadatos.</strong><br>
