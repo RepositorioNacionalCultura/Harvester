@@ -467,6 +467,7 @@ var eng = {
                         fields:link.fields,
                         values:link.values,
                         canEdit:form.canEdit,
+                        autoDraw: false,
                     });
                     sform.tindex=form.tindex;
 
@@ -479,7 +480,7 @@ var eng = {
                                 contents: link.title,
                                 width: "100%",
                                 height: 25,
-                                autoDraw: true,
+                                autoDraw: false,
                                 baseStyle: "exampleSeparator"
                             }),
                             sform
@@ -500,7 +501,8 @@ var eng = {
                         titleAlign : "right",
                         disabled : false,
                         dataSource: ds,
-                        fields:link.fields
+                        fields:link.fields,
+                        autoDraw: false
                     });
                     
                     sform.tindex=form.tindex+1;
@@ -515,6 +517,7 @@ var eng = {
                         disabled: link.disabled,
                         enableWhen: link.enableWhen,
                         pane: spane,
+                        autoDraw: false
                     };
                     
                     tabs.addTab(stab);
@@ -768,6 +771,8 @@ var eng = {
                 data.dataFormat = "json";
                 data.dataURL = eng.dataSourceServlet+"?dssp="+eng.dataSourceScriptPath+"&ds="+dsObjDef.dsName;// + "&scls=" + data.scls;//+"&modelid=" + data.modelid;
                 data.operationBindings = eng.operationBindings;
+                data.jsonPrefix="";
+                data.jsonSuffix="";
                 
                 if(formDef && formDef.fields)
                 {
@@ -777,6 +782,7 @@ var eng = {
                 data.fields.unshift({name: "_id", type: "string", hidden: true, primaryKey: true});    //Insertar llave primaria
               
                 var rds=isc.RestDataSource.create(data);
+                
                 eng.dataSourcesCache[dsObjDef.dsId]=rds;              
               
                 return rds;
@@ -797,7 +803,7 @@ var eng = {
         if (base.emptyCellValue===undefined)
             base.emptyCellValue = "--";
         if (base.dataPageSize===undefined)
-            base.dataPageSize = 20;
+            base.dataPageSize = 100;
         if (base.dataSource===undefined)
             base.dataSource = ds;
         if (base.autoFetchData===undefined)
@@ -1201,14 +1207,27 @@ var eng = {
         {
             var tab={
                 title: base.title,
+                autoDraw:false,
                 pane: pane
             };
 
             tabs=isc.TabSet.create({
                 ID: dsObjDef.dsName + "Tabs",
+                autoDraw:false,
+                border:0,
                 tabs: [tab]
             });
             form.tabs=tabs;
+            //Height autosize
+            form.tabs.tabSelected=function(){
+                var p=form.tabs.getSelectedTab().pane;
+                if(p.getWidth()==p.getScrollWidth())d=50;else d=64;
+                form.tabs.setHeight(p.getScrollHeight()+d)
+                
+                console.log(p.getScrollHeight(),p.getClipHeight(),p.getHeight(),p.getInnerContentHeight(),p.getOuterViewportHeight());
+                console.log(p.getClipHeight()-p.getScrollHeight());
+            };
+            //form.tabs.tabSelected();
         }
         
         var buttons=isc.HLayout.create({height: "20px", padding:"10px", membersMargin:20, align:"right", members: butts,autoDraw:false});
@@ -1244,10 +1263,12 @@ var eng = {
         {
             eng.fetchForm(form, {_id: fetchId}, function()
             {
+                if(form.tabs)form.tabs.tabSelected();
                 if(base.onLoad)base.onLoad(form);
             });
         }else
         {        
+            if(form.tabs)form.tabs.tabSelected();
             if(base.onLoad)base.onLoad(form);
         }
         
@@ -1502,7 +1523,9 @@ var eng = {
                 if(aScriptSource==null)
                 {
                     aScriptSource = eng.utils.getSynchData(file).responseText + '\n////# sourceURL=' + file + '\n';
-                    sessionStorage.setItem(file,aScriptSource);
+                    try{
+                        sessionStorage.setItem(file,aScriptSource);
+                    }catch(err){console.log(err,aScriptSource.length)}
                 }
             }else
             {
@@ -1670,7 +1693,24 @@ var eng = {
             var sURLVariables = sPageURL.split('/');
             if(index < sURLVariables.length)
                 return sURLVariables[index];
-        }          
+        },
+        
+        getDataSourceDisplayFields: function(dsName)
+        {
+            var ds=eng.dataSources[dsName];
+            if(ds)
+            {
+                var ret="\n    fields: [\n";
+                for(var i=0;i<ds.fields.length;i++)
+                {
+                    ret+="        {name: \""+ds.fields[i].name+"\"}";
+                    if(i+1<ds.fields.length)ret+=",";
+                    ret+="\n";
+                }                 
+                ret+="    ]\n";
+                return ret;
+            }           
+        }
         
     },
     
@@ -2068,11 +2108,16 @@ var eng = {
             eng.utils.loadJS(isomorphicDir+"system/modules/ISC_Forms.js",false,cache);
             eng.utils.loadJS(isomorphicDir+"system/modules/ISC_DataBinding.js",false,cache);
             eng.utils.loadJS(isomorphicDir+"system/modules/ISC_Calendar.js",false,cache);
-            eng.utils.loadJS(isomorphicDir+"skins/Simplicity/load_skin.js",false,cache);
+            eng.utils.loadJS(isomorphicDir+"skins/Tahoe/load_skin.js",false,cache);
             eng.utils.loadJS(isomorphicDir+"locales/frameworkMessages_es.properties",false,cache);
             eng.utils.loadJS("/platform/plupload/js/plupload.full.min.js",false,cache);
-            
+                        
             isc.DateItem.DEFAULT_START_DATE.setYear(1900);
+            
+            isc.Canvas.resizeControls(10);            
+            Page.setEvent("load",function(){
+                isc.Canvas.resizeFonts(3);                        
+            });
             Time.setDefaultDisplayTimezone("-06:00");
             Time.adjustForDST=false;
             NumberUtil.decimalSymbol=".";
@@ -2089,7 +2134,7 @@ var eng = {
                 {
                     eng.dataSourceScriptPath=file;
                 }
-                eng.utils.loadJS(file,false,cache);     
+                eng.utils.loadJS(cache?file:file+"?t="+new Date().getTime(),false,cache);
             }else if (Array.isArray(file))
             {
                 eng.dataSourceScriptPath=window.location.pathname.substring(0,window.location.pathname.lastIndexOf('/'))+"/"+JSON.stringify(file);

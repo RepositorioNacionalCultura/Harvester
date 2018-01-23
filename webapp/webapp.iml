@@ -25,9 +25,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: com.github.RepositorioNacionalCultura:Commons:master-7f303d68dd-1" level="project" />
     <orderEntry type="library" name="Maven: com.github.SWBForms:SWBFormsCore:jitpack-dependencies-1.0-SNAPSHOT-ga14399e-1" level="project" />
-    <orderEntry type="library" name="Maven: com.github.SWBForms:SWBDataManager:master-1.0-SNAPSHOT-g362e8de-8" level="project" />
+    <orderEntry type="library" name="Maven: com.github.SWBForms:SWBDataManager:master-1.0-SNAPSHOT-g35c84b1-9" level="project" />
     <orderEntry type="module" module-name="harvester-core" />
-    <orderEntry type="library" name="Maven: com.github.RepositorioNacionalCultura:Commons:master-3ff4a73a57-1" level="project" />
+    <orderEntry type="library" name="Maven: com.github.RepositorioNacionalCultura:Commons:master-b1ff99bb96-1" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20160810" level="project" />
     <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:3.5.0" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.0.0" level="project" />

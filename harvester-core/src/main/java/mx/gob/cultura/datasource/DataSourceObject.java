@@ -1,6 +1,6 @@
 package mx.gob.cultura.datasource;
 
-import mx.gob.cultura.transformer.Mapper;
+import mx.gob.cultura.commons.mapper.Mapper;
 
 /**
  * Interface to wrap common methods for objects (records) fetched from a {@link mx.gob.cultura.datasource.DataSource}

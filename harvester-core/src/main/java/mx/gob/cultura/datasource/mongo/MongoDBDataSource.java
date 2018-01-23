@@ -4,9 +4,9 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import mx.gob.cultura.commons.Util;
+import mx.gob.cultura.commons.mapper.Mapper;
 import mx.gob.cultura.datasource.DataSource;
 import mx.gob.cultura.datasource.DataSourceObject;
-import mx.gob.cultura.transformer.Mapper;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
