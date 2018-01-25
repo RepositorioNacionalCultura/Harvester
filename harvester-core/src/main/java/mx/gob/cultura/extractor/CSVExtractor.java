@@ -18,6 +18,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import mx.gob.cultura.indexer.SimpleESIndexer;
@@ -28,6 +29,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.semanticwb.datamanager.DataMgr;
 import org.semanticwb.datamanager.DataObject;
+import org.semanticwb.datamanager.DataObjectIterator;
 import org.semanticwb.datamanager.SWBDataSource;
 import org.semanticwb.datamanager.SWBScriptEngine;
 
@@ -212,7 +214,7 @@ public class CSVExtractor extends ExtractorBase {
                                     field = field.toLowerCase().trim();
                                     field = Util.replaceSpecialCharacters(field, true);
                                     field = Util.replaceOccurrences(hm, field.trim());
-                                    
+
                                     arr.add(c, field);
                                 }
                             } else {
@@ -227,7 +229,7 @@ public class CSVExtractor extends ExtractorBase {
                         DataObject rec = new DataObject();
                         for (String field : record) {
                             String colname = arr.get(c);
-                            if (colname != null&&colname.trim().length()>0) {
+                            if (colname != null && colname.trim().length() > 0) {
                                 Object val = field.trim();
                                 rec.put(colname, val);
                             }
@@ -253,6 +255,93 @@ public class CSVExtractor extends ExtractorBase {
                 dsExtract.updateObj(extractorDef);
                 ExtractorManager.hmExtractorDef.put(pid, extractorDef);
                 System.out.println("Finalizando extracción..." + ext_name.toUpperCase() + " ==> Extracted(" + r + ")");
+            }
+
+            System.out.println("\n\n\n>>>>>>>>>> TRANSFORMING <<<<<<<<<<<<<<<<<\n\n\n");
+            String idScript = extractorDef.getString("transScript");
+            SWBDataSource dsTScript = engine.getDataSource("TransformationScript");
+            DataObject doTS = dsTScript.fetchObjById(idScript);
+            String scriptsrc = doTS.getString("script");
+            ScriptEngineManager factory = new ScriptEngineManager();
+            long numItemsIndexed = 0;
+            long numItemsDeleted = 0;
+
+            if (null != scriptsrc && scriptsrc.trim().length() > 0 && (getStatus().equals("STOPPED") || getStatus().equals("FINISHED") || getStatus().equals("LOADED"))) {
+//            System.out.println("tiene script...");
+                extractorDef.put("status", "PROCESSING");
+                dsExtract.updateObj(extractorDef);
+                ScriptEngine screngine = factory.getEngineByName("JavaScript");
+                DataObjectScriptEngineMapper mapper = new DataObjectScriptEngineMapper(screngine, scriptsrc);
+
+                //Generar el nuevo DataObject combinado por cada prefix
+                try {
+                    DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
+                    DBCollection objects = db.getCollection("fullobjects");
+                    SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
+
+//                System.out.println("encontro DB y colección...");
+                    DataObject dobj = null;
+
+                    try {
+                        DBCursor cursor = objects.find();
+                        while (null != cursor && cursor.hasNext()) {
+                            if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                                break;
+                            }
+                            DBObject next = cursor.next();
+                            //Se tiene que hacer el llamado al proceso de transformación validando si el objeto está eliminado "deleted"
+                            String str_deleted = (String) next.get("status");
+                            if (null != str_deleted && str_deleted.equals("deleted")) {
+                                numItemsDeleted++;
+                                continue;
+                            }
+
+                            dobj = (DataObject) DataObject.parseJSON(next.toString());
+                            try {
+                                DataObject result = mapper.map(dobj);
+                                HashMap<String, String> hmmaptable = Util.loadExtractorMapTable(engine, extractorDef);
+
+                                // Mapeo de propiedades definidas en la tabla con los a encontrar en los catálogos 
+                                // Se actualizan las propiedades del DataObject
+                                if (!hmmaptable.isEmpty()) {
+                                    Util.findProps(result, hmmaptable, engine);
+                                }
+                                System.out.println("Antes de agregar el objeto");
+                                result.put("forIndex", true);
+                                DataObject dobjnew = transobjs.addObj(result);
+                                System.out.println("Resultado del Mapeo:....\n" + result);
+                                numItemsIndexed++;
+                            } catch (Exception e) {
+                                System.out.println("Error en el mapeo...");
+
+                            }
+
+                            if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
+                                System.out.println("Items Indexed: " + numItemsIndexed);
+                            }
+                        }
+                        cursor.close();
+                        System.out.println("Total Items Indexed: " + numItemsIndexed);
+                        System.out.println("Total Items Deleted: " + numItemsDeleted);
+                        
+                        //eliminando colección fullobjects
+                        objects.drop();
+                        
+                        
+                    } catch (Exception e) {
+                        System.out.println("Error al indexar\n");
+                        e.printStackTrace();
+                    }
+                    extractorDef.put("status", "FINISHED");
+                    extractorDef.put("indexed", numItemsIndexed);
+                    dsExtract.updateObj(extractorDef);
+
+                } catch (Exception e) {
+                    System.out.println("Error al procesar la Base de Datos");
+                    e.printStackTrace();
+                    extractorDef.put("processed", numItemsIndexed);
+                    dsExtract.updateObj(extractorDef);
+                }
             }
         }
 
@@ -307,229 +396,62 @@ public class CSVExtractor extends ExtractorBase {
 
     @Override
     public void process() throws Exception {
-        System.out.println("\n\n\n>>>>>>>>>> PROCESSING <<<<<<<<<<<<<<<<<\n\n\n");
-
-//        long numItems = 0;
-//        long numAlready = 0;
-//
-//        extractorDef.put("status", "PROCESSING");
-//        dsExtract.updateObj(extractorDef);
-//
-//        DataList dlpfx = extractorDef.getDataList("prefix");
-//        System.out.println("num items:" + dlpfx.size());
-//        String[] ext_prefix = new String[dlpfx.size()];
-//        //Generar el nuevo DataObject combinado por cada prefix
-//        try {
-//            DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
-//            DBCollection objects = db.getCollection("fullobjects");
-//            objects.createIndex("oaiid");
-////                HashMap<String, DataObject> hmfull = new HashMap();
-//            boolean hdrLoaded = false;
-//            DataObject dobj = null;
-//            DBCollection datasource = db.getCollection("fullobjects");
-//            for (int i = 0; i < dlpfx.size(); i++) {
-//                if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
-//                    break;
-//                }
-//                try {
-//                    
-//                    DBCursor cursor = datasource.find();
-//                    System.out.println(pfx + " cursor size: " + (null != cursor ? cursor.count() : "NULO"));
-//                    while (null != cursor && cursor.hasNext()) {
-//                        if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
-//                            break;
-//                        }
-//                        DBObject next = cursor.next();
-//                        String key = (String) next.get("oaiid");
-//                        boolean isDODeleted = false;
-//                        boolean add2DB = false;
-//                        hdrLoaded = false;
-//                        //Revisar si existe en fullobjects
-//                        BasicDBObject dbQuery = new BasicDBObject("oaiid", key);
-//                        DBObject dbres = objects.findOne(dbQuery);
-//                        if (null == dbres) {
-//                            add2DB = true;
-//                            dobj = new DataObject();
-//                            dobj.put("oaiid", key);
-//                        }
-//                        if (null != dbres) {
-//                            //Existe en la DB
-//
-//                            dobj = (DataObject) DataObject.parseJSON(dbres.toString()); //hmfull.get(key.trim());
-//                            if (dobj.get("header") != null) {
-//                                hdrLoaded = true;
-//                            }
-//                            if (dobj.get(pfx) != null) {
-//                                numAlready++;
-//                                continue;
-//                            }
-//                        }
-//
-//                        DataObject tmpObj = (DataObject) DataObject.parseJSON(next.get("body").toString());
-//                        if (!hdrLoaded) {
-//                            if (null != tmpObj) {
-//                                Object header = tmpObj.get("header");
-//                                if (null != header) {
-//                                    dobj.put("header", header);
-//                                    hdrLoaded = true;
-//                                }
-//                            }
-//                        }
-//                        Object metadata = tmpObj.get("metadata");
-//                        if (null != metadata) {
-//                            dobj.put(pfx, metadata);
-//                            //System.out.println(metadata.toString());
-//                        } else {
-//                            DataObject doHdr = (DataObject) DataObject.parseJSON(tmpObj.get("header").toString());
-//                            if (null != doHdr) {
-//                                if (doHdr.getString("status") != null) {
-//                                    dobj.put("status", doHdr.getString("status"));
-//                                    if (doHdr.getString("status").equals("deleted")) {
-//                                        isDODeleted = true;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        //hmfull.put(key.trim(), dobj);
-//
-//                        // Esta parte sólo es para verificar como forma los objetos completos.
-//                        BasicDBObject bjson = Util.toBasicDBObject(dobj);
-//                        if (add2DB) {
-//                            objects.insert(bjson);
-//                        } else {
-//                            objects.update(dbQuery, bjson);
-//                        }
-//                        numItems++;
-//                        if (numItems % 1000 == 0 && numItems > 0) {
-//                            System.out.println("Items Processed: " + numItems);
-//                        }
-//                    }
-//                    try {
-//                        cursor.close();
-//                    } catch (Exception e) {
-//                    }
-//
-//                } catch (Exception e) {
-//                    System.out.println("Error al cargar el DataSource. " + e.getMessage());
-//                    e.printStackTrace(System.out);
-//                }
-//
-//            }
-//
-//            extractorDef.put("processed", numItems);
-//            extractorDef.put("status", "FINISHED");
-//            dsExtract.updateObj(extractorDef);
-//
-//        } catch (Exception e) {
-//            System.out.println("Error al procesar la Base de Datos");
-//            e.printStackTrace();
-//            extractorDef.put("processed", numItems);
-//            dsExtract.updateObj(extractorDef);
-//        }
+        throw new Exception("Method not implemented");
     }
 
     @Override
     public void index() throws Exception {
         System.out.println("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
-        String idScript = extractorDef.getString("transScript");
-        SWBDataSource dsTScript = engine.getDataSource("TransformationScript");
-        DataObject doTS = dsTScript.fetchObjById(idScript);
-        String scriptsrc = doTS.getString("script");
-        ScriptEngineManager factory = new ScriptEngineManager();
+        SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
         long numItemsIndexed = 0;
-        long numItemsDeleted = 0;
 
-        if (null != scriptsrc && scriptsrc.trim().length() > 0 && (getStatus().equals("STOPPED") || getStatus().equals("FINISHED") || getStatus().equals("LOADED"))) {
-//            System.out.println("tiene script...");
+        if ((getStatus().equals("STOPPED") || getStatus().equals("FINISHED") || getStatus().equals("LOADED"))) {
+
             extractorDef.put("status", "INDEXING");
             dsExtract.updateObj(extractorDef);
-            ScriptEngine screngine = factory.getEngineByName("JavaScript");
-            DataObjectScriptEngineMapper mapper = new DataObjectScriptEngineMapper(screngine, scriptsrc);
 
-            //Generar el nuevo DataObject combinado por cada prefix
             try {
-                DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
-                DBCollection objects = db.getCollection("fullobjects");
-//                System.out.println("encontro DB y colección...");
-                DataObject dobj = null;
-
-                try {
-                    DBCursor cursor = objects.find();
-                    while (null != cursor && cursor.hasNext()) {
-                        if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
-                            break;
-                        }
-                        DBObject next = cursor.next();
-//                        System.out.println("objeto:"+next);
-                        //Se tiene que hacer el llamado al proceso de transformación validando si el objeto está eliminado "deleted"
-                        String str_deleted = (String) next.get("status");
-                        if (null != str_deleted && str_deleted.equals("deleted")) {
-                            numItemsDeleted++;
-                            continue;
-                        }
-
-                        dobj = (DataObject) DataObject.parseJSON(next.toString());
-//                        System.out.println("DataObject: " + dobj);
+                DataObjectIterator cursor = transobjs.find();
+                while (null != cursor && cursor.hasNext()) {
+                    if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                        break;
+                    }
+                    DataObject next = cursor.next();
+                    if (next.getBoolean("forIndex", true)) {
                         try {
-                            DataObject result = mapper.map(dobj);
-
-                            HashMap<String, String> hmmaptable = Util.loadExtractorMapTable(engine, extractorDef);
-//                            System.out.println("PROPERTIES>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-//                            HashMap<String, String> hm = Util.listProps(result, hmmaptable);
-//                            list = new ArrayList<String>(hm.keySet());
-//                            Collections.sort(list);
-//                            Iterator<String> it2 = list.iterator();
-//                            System.out.println("==========================\n");
-//                            while (it2.hasNext()) {
-//                                String elem = it2.next();
-//                                System.out.println(elem);
-//                            }
-
-                            // Mapeo de propiedades definidas en la tabla con los a encontrar en los catálogos 
-                            // Se actualizan las propiedades del DataObject
-                            if (!hmmaptable.isEmpty()) {
-                                Util.findProps(result, hmmaptable, engine);
-                            }
+                            next.remove("_id");
                             // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
                             //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
-                            try {
-                                SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");
-                                //System.out.println("\n\n\n"+next.toString());
-                                sesidx.index(result.toString());
-                            } catch (Exception e) {
-                                System.out.println("Error en la indexación.");
-                            }
-                            
+                            SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "repositorio", "bic");
+                            //SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");
+                            //System.out.println("\n\n\n"+next.toString());
+                            sesidx.index(next.toString());
                             numItemsIndexed++;
                         } catch (Exception e) {
-                            System.out.println("Error en el mapeo...");
+                            System.out.println("Error en el mapeo e indexación...");
 
                         }
-
-                        if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
-                            System.out.println("Items Indexed: " + numItemsIndexed);
-                        }
-//                        if (numItemsIndexed == 10) {
-//                            break;
-//                        }
                     }
-                    cursor.close();
-                    System.out.println("Total Items Indexed: " + numItemsIndexed);
-                    System.out.println("Total Items Deleted: " + numItemsDeleted);
-                } catch (Exception e) {
-                    System.out.println("Error al indexar\n");
-                    e.printStackTrace();
+                    if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
+                        System.out.println("Items Indexed: " + numItemsIndexed);
+                    }
+                    //Sólo para pruebas
+//                    if (numItemsIndexed == 10) {
+//                        break;
+//                    }
                 }
+                cursor.close();
+                System.out.println("Total Items Indexed: " + numItemsIndexed);
                 extractorDef.put("status", "FINISHED");
                 extractorDef.put("indexed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
-
             } catch (Exception e) {
-                System.out.println("Error al procesar la Base de Datos");
+                System.out.println("Error al indexar\n");
                 e.printStackTrace();
-                extractorDef.put("processed", numItemsIndexed);
+                extractorDef.put("indexed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
             }
+
         }
     }
 

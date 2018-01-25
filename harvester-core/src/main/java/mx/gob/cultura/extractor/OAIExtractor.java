@@ -28,6 +28,7 @@ import mx.gob.cultura.util.Util;
 import org.json.JSONException;
 import org.semanticwb.datamanager.DataList;
 import org.semanticwb.datamanager.DataObject;
+import org.semanticwb.datamanager.DataObjectIterator;
 import org.semanticwb.datamanager.SWBDataSource;
 import org.semanticwb.datamanager.SWBScriptEngine;
 
@@ -630,12 +631,7 @@ public class OAIExtractor extends ExtractorBase {
             dsExtract.updateObj(extractorDef);
         }
 
-    }
-
-    @Override
-    public void index() throws Exception {
-        System.out.println("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
-
+        System.out.println("\n\n\n>>>>>>>>>> TRANSFORMING <<<<<<<<<<<<<<<<<\n\n\n");
         String idScript = extractorDef.getString("transScript");
         SWBDataSource dsTScript = engine.getDataSource("TransformationScript");
         DataObject doTS = dsTScript.fetchObjById(idScript);
@@ -646,9 +642,7 @@ public class OAIExtractor extends ExtractorBase {
 
         if (null != scriptsrc && scriptsrc.trim().length() > 0 && (getStatus().equals("STOPPED") || getStatus().equals("FINISHED") || getStatus().equals("LOADED"))) {
 
-//            scriptsrc = scriptsrc.replace("&gt;", ">");
-//            scriptsrc = scriptsrc.replace("&lt;", "<");
-            extractorDef.put("status", "INDEXING");
+            extractorDef.put("status", "PROCESSING");
             dsExtract.updateObj(extractorDef);
             ScriptEngine scrptengine = factory.getEngineByName("JavaScript");
             DataObjectScriptEngineMapper mapper = new DataObjectScriptEngineMapper(scrptengine, scriptsrc);
@@ -657,6 +651,7 @@ public class OAIExtractor extends ExtractorBase {
             try {
                 DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
                 DBCollection objects = db.getCollection("fullobjects");
+                SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
 
                 DataObject dobj = null;
 
@@ -682,33 +677,16 @@ public class OAIExtractor extends ExtractorBase {
 
                             //Transformación del DataObject
                             DataObject result = mapper.map(dobj);
-//                            System.out.println("DataObject:\n" + result.toString());
-
                             HashMap<String, String> hmmaptable = Util.loadExtractorMapTable(engine, extractorDef);
-//                            System.out.println("PROPERTIES>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-//                            HashMap<String, String> hm = Util.listProps(result, hmmaptable);
-//                            list = new ArrayList<String>(hm.keySet());
-//                            Collections.sort(list);
-//                            Iterator<String> it2 = list.iterator();
-//                            System.out.println("==========================\n");
-//                            while (it2.hasNext()) {
-//                                String elem = it2.next();
-//                                System.out.println(elem);
-//                            }
-
                             // Mapeo de propiedades definidas en la tabla con los a encontrar en los catálogos 
                             // Se actualizan las propiedades del DataObject
                             if (!hmmaptable.isEmpty()) {
                                 Util.findProps(result, hmmaptable, engine);
                             }
-
-//                            System.out.println("Resultado del Mapeo:....\n"+result);
-//                            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<PROPERTIES");
-                            // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
-                            //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
-                            SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");
-                            //System.out.println("\n\n\n"+next.toString());
-                            sesidx.index(result.toString());
+                            System.out.println("ANtes de agregar el objeto");
+                            result.put("forIndex", true);
+                            DataObject dobjnew = transobjs.addObj(result);
+                            System.out.println("Resultado del Mapeo:....\n" + result);
                             numItemsIndexed++;
                         } catch (Exception e) {
                             System.out.println("Error en el mapeo e indexación...");
@@ -716,27 +694,88 @@ public class OAIExtractor extends ExtractorBase {
                         }
 
                         if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
-                            System.out.println("Items Indexed: " + numItemsIndexed);
+                            System.out.println("Items Transformed: " + numItemsIndexed);
                         }
 
                     }
                     cursor.close();
-                    System.out.println("Total Items Indexed: " + numItemsIndexed);
+                    System.out.println("Total Items Transformed: " + numItemsIndexed);
                     System.out.println("Total Items Deleted: " + numItemsDeleted);
                 } catch (Exception e) {
-                    System.out.println("Error al indexar\n");
+                    System.out.println("Error en la transformación y mapeo\n");
                     e.printStackTrace();
                 }
                 extractorDef.put("status", "FINISHED");
-                extractorDef.put("indexed", numItemsIndexed);
+                extractorDef.put("transformed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
+                
+                //eliminando colección fullobjects
+                objects.drop();
 
             } catch (Exception e) {
                 System.out.println("Error al procesar la Base de Datos");
                 e.printStackTrace();
-                extractorDef.put("processed", numItemsIndexed);
+                extractorDef.put("transformed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
             }
+        }
+
+    }
+
+    @Override
+    public void index() throws Exception {
+        System.out.println("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
+
+        SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
+        long numItemsIndexed = 0;
+
+        if ((getStatus().equals("STOPPED") || getStatus().equals("FINISHED") || getStatus().equals("LOADED"))) {
+
+            extractorDef.put("status", "INDEXING");
+            dsExtract.updateObj(extractorDef);
+
+            try {
+                DataObjectIterator cursor = transobjs.find();
+                while (null != cursor && cursor.hasNext()) {
+                    if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                        break;
+                    }
+                    DataObject next = cursor.next();
+                    if (next.getBoolean("forIndex", true)) {
+                        try {
+                            next.remove("_id");
+                            // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
+                            //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
+                            SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "repositorio", "bic");
+                            //SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");
+                            //System.out.println("\n\n\n"+next.toString());
+                            sesidx.index(next.toString());
+                            numItemsIndexed++;
+                        } catch (Exception e) {
+                            System.out.println("Error en el mapeo e indexación...");
+
+                        }
+                    }
+                    if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
+                        System.out.println("Items Indexed: " + numItemsIndexed);
+                    }
+                    //Sólo para pruebas
+//                    if (numItemsIndexed == 10) {
+//                        break;
+//                    }
+                }
+                cursor.close();
+                System.out.println("Total Items Indexed: " + numItemsIndexed);
+                extractorDef.put("status", "FINISHED");
+                extractorDef.put("indexed", numItemsIndexed);
+                dsExtract.updateObj(extractorDef);
+            } catch (Exception e) {
+                System.out.println("Error al indexar\n");
+                e.printStackTrace();
+                extractorDef.put("indexed", numItemsIndexed);
+                dsExtract.updateObj(extractorDef);
+            }
+
         }
     }
 
