@@ -59,7 +59,4 @@
         z-index: 0 !important;
     }
 
-    .textItem, .selectItemText {
-        box-sizing: unset;
-    }
 </style>
