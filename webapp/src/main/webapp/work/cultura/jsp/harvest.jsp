@@ -125,9 +125,9 @@
                 if (null != pid) {
                     ExtractorManager extMgr = ExtractorManager.getInstance();
                     extMgr.loadExtractor(dobj);
-//System.out.println("dobj: \n"+dobj.toString());
+System.out.println("dobj: \n"+dobj.toString());
                     extMgr.indexExtractor(id);
-//System.out.println("End Indexing...");
+System.out.println("End Indexing...");
                     endTime = System.currentTimeMillis();
 //                    status = extMgr.getStatus(id);
                     dobj = datasource.fetchObjById(id);

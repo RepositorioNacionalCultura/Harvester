@@ -270,3 +270,74 @@ eng.dataSources["Ciudad"] = {
         {name: "replace", title: "Remplazar por", type: "string", required: true}
     ]
 };
+
+eng.dataSources["TransObject"] = {
+    scls: "TransObject",
+    modelid: "Cultura",
+    dataStore: "mongodb",
+    displayField: "name",
+    fields: [
+        {name: "indexCreated", title: "Index Created", type: "string"}, //"indexCreated":"", //campo interno de control, no se expone
+        {name: "indexUpdated", title: "Index Updated", type: "string"}, //"indexUpdated":"", //campo interno de control, no se expone
+        {name: "forIndex", title: "For Index", type: "boolean", defaultValue:true},
+//	"forIndex": true, //campo interno de control, no se expone, será la bandera usada para saber si se indexa
+        {name: "identifier", title: "Identifier", type: "object", multiple:true},
+//	"identifier": [
+//		{
+//			"type": "oai",
+//			"value": "oai:mediateca.inah.gob.mx:archivohistorico_21471",
+//			"preferred": true
+//		},
+//		{
+//			"type": "mediateca",
+//			"value": "48_20130802-094000:65",
+//			"preferred": false
+//		},
+//		{
+//			"type": "mods",
+//			"value": "http://mediateca.inah.gob.mx/islandora_74/islandora/object/archivohistorico%3A21471",
+//			"preferred": false
+//		}
+//	],        
+        {name: "resourcestats", title: "Resource Stats", type: "object"},
+//	"resourcestats": { //campo interno de control, no se expone
+//		"views": 0
+//	},
+	{name: "resourcetype", title: "Resource Type", type: "string", multiple:true},
+        {name: "resourcetitle", title: "Resource Title", type: "object", multiple:true},
+//        "resourcetitle": [ 
+//		{
+//			"type": "main",
+//			"value": "Bando de orden real para que se decomisen las embarcaciones del comercio interior entre las Indias que lleven géneros prohibidos, virrey Martín de Mayorga, México"
+//		}
+//	],
+        {name: "digitalobject", title: "Digital Object", type: "object", multiple:true},
+//	"digitalobject": [
+//		{
+//			"downloads": 0, //campo interno de control, no se expone
+//			"rights": [
+//				{
+//					"type": "useAndReproduction",
+//					"url": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/",
+//					"rightstitle": "Creative Commons (by-nc-nd)",
+//					"description": "",
+//					"holder": "Archivo Municipal de Taxco"
+//				}
+//			],
+//			"digitalobjecttitle": [
+//				"Bando de orden real para que se decomisen las embarcaciones del comercio interior entre las Indias que lleven géneros prohibidos, virrey Martín de Mayorga, México"
+//			],
+//			"url": "http://mediateca.inah.gob.mx/repositorio/islandora/object/archivohistorico:21471/datastream/OBJ/download",
+//			"mediatype": {
+//				"name": "Documento PDF",
+//				"mime": "application/pdf"
+//			}
+//		}
+//	],        
+        {name: "rights", title: "Rights", type: "object", multiple:true}, // {"type": "useAndReproduction","url": "http://creativecommons.org/licenses/by-nc-nd/2.5/mx/","rightstitle": "Creative Commons (by-nc-nd)","description": "","holder": "Archivo Municipal de Taxco"}
+        {name: "creator", title: "Creator", type: "string", multiple:true},
+        {name: "datecreated", title: "Date Created", type: "object"}, //{"format": "w3cdtf","value": "1781-03-13"}
+        {name: "periodcreated", title: "Period Created", type: "object"}, // {name": "","datestart": {"format": "","value": "1773"},"dateend": {"format": "","value": "1781"}}
+        {name: "holder", title: "Holder", type: "string"},
+    ]
+};
