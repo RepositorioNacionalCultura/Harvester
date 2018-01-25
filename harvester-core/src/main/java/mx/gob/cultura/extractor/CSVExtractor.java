@@ -422,8 +422,8 @@ public class CSVExtractor extends ExtractorBase {
                             next.remove("_id");
                             // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
                             //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
-                            SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "repositorio", "bic");
-                            //SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");
+                            //SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "repositorio", "bic");
+                            SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");
                             //System.out.println("\n\n\n"+next.toString());
                             sesidx.index(next.toString());
                             numItemsIndexed++;
