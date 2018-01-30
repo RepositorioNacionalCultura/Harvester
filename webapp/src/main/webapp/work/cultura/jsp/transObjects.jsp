@@ -127,14 +127,38 @@
                                     while (res.hasNext()) {
                                         DataObject dotmp = res.next();
                                         //buscar el id con prefered=true
-                                        String tmpId = dotmp.getDataList("identifier").getDataObject(0).getString("value");
+                                        String tmpId = null;
+                                        try {
+                                            tmpId = dotmp.getDataList("identifier").getDataObject(0).getString("value");
+                                        } catch (Exception e) {
+                                            tmpId = dotmp.getString("identifier");
+                                            //System.out.println("No identifier");
+                                        }
                                         //revisar si tiene título
                                         String tmpTitle = "No disponible";
                                         try {
-                                            tmpTitle = dotmp.getDataList("title").getDataObject(0).getString("value");
+                                            if(!dotmp.getDataList("title").isEmpty()){
+                                                tmpTitle = dotmp.getDataList("title").getDataObject(0).getString("value","NO TITLE AVAILABLE");
+                                            } else {
+                                                tmpTitle = "NO TITLE AVAILABLE";
+                                                
+                                            }
                                         } catch (Exception e) {
+                                            tmpTitle = dotmp.getString("title");
+                                            //System.out.println("No title");
                                         }
-                                        String tipos = "";//doItems.getDataList("type").toString();
+                                        String tipos = dotmp.get("type").toString();
+                                        try {
+                                            if(!dotmp.getDataList("type").isEmpty()){
+                                                tipos = dotmp.getDataList("title").getDataObject(0).getString("value","NO TYPE AVAILABLE");
+                                            } else {
+                                                tipos = "NO TYPE AVAILABLE";
+                                                
+                                            }
+                                        } catch (Exception e) {
+                                            tipos = dotmp.get("type").toString();
+                                            //System.out.println("No title");
+                                        }
                                         numItem++;
                                 %>
                                 <tr>
