@@ -308,7 +308,7 @@ public class CSVExtractor extends ExtractorBase {
                                 System.out.println("Antes de agregar el objeto");
                                 result.put("forIndex", true);
                                 DataObject dobjnew = transobjs.addObj(result);
-                                System.out.println("Resultado del Mapeo:....\n" + result);
+                                //System.out.println("Resultado del Mapeo:....\n" + result);
                                 numItemsIndexed++;
                             } catch (Exception e) {
                                 System.out.println("Error en el mapeo...");
