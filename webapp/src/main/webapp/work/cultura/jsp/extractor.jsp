@@ -35,8 +35,6 @@
     String str_script = "";
 
     if (dobj != null) {
-        //str_script = dobj.getString("script", "");
-        //str_script = "<pre><code>" + str_script + "</pre></code>";
 
         String clase = dobj.getString("class", null);
         if (clase != null && clase.equals("CSVExtractor")) {
@@ -47,7 +45,6 @@
         }
 
     }
-//System.out.println("SCRIPT:"+str_script);
 %>
 <!DOCTYPE html>
 <html>
@@ -215,7 +212,7 @@
                         <%if (!isFile) {%>
                         form.buttons.addMember(isc.IButton.create(
                                 {
-                                    title: "Procesar",
+                                    title: "Transformar",
                                     padding: "10px",
                                     click: function (p1) {
                                         window.location = "/cultura/harvest?_id=<%=pid%>&act=PROCESS";
@@ -223,6 +220,15 @@
                                     }
                                 }));
                         <%}%>
+                        form.buttons.addMember(isc.IButton.create(
+                                {
+                                    title: "Revisar",
+                                    padding: "10px",
+                                    click: function (p1) {
+                                        window.location = "/cultura/transObjects?_id=<%=pid%>";
+                                        return false;
+                                    }
+                                }));
                         form.buttons.addMember(isc.IButton.create(
                                 {
                                     title: "Indexar",
