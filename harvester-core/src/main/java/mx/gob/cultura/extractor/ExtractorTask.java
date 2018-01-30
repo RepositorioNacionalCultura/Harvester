@@ -34,7 +34,7 @@ public class ExtractorTask extends TimerTask {
             //System.out.println("key----"+next);
             Extractor extractor = ExtractorManager.hmExtractor.get(next);
             if(null!=extractor){
-                System.out.println("Extractor "+extractor.getName()+" Status:"+extractor.getStatus()+")");
+                System.out.println("Extractor "+extractor.getName()+" Status:("+extractor.getStatus()+")");
             } else {
                 System.out.println("Extractor NULL===("+(extractor==null?"TRUE":"FALSE")+")");
             }

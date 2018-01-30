@@ -18,7 +18,6 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import mx.gob.cultura.indexer.SimpleESIndexer;
