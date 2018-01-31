@@ -126,6 +126,7 @@
                                 <%                                int numItem = numpage * 50;
                                     while (res.hasNext()) {
                                         DataObject dotmp = res.next();
+                                        String mymodalid = dotmp.getId();
                                         //buscar el id con prefered=true
                                         String tmpId = null;
                                         try {
@@ -147,6 +148,10 @@
                                             tmpTitle = dotmp.getString("title");
                                             //System.out.println("No title");
                                         }
+                                        //revisar si tiene descripción
+                                        String tmpDescrip = dotmp.getString("description","NO DESCRIPTION AVAILABLE");
+                                        String tmpDigital = dotmp.getString("digitalObject","NO DIGITAL OBJECT FOUND");
+
                                         String tipos = dotmp.get("type").toString();
                                         try {
                                             if(!dotmp.getDataList("type").isEmpty()){
@@ -159,11 +164,56 @@
                                             tipos = dotmp.get("type").toString();
                                             //System.out.println("No title");
                                         }
+                                        
+                                        String rights = dotmp.getString("rights","NO RIGHTS FOUND");
+                                        
+                                        String autor = dotmp.getString("creator","NO AUTHOR FOUND");
+                                        
+                                        String datecreated = dotmp.getString("datecreated", "NO CREATION DATE FOUND");
+                                        
+                                        String periodcreated = dotmp.getString("periodcreated","NO CREATION PERIOD FOUND");
+                                        
+                                        String holder = dotmp.getString("holder","NO HOLDER FOUND");
+
                                         numItem++;
                                 %>
                                 <tr>
                                     <th scope="row" data-toggle="tooltip" title="<%=tmpId%>"><%=numItem%></th>
-                                    <td><%=tmpTitle%></td>
+                                    <td data-toggle="modal" data-target="#myModal<%=mymodalid%>"><%=tmpTitle%>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="myModal<%=mymodalid%>" role="dialog">
+                                          <div class="modal-dialog modal-lg">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                  <h4 class="modal-title">Información</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                
+                                              </div>
+                                              <div class="modal-body">
+                                                  <table class="table table-sm">
+                                                      <tr><th scope="row">ID</th><td><%=tmpId%></td></tr>
+                                                      <tr><th scope="row">TITULO</th><td><%=tmpTitle%></td></tr>
+                                                      <tr><th scope="row">DESCRIPCIÓN</th><td><%=tmpDescrip%></td></tr>
+                                                      <tr><th scope="row">OBJETO DIGITAL</th><td><%=tmpDigital%></td></tr>
+                                                      <tr><th scope="row">TIPO</th><td><%=tipos%></td></tr>
+                                                      
+                                                      <tr><th scope="row">DERECHOS</th><td><%=rights%></td></tr>
+                                                      <tr><th scope="row">AUTOR</th><td><%=autor%></td></tr>
+                                                      <tr><th scope="row">FECHA</th><td><%=datecreated%></td></tr>
+                                                      <tr><th scope="row">PERIODO</th><td><%=periodcreated%></td></tr>
+                                                      <tr><th scope="row">HOLDER</th><td><%=holder%></td></tr>
+
+                                                  </table>
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>                                 
+                                    </td>
                                     <td><%=tipos%></td>
                                     <td><input type="checkbox" name="items" class="tobj" value="<%=dotmp.getId()%>" <%=dotmp.getBoolean("forIndex", false) ? "checked" : ""%>> </td>
                                 </tr>
