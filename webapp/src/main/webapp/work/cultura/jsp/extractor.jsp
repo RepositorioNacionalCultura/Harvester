@@ -48,21 +48,44 @@
 %>
 <!DOCTYPE html>
 <html>
-    <head>
-        <jsp:include page="../../templates/metas.jsp" flush="true"></jsp:include>
-            <title>Repositorio Digital del Patrimonio Nacional de Cultura - Extractor</title>
-        </head>
-        <body class="animated fadeIn">
-        <jsp:include page="../../templates/topnav.jsp" flush="true">
+<head>
+    <jsp:include page="../../templates/metas.jsp" flush="true"></jsp:include>
+    <title>Repositorio Digital del Patrimonio Nacional de Cultura - Extractor</title>
+</head>
+<body class="animated fadeIn">
+<jsp:include page="../../templates/topnav.jsp" flush="true">
+    <jsp:param name="activeItem" value="extractors" />
+</jsp:include>
+<div class="container-fluid">
+    <div class="row">
+        <jsp:include page="../../templates/sidenav.jsp" flush="true">
             <jsp:param name="activeItem" value="extractors" />
         </jsp:include>
-        <div class="container-fluid">
+        <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
             <div class="row">
-                <jsp:include page="../../templates/sidenav.jsp" flush="true">
-                    <jsp:param name="activeItem" value="extractors" />
-                </jsp:include>
-                <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+                <div class="col-sm-12">
                     <h3>Extractor</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="btn-toolbar float-right" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                            <button id="saveBtn" class="btn btn-primary" data-toggle="tooltip" title="Guardar"><i class="fas fa-save"></i></button>
+                            <button id="harvestBtn" class="btn btn-primary" data-toggle="tooltip" title="Cosechar"><i class="fas fa-play"></i></button>
+                            <button id="refreshtBtn" class="btn btn-primary" data-toggle="tooltip" title="Actualizar"><i class="fas fa-sync-alt"></i></button>
+                            <button id="replaceBtn" class="btn btn-primary" data-toggle="tooltip" title="Reemplazar"><i class="fas fa-exchange-alt"></i></button>
+                            <button id="transformBtn" class="btn btn-primary" data-toggle="tooltip" title="Transformar"><i class="fas fa-cogs"></i></button>
+                            <button id="reviewBtn" class="btn btn-primary" data-toggle="tooltip" title="Revisar"><i class="fas fa-eye"></i></button>
+                            <button id="indexBtn" class="btn btn-primary" data-toggle="tooltip" title="Indexar"><i class="fas fa-database"></i></button>
+                            <button id="stopBtn" class="btn btn-primary" data-toggle="tooltip" title="Detener"><i class="fas fa-stop"></i></button>
+                            <button id="backBtn" class="btn btn-primary" data-toggle="tooltip" title="Regresar"><i class="fas fa-reply"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
                     <script type="text/javascript">
                         eng.initPlatform("datasources.js", false);
                         var form = eng.createForm({
@@ -72,7 +95,7 @@
                             canPrint: false,
                             numCols: 6,
                             titleOrientation: "top",
-                            title: "Extractor",
+                            title: "Configuración",
                             fields: [
                                 {name: "name", title: "Nombre/Modelo", type: "string", required:true, colSpan: 3, width: "100%"},
                                 {name: "class", title: "Extractor a utilizar", type: "select", valueMap: {"OAIExtractor": "OAIExtractor", "CSVExtractor": "CSVExtractor"}, endRow: true,
@@ -123,11 +146,11 @@
                                         var indice = 7;
                                         if(form.getValue("class")==="CSVExtractor"){
                                             indice = 5;
-                                            } 
+                                        }
                                         if (mostrar) {
                                             form.showField("interval");
                                             form.fields[indice].showIf = true;
-                                            form.fields[indice].required = true;                                            
+                                            form.fields[indice].required = true;
                                         } else {
                                             form.hideField("interval");
                                             form.fields[indice].showIf = false;
@@ -137,7 +160,7 @@
                                 },
                                 {name: "interval", title: "Intervalo de tiempo (días)", type: "int", colSpan: 2, width: "100%", endRow: true, <%=!havePeriodicity ? "showIf:\"false\"" : ""%>},
 
-                        <%if (id != null) {%>
+                                <%if (id != null) {%>
 
                                 {name: "status", title: "Estatus", type: "select", valueMap: {"LOADED": "LOADED", "STARTED": "STARTED", "EXTRACTING": "EXTRACTING", "STOPPED": "STOPPED", "FAILLOAD": "FAIL LOAD", "ABORTED": "ABORTED"}, defaultValue: "STOPPED", canEdit: false, startRow:true}, //STARTED | EXTRACTING | STOPPED
                                 {name: "created", title: "Fecha creación", type: "string", canEdit: false},
@@ -151,7 +174,7 @@
                                 {name: "pfxActual", title: "Prefijo actual", type: "string"},
                                 //                    {name: "script", title: "Script de transformación", startRow: true, type: "textArea", width: "100%", height: "400", colSpan: 5},
 
-                        <%}%>
+                                <%}%>
                             ],
                             links: [
                                 {name: "transScript",
@@ -182,111 +205,73 @@
                             ]
                         }, <%=id%>, "Extractor");
                         <%if (id != null) {%>
-                        form.buttons.addMember(isc.IButton.create(
-                                {
-                                    title: "Cosechar",
-                                    padding: "10px",
-                                    click: function (p1) {
-                                        window.location = "/cultura/harvest?_id=<%=pid%>&act=EXTRACT";
-                                        return false;
-                                    }
-                                }));
-                        form.buttons.addMember(isc.IButton.create(
-                                {
-                                    title: "Actualizar",
-                                    padding: "10px",
-                                    click: function (p1) {
-                                        window.location = "/cultura/harvest?_id=<%=pid%>&act=UPDATE";
-                                        return false;
-                                    }
-                                }));
-                        form.buttons.addMember(isc.IButton.create(
-                                {
-                                    title: "Reemplazar",
-                                    padding: "10px",
-                                    click: function (p1) {
-                                        window.location = "/cultura/harvest?_id=<%=pid%>&act=REPLACE";
-                                        return false;
-                                    }
-                                }));
+
+                        $("#harvestBtn").on("click", function(event) {
+                            window.location = "/cultura/harvest?_id=<%=pid%>&act=EXTRACT";
+                            return false;
+                        });
+                        $("#refreshBtn").on("click", function(event) {
+                            window.location = "/cultura/harvest?_id=<%=pid%>&act=UPDATE";
+                            return false;
+                        });
+                        $("#replaceBtn").on("click", function(event) {
+                            window.location = "/cultura/harvest?_id=<%=pid%>&act=REPLACE";
+                            return false;
+                        });
                         <%if (!isFile) {%>
-                        form.buttons.addMember(isc.IButton.create(
-                                {
-                                    title: "Transformar",
-                                    padding: "10px",
-                                    click: function (p1) {
-                                        window.location = "/cultura/harvest?_id=<%=pid%>&act=PROCESS";
-                                        return false;
-                                    }
-                                }));
+                        $("#transformBtn").on("click", function(event) {
+                            window.location = "/cultura/harvest?_id=<%=pid%>&act=PROCESS";
+                            return false;
+                        });
                         <%}%>
-                        form.buttons.addMember(isc.IButton.create(
-                                {
-                                    title: "Revisar",
-                                    padding: "10px",
-                                    click: function (p1) {
-                                        window.location = "/cultura/transObjects?_id=<%=pid%>";
-                                        return false;
-                                    }
-                                }));
-                        form.buttons.addMember(isc.IButton.create(
-                                {
-                                    title: "Indexar",
-                                    padding: "10px",
-                                    click: function (p1) {
-                                        window.location = "/cultura/harvest?_id=<%=pid%>&act=INDEX";
-                                        return false;
-                                    }
-                                }));
-                        form.buttons.addMember(isc.IButton.create(
-                                {
-                                    title: "Detener",
-                                    padding: "10px",
-                                    click: function (p1) {
-                                        window.location = "/cultura/harvest?_id=<%=pid%>&act=STOP";
-                                        return false;
-                                    }
-                                }));
-                        <%}%>
-                        form.submitButton.setTitle("Guardar");
-                        <%if (id == null) {%>
-                        form.submitButton.click = function(event) {
-                            
-                            eng.submit(event.target.form, this, 
-                                function(request) {
-                                    isc.say("Datos enviados correctamente...", function(success){
-                                        if(success) {
-                                            //isc.say('Notificación enviada. Gracias!');
-                                            window.location.href = '/cultura/extractor?_id='+request.data_id;
-                                            return false;
-                                        }else{
-                                            isc.say('No pudo guardarse la información del extractor. Contacte con el Administrador.');
-                                        }
-                                    });
-                                }
-                            );
-                        };
-                        <%}%>
+                        $("#reviewBtn").on("click", function(event) {
+                            window.location = "/cultura/transObjects?_id=<%=pid%>";
+                            return false;
+                        });
 
-                        form.buttons.addMember(isc.IButton.create(
-                                {
-                                    title: "Regresar",
-                                    padding: "10px",
-                                    click: function (p1) {
-                                        window.location = "/cultura/extractors";
-                                        return false;
-                                    }
-                                }));
+                        $("#indexBtn").on("click", function(event) {
+                            window.location = "/cultura/harvest?_id=<%=pid%>&act=INDEX";
+                            return false;
+                        });
 
+                        $("#stopBtn").on("click", function(event) {
+                            window.location = "/cultura/harvest?_id=<%=pid%>&act=STOP";
+                            return false;
+                        });
+                        <%}%>
 
                         <%if (id == null) {%>
-                        form.tabs.getTab(1).disable();
-                        form.tabs.getTab(2).disable();
+                            $("#saveBtn").on("click", function(event) {
+                                form.submit(
+                                    function(request) {
+                                        isc.say("Datos enviados correctamente...", function(success){
+                                            if(success) {
+                                                window.location.href = '/cultura/extractor?_id='+request.data_id;
+                                                return false;
+                                            }else{
+                                                isc.say('No pudo guardarse la información del extractor. Contacte con el Administrador.');
+                                            }
+                                        });
+                                    }
+                                );
+                            });
                         <%}%>
-                    </script>         
-                </main>
+
+                        $("#backBtn").on("click", function(event){
+                            window.location = "/cultura/extractors";
+                            return false;
+                        });
+
+                        <%if (id == null) {%>
+                            form.tabs.getTab(1).disable();
+                            form.tabs.getTab(2).disable();
+                        <%}%>
+                    </script>
+                </div>
             </div>
-        </div>
-        <jsp:include page="../../templates/bodyscripts.jsp" flush="true"></jsp:include>
-    </body>
+        </main>
+    </div>
+</div>
+<jsp:include page="../../templates/bodyscripts.jsp" flush="true"></jsp:include>
+</body>
 </html>
