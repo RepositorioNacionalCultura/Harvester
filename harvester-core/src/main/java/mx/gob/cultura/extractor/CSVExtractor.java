@@ -119,7 +119,7 @@ public class CSVExtractor extends ExtractorBase {
 
         //2017-12-01T13:05:00.000
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        //DataObject do_extrac = null;
+        
         String ext_name = null;
         String ext_coll = null;
         String ext_url = null;
@@ -191,7 +191,6 @@ public class CSVExtractor extends ExtractorBase {
                 extractorDef.put("lastExecution", sdf.format(new Date()));
 
                 dsExtract.updateObj(extractorDef);
-                ExtractorManager.hmExtractorDef.put(pid, extractorDef);
                 HashMap<String, String> hm = Util.loadOccurrences(engine);
                 int r = 0;
                 ArrayList<String> arr = new ArrayList();
@@ -200,7 +199,7 @@ public class CSVExtractor extends ExtractorBase {
                     extractorDef.put("status", "EXTRACTING");
                     extracting = true;
                     dsExtract.updateObj(extractorDef);
-                    ExtractorManager.hmExtractorDef.put(pid, extractorDef);
+
 
                     //arreglo con el nombre de las columnas
                     if (r == 0) {
@@ -252,7 +251,7 @@ public class CSVExtractor extends ExtractorBase {
                 extractorDef.put("harvestered", r);
                 extractorDef.put("processed", r);
                 dsExtract.updateObj(extractorDef);
-                ExtractorManager.hmExtractorDef.put(pid, extractorDef);
+
                 System.out.println("Finalizando extracción..." + ext_name.toUpperCase() + " ==> Extracted(" + r + ")");
             }
 
@@ -305,7 +304,7 @@ public class CSVExtractor extends ExtractorBase {
                                 if (!hmmaptable.isEmpty()) {
                                     Util.findProps(result, hmmaptable, engine);
                                 }
-                                System.out.println("Antes de agregar el objeto");
+                                //System.out.println("Antes de agregar el objeto");
                                 result.put("forIndex", true);
                                 DataObject dobjnew = transobjs.addObj(result);
                                 //System.out.println("Resultado del Mapeo:....\n" + result);
