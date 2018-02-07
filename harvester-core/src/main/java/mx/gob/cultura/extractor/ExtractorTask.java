@@ -33,6 +33,7 @@ public class ExtractorTask extends TimerTask {
             String next = it.next();
             //System.out.println("key----"+next);
             Extractor extractor = ExtractorManager.hmExtractor.get(next);
+            
             if(null!=extractor){
                 System.out.println("Extractor "+extractor.getName()+" Status:("+extractor.getStatus()+")");
             } else {
@@ -41,7 +42,7 @@ public class ExtractorTask extends TimerTask {
             System.out.println("\n=============================================");
             if (null!=extractor && (extractor.getStatus().equals("LOADED")|| extractor.getStatus().equals("STOPPED"))) {
                 try {
-                    DataObject dobj = ExtractorManager.hmExtractorDef.get(next);
+                    DataObject dobj = extractor.getDefinitionObject();
                     Date now = new Date();
                     // Revisando si tiene periodicidad
                     boolean hasPeriodicity = false;

@@ -108,7 +108,7 @@ public class OAIExtractor extends ExtractorBase {
     @Override
     public String getType() {
 
-        String ret = extractorDef.getString("");
+        String ret = extractorDef.getString("OAIExtractor");
         return ret;
     }
 
@@ -116,6 +116,7 @@ public class OAIExtractor extends ExtractorBase {
     public void extract() throws Exception {
 
         System.out.println("\n\n\n>>>>>>>>>>>> EXTRACTING <<<<<<<<<<<<<<\n\n\n");
+        System.out.println("DO Extract:"+extractorDef);
 
         //2017-12-01T13:05:00.000
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -166,7 +167,7 @@ public class OAIExtractor extends ExtractorBase {
                 ext_script = extractorDef.getString("script");
                 ext_verbs = extractorDef.getString("verbs");
                 DataList dlpfx = extractorDef.getDataList("prefix");
-//                System.out.println("num items:" + dlpfx.size());
+                System.out.println("num items:" + dlpfx.size());
                 ext_prefix = new String[dlpfx.size()];
                 for (int i = 0; i < dlpfx.size(); i++) {
                     ext_prefix[i] = dlpfx.getString(i);
@@ -206,7 +207,6 @@ public class OAIExtractor extends ExtractorBase {
 
                 extractorDef.put("status", "STARTED");
                 dsExtract.updateObj(extractorDef);
-                ExtractorManager.hmExtractorDef.put(pid, extractorDef);
 
                 DB db = ExtractorManager.client.getDB(ext_name.toUpperCase());
 
@@ -233,7 +233,7 @@ public class OAIExtractor extends ExtractorBase {
                             if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
                                 break;
                             }
-//                            System.out.println("\n\nEmpezando con:...." + pfx);
+                            System.out.println("\n\nEmpezando con:...." + pfx);
                             // creando la colección por prefijo
                             DBCollection objects = db.getCollection(pfx);
                             objects.createIndex("oaiid");
@@ -278,7 +278,7 @@ public class OAIExtractor extends ExtractorBase {
                                         tknFound = true;
                                     }
 
-                                    JSONObject json = XML.toJSONObject(jsonstr);
+                                    JSONObject json = XML.toJSONObject(jsonstr,true);
                                     //System.out.println("\n\n\nJSON:" + json.toString());
                                     JSONObject jsonroot = json.getJSONObject("OAI-PMH");
 
@@ -342,7 +342,6 @@ public class OAIExtractor extends ExtractorBase {
                                     extractorDef.put("rows2Processed", listSize);
                                     extractorDef.put("processed", 0);
                                     dsExtract.updateObj(extractorDef);
-                                    ExtractorManager.hmExtractorDef.put(pid, extractorDef);
 
                                     if (listSize > (numextract + numalready)) {
 
@@ -389,7 +388,7 @@ public class OAIExtractor extends ExtractorBase {
                                     }
                                     extractorDef.put("harvestered", numextract);
                                     dsExtract.updateObj(extractorDef);
-                                    ExtractorManager.hmExtractorDef.put(pid, extractorDef);
+
                                 } catch (JSONException jex) {
                                     Thread.sleep(5000);
                                     retries++;
@@ -423,7 +422,6 @@ public class OAIExtractor extends ExtractorBase {
                             }
                             extractorDef.put("pfxExtracted", ext_pfxExtracted);
                             dsExtract.updateObj(extractorDef);
-                            ExtractorManager.hmExtractorDef.put(pid, extractorDef);
                             ExtractorManager.getInstance().loadExtractor(extractorDef);
                             System.out.println("Finalizando extracción..." + ext_name.toUpperCase() + " ==> Extracted(" + numextract + "), EXISTING(" + numalready + ")");
                             numextract = 0;
@@ -445,7 +443,6 @@ public class OAIExtractor extends ExtractorBase {
                         extractorDef.put("tokenValue", null);
                         extractorDef.put("pfxActual", null);
                         dsExtract.updateObj(extractorDef);
-                        ExtractorManager.hmExtractorDef.put(pid, extractorDef);
                         ExtractorManager.getInstance().loadExtractor(extractorDef);
                     } catch (Exception e) {
                         System.out.println("Error extracción de metadatos");
@@ -683,10 +680,10 @@ public class OAIExtractor extends ExtractorBase {
                             if (!hmmaptable.isEmpty()) {
                                 Util.findProps(result, hmmaptable, engine);
                             }
-                            System.out.println("ANtes de agregar el objeto");
+                            //System.out.println("Antes de agregar el objeto");
                             result.put("forIndex", true);
                             DataObject dobjnew = transobjs.addObj(result);
-                            System.out.println("Resultado del Mapeo:....\n" + result);
+                            //System.out.println("Resultado del Mapeo:....\n" + result);
                             numItemsIndexed++;
                         } catch (Exception e) {
                             System.out.println("Error en el mapeo e indexación...");

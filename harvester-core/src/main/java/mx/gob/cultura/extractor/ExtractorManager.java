@@ -25,7 +25,7 @@ import org.semanticwb.datamanager.SWBScriptEngine;
 public class ExtractorManager {
 
     protected static HashMap<String, Extractor> hmExtractor = new HashMap(); //id del DataObject, instancia del extractor
-    protected static HashMap<String, DataObject> hmExtractorDef = new HashMap(); //id del DataObject, DataObject de la definición del extractor
+    //protected static HashMap<String, DataObject> hmExtractorDef = new HashMap(); //id del DataObject, DataObject de la definición del extractor
     protected static SWBDataSource datasource = null;
     private static SWBScriptEngine engine = null;
     private static ExtractorManager instance = null; //  Instancia del ExtractorManager
@@ -80,7 +80,7 @@ public class ExtractorManager {
                         }
                     }
                     hmExtractor.put(key, extractor);
-                    hmExtractorDef.put(key, dobj);
+//                    hmExtractorDef.put(key, dobj);
                 }
             }
         } catch (Exception e) {
@@ -102,6 +102,7 @@ public class ExtractorManager {
     public void loadExtractor(DataObject extractorConfig) {
 
         if (null != extractorConfig) {
+            System.out.println("Revisando estatus del extractor.....");
             String className = extractorConfig.getString("class");
             Extractor extractor = hmExtractor.get(extractorConfig.getId());
             String status = null;
@@ -114,7 +115,7 @@ public class ExtractorManager {
                 }
                  System.out.println("LOADEXTRACTOR..."+status);
                 if (null == status && status.equals("EXTRACTING")) {
-                    while(status.equals("EXTRACTING")){ //Esperando a que termine el extractor
+                    while(status.equals("EXTRACTING")||status.equals("PROCESSING")||status.equals("INDEXING")){ //Esperando a que termine el extractor
                         try {
                             // el extractor tiene el status de EXTRACTING, se espera 2 segundos  a que termine y se verifica el status
                             Thread.sleep(2000);
@@ -130,17 +131,18 @@ public class ExtractorManager {
                     }
                 }
             }
-
-            if (null != status && (status.equals("STARTED") || status.equals("STOPPED")) || null == extractor) {
+            extractor=null;
+            if (null != status && (status.equals("STOPPED") || status.equals("ABORT")|| status.equals("FINISHED")) || null == extractor) {
                 if (null != className) { // Generando la nueva instancia del extractor
                     if (className.endsWith("CSVExtractor")) {
                         extractor = new CSVExtractor(extractorConfig.getId(),engine);
                     } else if (className.endsWith("OAIExtractor")) {
                         extractor = new OAIExtractor(extractorConfig.getId(),engine);
                     }
+                    hmExtractor.put(extractorConfig.getId(), extractor);  // actualizando instancia del extractor en el HashMap
+//                    hmExtractorDef.put(extractorConfig.getId(), extractorConfig);  // actualizando configuración del extractor en el HashMap
                 }
-                hmExtractor.put(extractorConfig.getId(), extractor);  // actualizando instancia del extractor en el HashMap
-                hmExtractorDef.put(extractorConfig.getId(), extractorConfig);  // actualizando configuración del extractor en el HashMap
+               
             }
         }
     }
