@@ -32,7 +32,7 @@
                             left: "0",
                             margin: "10px",
                             width: "80%",
-                            height: 200,
+                            height: "80%",
                             canEdit: false,
                             canRemove: false,
                             canAdd: true,

@@ -350,7 +350,6 @@ public final class Util {
                 con.setRequestMethod("GET");
 
                 int statusCode = con.getResponseCode();
-
                 if (statusCode == 200) {
                     try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
                         String inputLine;

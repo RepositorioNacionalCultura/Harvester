@@ -73,8 +73,8 @@
                         <div class="btn-group mr-2" role="group" aria-label="First group">
                             <button id="saveBtn" class="btn btn-primary" data-toggle="tooltip" title="Guardar"><i class="fas fa-save"></i></button>
                             <button id="harvestBtn" class="btn btn-primary" data-toggle="tooltip" title="Cosechar"><i class="fas fa-play"></i></button>
-                            <button id="refreshtBtn" class="btn btn-primary" data-toggle="tooltip" title="Actualizar"><i class="fas fa-sync-alt"></i></button>
-                            <button id="replaceBtn" class="btn btn-primary" data-toggle="tooltip" title="Reemplazar"><i class="fas fa-exchange-alt"></i></button>
+                            <!--button id="refreshtBtn" class="btn btn-primary" data-toggle="tooltip" title="Actualizar"><i class="fas fa-sync-alt"></i></button-->
+                            <!--button id="replaceBtn" class="btn btn-primary" data-toggle="tooltip" title="Reemplazar"><i class="fas fa-exchange-alt"></i></button-->
                             <button id="transformBtn" class="btn btn-primary" data-toggle="tooltip" title="Transformar"><i class="fas fa-cogs"></i></button>
                             <button id="reviewBtn" class="btn btn-primary" data-toggle="tooltip" title="Revisar"><i class="fas fa-eye"></i></button>
                             <button id="indexBtn" class="btn btn-primary" data-toggle="tooltip" title="Indexar"><i class="fas fa-database"></i></button>
@@ -204,20 +204,23 @@
                                 },
                             ]
                         }, <%=id%>, "Extractor");
+                        //Hide save button
+                        form.buttons.removeMember(0);
+
                         <%if (id != null) {%>
 
                         $("#harvestBtn").on("click", function(event) {
                             window.location = "/cultura/harvest?_id=<%=pid%>&act=EXTRACT";
                             return false;
                         });
-                        $("#refreshBtn").on("click", function(event) {
+                        /*$("#refreshBtn").on("click", function(event) {
                             window.location = "/cultura/harvest?_id=<%=pid%>&act=UPDATE";
                             return false;
                         });
                         $("#replaceBtn").on("click", function(event) {
                             window.location = "/cultura/harvest?_id=<%=pid%>&act=REPLACE";
                             return false;
-                        });
+                        });*/
                         <%if (!isFile) {%>
                         $("#transformBtn").on("click", function(event) {
                             window.location = "/cultura/harvest?_id=<%=pid%>&act=PROCESS";
@@ -240,13 +243,14 @@
                         });
                         <%}%>
 
-                        <%if (id == null) {%>
+
                             $("#saveBtn").on("click", function(event) {
                                 form.submit(
-                                    function(request) {
-                                        isc.say("Datos enviados correctamente...", function(success){
+                                    function(response) {
+                                        console.log(response);
+                                        isc.say("Datos enviados correctamente...", function(success) {
                                             if(success) {
-                                                window.location.href = '/cultura/extractor?_id='+request.data_id;
+                                                window.location.href = '/cultura/extractor?_id='+response.data[0]._id;
                                                 return false;
                                             }else{
                                                 isc.say('No pudo guardarse la información del extractor. Contacte con el Administrador.');
@@ -255,7 +259,7 @@
                                     }
                                 );
                             });
-                        <%}%>
+
 
                         $("#backBtn").on("click", function(event){
                             window.location = "/cultura/extractors";
