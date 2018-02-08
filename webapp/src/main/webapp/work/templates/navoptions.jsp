@@ -3,6 +3,9 @@
     String active = request.getParameter("activeItem");
 %>
 <li class="nav-item">
+    <a class="nav-link <%= "vocabularies".equals(active) ? "active": "" %>" href="/cultura/vocabularies"><i class="fas fa-comment-alt fa-fw"></i>&nbsp;Vocabularios <span class="sr-only"></span></a>
+</li>
+<li class="nav-item">
     <a class="nav-link <%= "catalogs".equals(active) ? "active": "" %>" href="/cultura/catalogs"><i class="fas fa-th-list fa-fw"></i>&nbsp;Catálogos <span class="sr-only">(current)</span></a>
 </li>
 <li class="nav-item">

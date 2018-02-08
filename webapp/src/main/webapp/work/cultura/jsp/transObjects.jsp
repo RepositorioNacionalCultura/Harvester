@@ -152,7 +152,10 @@
                                         String tmpDescrip = dotmp.getString("description","NO DESCRIPTION AVAILABLE");
                                         String tmpDigital = dotmp.getString("digitalObject","NO DIGITAL OBJECT FOUND");
 
-                                        String tipos = dotmp.get("type").toString();
+                                        String tipos = "";
+                                        if (null != dotmp.get("type")) {
+                                            tipos = dotmp.get("type").toString();
+                                        }
                                         try {
                                             if(!dotmp.getDataList("type").isEmpty()){
                                                 tipos = dotmp.getDataList("title").getDataObject(0).getString("value","NO TYPE AVAILABLE");
@@ -161,7 +164,9 @@
                                                 
                                             }
                                         } catch (Exception e) {
-                                            tipos = dotmp.get("type").toString();
+                                            if (null != dotmp.get("type")) {
+                                                tipos = dotmp.get("type").toString();
+                                            }
                                             //System.out.println("No title");
                                         }
                                         
