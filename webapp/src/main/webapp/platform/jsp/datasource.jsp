@@ -169,7 +169,8 @@
                     if(resp!=null)resp.put("queueStatus", resp.getInt("status"));
                     ret.add(r);
             }
-            out.print("<SCRIPT>//'\"]]>>isc_JSONResponseStart>>"+ret+"//isc_JSONResponseEnd");
+            //out.print("<SCRIPT>//'\"]]>>isc_JSONResponseStart>>"+ret+"//isc_JSONResponseEnd");
+            out.print(ret);
             //System.out.println("out:"+ret);
         }else
         {

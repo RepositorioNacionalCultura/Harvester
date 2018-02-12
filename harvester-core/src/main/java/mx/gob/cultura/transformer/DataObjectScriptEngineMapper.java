@@ -1,6 +1,7 @@
 package mx.gob.cultura.transformer;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import mx.gob.cultura.commons.mapper.Mapper;
 import org.semanticwb.datamanager.DataObject;
 import org.semanticwb.datamanager.DataUtils;
 

@@ -30,6 +30,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.github.RepositorioNacionalCultura</groupId>
+            <artifactId>Commons</artifactId>
+            <version>master-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.SWBForms</groupId>
             <artifactId>SWBDataManager</artifactId>
             <version>master-SNAPSHOT</version>
@@ -60,6 +65,11 @@
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
             <version>6.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.5</version>
         </dependency>
     </dependencies>
 

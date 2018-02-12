@@ -80,6 +80,10 @@
             <valueMap inner="A regular inner join" 
                       outer="An outer join"/>
         </joinType>
+
+        <displayField type="string" xmlAttribute="true"/>        
+        <useLocalDisplayFieldValue type="boolean" xmlAttribute="true"/>
+        
         <!-- for tree relations -->
 	    <rootValue type="string" title="Tree Root Value" xmlAttribute="true"/> 
         <!-- included from a related DataSource -->
@@ -126,6 +130,8 @@
 
         <canFilter type="boolean" xmlAttribute="true" />
         <ignore type="boolean"/>
+        <!-- whether this field should not be serialized -->
+        <skipSerialization type="boolean" visibility="internal"/>
 
         <!-- marker left by DataSource generators -->
         <unknownType type="boolean" xmlAttribute="true"/>
@@ -162,7 +168,7 @@
         <joinSuffix type="string" xmlAttribute="true"/>
         
         <allowClientRequestedSummaries type="boolean" />
-        <defaultValue type="string" xmlAttribute="true"/>
+        <defaultValue type="any" xmlAttribute="true"/> 
         <group type="string" xmlAttribute="true"/>
         <!-- for types -->
         <ID type="string" xmlAttribute="true"/>

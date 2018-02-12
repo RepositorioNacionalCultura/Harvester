@@ -1,5 +1,6 @@
 package mx.gob.cultura.transformer;
 
+import mx.gob.cultura.commons.mapper.Mapper;
 import org.json.JSONObject;
 import org.json.XML;
 

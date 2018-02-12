@@ -2,6 +2,7 @@
 	<fields>
 		<dataSource type="DataSource" idAllowed="true" />
         <operationType type="string" />
+        <operationId type="string" />
         <criteria type="Criterion" />
         <values type="Record" />
         <fixedCriteria type="Criterion" />

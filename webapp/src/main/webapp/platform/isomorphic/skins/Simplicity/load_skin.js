@@ -209,8 +209,8 @@ isc.loadSkin = function (theWindow) {
                 expansionFieldImageHeight : 16,
                 headerBaseStyle : "headerButton",
                 headerHeight:25,
-                summaryRowHeight:21,
                 cellHeight:22,
+                summaryRowHeight: 24, // should be cellHeight + top/bottom borders
                 normalCellHeight:22,
                 showHeaderMenuButton:true,
                 headerMenuButtonConstructor:"HeaderMenuButton",
@@ -615,7 +615,7 @@ isc.loadSkin = function (theWindow) {
         //indicate type of media used for various icon types
         isc.pickerImgType = "gif";
         isc.transferImgType = "png";
-        isc.headerImgType = "png";
+        isc.headerImgType = "gif";
 
         // -------------------------------------------
         // Printing

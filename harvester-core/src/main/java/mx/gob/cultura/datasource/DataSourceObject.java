@@ -1,5 +1,7 @@
 package mx.gob.cultura.datasource;
 
+import mx.gob.cultura.commons.mapper.Mapper;
+
 /**
  * Interface to wrap common methods for objects (records) fetched from a {@link mx.gob.cultura.datasource.DataSource}
  * @author Hasdai Pacheco
@@ -16,4 +18,11 @@ public interface DataSourceObject<T> {
      * @return data object.
      */
     T getData();
+
+    /**
+     * Gets mapped object data.
+     * @param mapper {@link Mapper} to transform source object.
+     * @return
+     */
+    Object getData(Mapper mapper);
 }

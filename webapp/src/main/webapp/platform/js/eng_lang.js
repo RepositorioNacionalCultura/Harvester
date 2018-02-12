@@ -86,7 +86,7 @@ eng.fieldProcesors["select"] = function(field)
         {   
             var record = item.getSelectedRecord();
             if (record) {
-                console.log("formatValue:"+value,record,dsfmt,item,this);
+                //console.log("formatValue:"+value,record,dsfmt,item,this);
                 if("function" == typeof dsfmt)
                 {
                     return dsfmt(value, record);
@@ -261,7 +261,7 @@ eng.fieldProcesors["grid"] = function(field)
     if (!base.width)
         base.width = "100%";
     if (!base.height)
-        base.height = "150";
+        base.height = "250";
     if (!base.startRow)
         base.startRow = true;
     if (!base.colSpan)
@@ -329,10 +329,10 @@ eng.fieldProcesors["gridSelect"] = function(field)
 
     if (!base.editorType)
         base.editorType = "GridSelectItem";
-//    if (!base.width)
-//        base.width = "100%";
-//    if (!base.height)
-//        base.height = "150";
+    if (!base.width)
+        base.width = "100%";
+    if (!base.height)
+        base.height = "250";
     if (!base.startRow)
         base.startRow = true;
     if (!base.colSpan)
@@ -421,7 +421,7 @@ isc.GridEditorItem.addProperties({
     endRow:true, 
     startRow:true,
     winEdit: false,
-    //canEdit: true,
+    //canEdit: "*",
     
     // this is going to be an editable data item
     shouldSaveValue:true,
@@ -431,8 +431,14 @@ isc.GridEditorItem.addProperties({
     createCanvas : function () {
         this.dataSourceName = this.dataSource;
         this.dataSource = eng.createDataSource(this.dataSource,true,this);
+        
+        //console.log(this);
            
-        canEdit=this.canEdit!==undefined?this.canEdit:this.form.canEdit!==undefined?this.form.canEdit:true;        
+        var canEdit=this.canEdit!==undefined?this.canEdit:this.form.canEdit!==undefined?this.form.canEdit:true;   
+        
+        this.canEdit=true;
+        
+        //console.log(canEdit);
         
         var totalsLabel = isc.Label.create({
             padding: 5,
@@ -535,7 +541,7 @@ isc.GridEditorItem.addProperties({
                 height: 24,
                 members: mem
             });
-        }else
+        }else       
         {
             toolStrip = isc.ToolStrip.create({
                 width: "100%",
@@ -571,10 +577,9 @@ isc.GridEditorItem.addProperties({
             canEdit:canEdit,
             winEdit: this.winEdit,
             autoSaveEdits: false,
-            cellHeight:this.cellHeight,
             gridComponents: ["filterEditor","header", "body","summaryRow", toolStrip],
-            autoFitData: "vertical",
-            autoFitMaxRecords: 5,
+            //autoFitData: "vertical",
+            //autoFitMaxRecords: 5,
             initialCriteria: this.initialCriteria,
             showRecordComponents:this.showRecordComponents,
             showRecordComponentsByCell:this.showRecordComponentsByCell,
@@ -591,7 +596,6 @@ isc.GridEditorItem.addProperties({
             canSelect:this.canSelect,
             baseStyle:this.baseStyle,
             canRemoveRecords:canEdit && this.canRemove!==false,
-            headerHeight:this.headerHeight?this.headerHeight:25,
             headerSpans:this.headerSpans,
             visibility:this.visibility?this.visibility:"hidden",            
             
@@ -617,7 +621,10 @@ isc.GridEditorItem.addProperties({
                 }else
                 {
                     //console.log(this,record,recordNum);
-                    this.startEditing(recordNum);
+                    if(this.canEdit)
+                    {
+                        this.startEditing(recordNum);
+                    }
                     //this.parentElement.parentElement.startEditing(this.parentElement.parentElement.data.indexOf(record));
                 }
             },
@@ -633,6 +640,16 @@ isc.GridEditorItem.addProperties({
             }            
             
         });
+        
+        if(this.cellHeight!==undefined)
+        {
+            grid.cellHeight = this.cellHeight;
+        }
+        
+        if(this.headerHeight!==undefined)
+        {
+            grid.headerHeight = this.headerHeight;
+        }
         
         if(this.recordDoubleClick!==undefined)
         {
@@ -714,7 +731,13 @@ isc.GridEditorItem.addProperties({
         {
             this.grid.discardAllEdits(null);
             this.dataValue = dataValue;
-            this.grid.invalidateCache();
+            try {
+                this.grid.invalidateCache();
+            }
+            catch(err) {
+                console.log(err);
+            }
+            
             //if(dataValue==null)dataValue="";
             if(dataValue != null)
             {
@@ -1165,7 +1188,7 @@ isc.GridSelectItem.addProperties({
         var grid1=isc.ListGrid.create({
             //dataSource:this.dataSource,
             fields:eng.mergeAndArray(eng.getDataSource(this.dsDef.dsName).getDataSourceScript().fields,this.fieldsSelect),
-            width:"30%", height:"100%", 
+            width:"30%", height:this.height, 
             alternateRecordStyles:true,
 //            canReorderRecords: true,
             canDragRecordsOut: true,
@@ -1174,40 +1197,67 @@ isc.GridSelectItem.addProperties({
             showAllRecords:true,
             initialCriteria: this.initialCriteria,
             autoFetchData:false,
-            data:eng.getDataSource(this.dsDef.dsName).fetch({data:this.initialCriteria}).data
+            data:eng.getDataSource(this.dsDef.dsName).fetch({data:this.initialCriteria}).data,
+            recordDrop : function (draggedRecords, targetRecord, targetIndex, sourceWidget) {
+                // Call the super implementation of recordDrop() to update the order of rows in the ListGrid.
+                this.Super("recordDrop", arguments);
+                _this.storeData();
+            }            
         });
         
         var grid2=isc.ListGrid.create({
             //dataSource:this.dataSource,
             fields:eng.mergeAndArray(eng.getDataSource(this.dsDef.dsName).getDataSourceScript().fields,this.fields),
-            width:"60%", height:"100%", 
+            width:"60%", height:this.height, 
             alternateRecordStyles:true, 
             showAllRecords:true,
             emptyMessage: "No hay elementos seleccionados...",
 //            canReorderRecords: true,
             canDragRecordsOut: true,
             canAcceptDroppedRecords: true,
+            canReorderRecords: true,
             dragDataAction: "move",
             autoFetchData:false,
+            recordDrop : function (draggedRecords, targetRecord, targetIndex, sourceWidget) {
+                // Call the super implementation of recordDrop() to update the order of rows in the ListGrid.
+                this.Super("recordDrop", arguments);
+                _this.storeData();
+            }
         });
         
         var _this=this;
+        
+        _this.storeData=function()
+        {
+            var val=[];
+            for(var x=0;x<grid2.data.length;x++)
+            {
+                val.push(grid2.data[x]._id);
+            }
+            _this.form.setValue(_this.name,val);
+            console.log(val);
+        }        
             
         var c=isc.HStack.create({membersMargin:10, width:this.width, height:this.height, members:[
             grid1,
             isc.VStack.create({width:"32", height:74, layoutAlign:"center", membersMargin:10, members:[
-                isc.Img.create({src:"/platform/images/arrow_right.png", height:32,
+                isc.Img.create({src:"/platform/isomorphic/skins/Tahoe/images/DynamicForm/unstacked_spinner_plus.png", height:"25px",
                     click:function(){
                         grid2.transferSelectedData(grid1);
                         _this.dataValue=grid2.data;
-                        //_this.form.setValue(_this.name,grid2.data);
+                        _this.storeData();
                     }
                 }),
-                isc.Img.create({src:"/platform/images/arrow_left.png", height:32,
+                isc.Img.create({src:"/platform/isomorphic/skins/Tahoe/images/DynamicForm/unstacked_spinner_minus.png", height:"25px",
                     click:function(){
                         grid1.transferSelectedData(grid2);
                         _this.dataValue=grid2.data;
-                        //_this.form.setValue(_this.name,grid2.data);
+                        var val=[];
+                        for(var x=0;x<grid2.data.length;x++)
+                        {
+                            val.push(grid2.data[x]._id);
+                        }
+                        _this.storeData();                  
                     }
                 })
             ]}),
@@ -1254,6 +1304,7 @@ isc.GridSelectItem.addProperties({
                 }
             }
             this.grid.transferSelectedData(this.gridSelect);
+            this.grid.deselectAllRecords();
         }
     }    
 });
