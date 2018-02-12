@@ -24,8 +24,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: com.github.RepositorioNacionalCultura:Commons:master-7f303d68dd-1" level="project" />
-    <orderEntry type="library" name="Maven: com.github.SWBForms:SWBFormsCore:jitpack-dependencies-1.0-SNAPSHOT-ga14399e-1" level="project" />
     <orderEntry type="library" name="Maven: com.github.SWBForms:SWBDataManager:master-1.0-SNAPSHOT-g35c84b1-9" level="project" />
+    <orderEntry type="library" name="Maven: com.github.SWBForms:SWBFormsCore:jitpack-dependencies-1.0-SNAPSHOT-ga14399e-1" level="project" />
+    <orderEntry type="library" name="Maven: com.github.SWBForms:SWBDataManager:master-1.0-SNAPSHOT-g68e51f2-11" level="project" />
     <orderEntry type="module" module-name="harvester-core" />
     <orderEntry type="library" name="Maven: com.github.RepositorioNacionalCultura:Commons:master-f16b3f0995-1" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20160810" level="project" />
