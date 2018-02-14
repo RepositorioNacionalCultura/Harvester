@@ -19,64 +19,59 @@
                     <jsp:param name="activeItem" value="extractors" />
                 </jsp:include>
                 <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-                    <h2>Extractores</h2>
-                    <%
-                        String id = request.getParameter("_id");
-                        String pid = id;
-                        if (id != null) {
-                            id = "\"" + id + "\"";
-                        }
-                    %>
-                    <script type="text/javascript">
-                        var extractor = eng.createGrid({
-                            left: "0",
-                            margin: "10px",
-                            width: "80%",
-                            height: 200,
-                            canEdit: false,
-                            canRemove: false,
-                            canAdd: true,
-                            fields: [
-                                //{name:"endpoint",title:"EndPoint",stype:"select", dataSource:"EndPoint", required:true},
-                                {name: "name", title: "Nombre/Modelo", type: "string"},
-                                {name: "class", title: "Tipo"},
-        //        {name:"verbs",title:"Verbos",type:"select",
-        //        valueMap:vals_verbs, defaultValue:"Identify", required:true},
-        //        {name:"prefix",title:"MetaData PREFIX",type:"select",
-        //        valueMap:vals_meta, defaultValue:"mods"},
-        //        {name:"resumptionToken",title:"Soporta Resumption Token",type:"boolean"},
-        //        {name:"tokenValue",title:"Token",type:"string"},
-                                {name: "periodicity", title: "Periodicidad", type: "boolean"},
-                                {name: "interval", title: "Intervalo de tiempo (días)", type: "int"},
-        //        {name:"mapeo",title:"Tabla de mapeo", stype:"select",  dataSource:"MapDefinition"},
-                                {name: "created", title: "Fecha creación", type: "string", canEdit: false},
-                                {name: "lastExecution", title: "Última ejecución", type: "string", canEdit: false},
-                                {name: "status", title: "Estatus"}, //STARTED | EXTRACTING | STOPPED
-                                {name: "rows2harvest", title: "Registros por cosechar", type: "int"},
-                                {name: "harvestered", title: "Registros cosechados", type: "int"},
-                                {name: "rows2Processed", title: "Registros por procesar", type: "int"},
-                                {name: "processed", title: "Registros procesados", type: "int"}
-                            ],
-        //                recordClick: function (grid, record) {
-        //                    var o = record._id;
-        //                    isc.say(JSON.stringify(o, null, "\t"));
-        //                    return false;
-        //                }
-                            recordDoubleClick: function (grid, record)
-                            {
-                                window.location = "/cultura/extractor?_id=" + record._id;
-                                return false;
-                            }
-                            ,
-                            addButtonClick: function (event)
-                            {
-                                window.location = "/cultura/extractor";
-                                return false;
-                            }
-                        }, "Extractor");
-                        
-                        
-                    </script>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h2>Extractores</h2>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-sm-12">
+                            <%
+                                String id = request.getParameter("_id");
+                                String pid = id;
+                                if (id != null) {
+                                    id = "\"" + id + "\"";
+                                }
+                            %>
+                            <script type="text/javascript">
+                                var extractor = eng.createGrid({
+                                    left: "0",
+                                    margin: "10px",
+                                    width: "80%",
+                                    height: "80%",
+                                    canEdit: false,
+                                    canRemove: false,
+                                    canAdd: true,
+                                    fields: [
+                                        //{name:"endpoint",title:"EndPoint",stype:"select", dataSource:"EndPoint", required:true},
+                                        {name: "created", title: "Fecha de creación", type: "string", canEdit: false},
+                                        {name: "name", title: "Nombre", type: "string"},
+                                        {name: "class", title: "Tipo"},
+                                        {name: "status", title: "Estado"}, //STARTED | EXTRACTING | STOPPED
+                                        //{name: "periodicity", title: "Periodicidad", type: "boolean"},
+                                        //{name: "interval", title: "Intervalo de tiempo (días)", type: "int"},
+                                        //        {name:"mapeo",title:"Tabla de mapeo", stype:"select",  dataSource:"MapDefinition"},
+                                        {name: "lastExecution", title: "Última ejecución", type: "string", canEdit: false}
+                                        //{name: "rows2harvest", title: "Registros por cosechar", type: "int"},
+                                        //{name: "harvestered", title: "Registros cosechados", type: "int"},
+                                        //{name: "rows2Processed", title: "Registros por procesar", type: "int"},
+                                        //{name: "processed", title: "Registros procesados", type: "int"}
+                                    ],
+                                    recordDoubleClick: function (grid, record)
+                                    {
+                                        window.location = "/cultura/extractor?_id=" + record._id;
+                                        return false;
+                                    }
+                                    ,
+                                    addButtonClick: function (event)
+                                    {
+                                        window.location = "/cultura/extractor";
+                                        return false;
+                                    }
+                                }, "Extractor");
+                            </script>
+                        </div>
+                    </div>
                 </main>
             </div>
         </div>

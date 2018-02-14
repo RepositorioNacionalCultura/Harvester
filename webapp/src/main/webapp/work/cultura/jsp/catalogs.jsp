@@ -19,10 +19,10 @@
                     <jsp:param name="activeItem" value="catalogs" />
                 </jsp:include>
                 <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-                    <h2>Catálogos</h2>
+                    <!--h2>Catálogos</h2>
                     <h4>Verbos</h4>
-                    <hr>
-                        <script type="text/javascript">
+                    <hr-->
+                        <!--script type="text/javascript">
                             var verbs = eng.createGrid({
                                 left: "0",
                                 margin: "10px",
@@ -37,7 +37,7 @@
         //                    return false;
         //                }
                             }, "Verbs");
-                        </script>
+                        </script-->
 
                     <h4>Prefijos de metadatos</h4>
                     <hr>
@@ -111,31 +111,6 @@
         //                    return false;
         //                },
                         }, "Replace");
-                    </script>
-
-                    <h4>Ciudades</h4>
-                    <hr>
-                    <script type="text/javascript">
-                        var cities = eng.createGrid({
-                            left: "0",
-                            margin: "10px",
-                            width: "80%",
-                            height: 200,
-                            canEdit: true,
-                            canRemove: true,
-                            canAdd: true,
-        //                recordDoubleClick: function (grid, record)
-        //                {
-        //                    window.location = "endPoint.jsp?_id=" + record._id;
-        //                    return false;
-        //                }
-        //                ,
-        //                addButtonClick: function (event)
-        //                {
-        //                    window.location = "endPoint.jsp";
-        //                    return false;
-        //                },
-                        }, "Ciudad");
                     </script>
                 </main>
             </div>

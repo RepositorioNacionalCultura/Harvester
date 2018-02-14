@@ -65,9 +65,6 @@ eng.dataSources["Objects"] = {
     ]
 };
 
-
-
-
 eng.dataSources["Verbs"] = {
     scls: "Verbs",
     modelid: "Cultura",
@@ -76,6 +73,25 @@ eng.dataSources["Verbs"] = {
     fields: [
         {name: "cve", title: "Clave", type: "string", required: true},
         {name: "name", title: "Nombre", type: "string", required: true}
+    ]
+};
+
+eng.dataSources["Holders"] = {
+    scls: "Holders",
+    modelid: "Cultura",
+    dataStore: "mongodb",
+    displayField: "name",
+    fields: [
+        {name: "name", title: "Nombre", type: "string", required: true},
+        {name: "continent", title: "Continente", type: "string", required: true},
+        {name: "country", title: "País", type: "string", required: true},
+        {name: "state", title: "Estado", type: "string", required: true},
+        {name: "county", title: "Municipio", type: "string", required: true},
+        {name: "locality", title: "Localidad", type: "string", required: true},
+        {name: "address", title: "Dirección", type: "string", required: true},
+        {name: "lat", title: "Latitud", type: "string", required: true},
+        {name: "lon", title: "Longitud", type: "string", required: true},
+        {name: "uri", title: "Link SIC", type: "string", required: true}
     ]
 };
 
@@ -180,7 +196,7 @@ eng.dataSources["Extractor"] = {
         {name: "tokenValue", title: "Token", type: "string"},
         {name: "pfxExtracted", title: "Prefijos extraidos", type: "string"},
         {name: "pfxActual", title: "Prefijo actual", type: "string"},
-        {name: "class", title: "Nombre de la Clase a utilizar", type: "select", valueMap: {"OAIExtractor": "OAIExtractor", "CSVExtractor": "CSVExtractor"}, defaultValue: "OAIExtractor"},
+        {name: "class", title: "Nombre de la Clase a utilizar", type: "select", valueMap: {"OAIExtractor": "Extractor de OAI", "CSVExtractor": "Extractor de CSV"}, defaultValue: "OAIExtractor"},
         {name: "csvfile", title: "Archivo CSV", stype: "file"},
         {name: "periodicity", title: "Periodicidad", type: "boolean"},
         {name: "interval", title: "Intervalo de tiempo (días)", type: "int"},
