@@ -1,6 +1,7 @@
 package mx.gob.cultura.extractor;
 
 import com.mongodb.MongoClient;
+import mx.gob.cultura.commons.Util;
 import org.apache.log4j.Logger;
 import org.semanticwb.datamanager.*;
 
@@ -17,7 +18,7 @@ public class ExtractorManager {
     protected static HashMap<String, Extractor> hmExtractor = new HashMap(); //id del DataObject, instancia del extractor
     //protected static HashMap<String, DataObject> hmExtractorDef = new HashMap(); //id del DataObject, DataObject de la definición del extractor
     protected static SWBDataSource datasource = null;
-    protected static MongoClient client = null;
+    protected static MongoClient client = Util.MONGODB.getMongoClient();
     private static Logger log = Logger.getLogger(ExtractorManager.class);
     private static SWBScriptEngine engine = null;
     private static ExtractorManager instance = null; //  Instancia del ExtractorManager
@@ -47,7 +48,7 @@ public class ExtractorManager {
      * Initializes extractor manager
      */
     public void init() {
-        client = new MongoClient("localhost", 27017);
+        //client = new MongoClient("localhost", 27017);
         engine = DataMgr.getUserScriptEngine("/work/cultura/jsp/datasources.js", null);
         //engine = DataMgr.initPlatform(null);
         try {

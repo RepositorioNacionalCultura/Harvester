@@ -1,9 +1,9 @@
 package mx.gob.cultura.extractor;
 
 import com.mongodb.*;
+import mx.gob.cultura.commons.Util;
 import mx.gob.cultura.indexer.SimpleESIndexer;
 import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
-import mx.gob.cultura.util.Util;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -195,7 +195,7 @@ public class OAIExtractor extends ExtractorBase {
                     ext_lastExec = ext_lastExec.replace(" ", "T");
                 }
 
-                HashMap<String, String> hm = Util.loadOccurrences(engine);
+                HashMap<String, String> hm = Util.SWBForms.loadOccurrences(engine);
                 boolean isResumeExtract = false;
                 if (ext_pfxActual != null) {
                     isResumeExtract = true;
@@ -253,7 +253,7 @@ public class OAIExtractor extends ExtractorBase {
                                         log.debug(jsonstr.substring(1, jsonstr.length() - 1));
                                         break;
                                     }
-                                    jsonstr = Util.replaceOccurrences(hm, jsonstr);
+                                    jsonstr = Util.TEXT.replaceOccurrences(hm, jsonstr);
 
                                     if (jsonstr.contains("resumptionToken")) {
                                         tknFound = true;
@@ -342,7 +342,7 @@ public class OAIExtractor extends ExtractorBase {
                                                     DataObject rec = new DataObject();
                                                     rec.put("oaiid", nid);
                                                     rec.put("body", DataObject.parseJSON(nodeAsString));
-                                                    BasicDBObject bjson = Util.toBasicDBObject(rec);
+                                                    BasicDBObject bjson = Util.SWBForms.toBasicDBObject(rec);
                                                     objects.insert(bjson);
                                                     itemsExtracted++;
                                                 } else {
@@ -562,7 +562,7 @@ public class OAIExtractor extends ExtractorBase {
                         //hmfull.put(key.trim(), dobj);
 
                         // Esta parte sólo es para verificar como forma los objetos completos.
-                        BasicDBObject bjson = Util.toBasicDBObject(dobj);
+                        BasicDBObject bjson = Util.SWBForms.toBasicDBObject(dobj);
                         if (add2DB) {
                             objects.insert(bjson);
                         } else {
@@ -641,11 +641,11 @@ public class OAIExtractor extends ExtractorBase {
 
                             //Transformación del DataObject
                             DataObject result = mapper.map(dobj);
-                            HashMap<String, String> hmmaptable = Util.loadExtractorMapTable(engine, extractorDef);
+                            HashMap<String, String> hmmaptable = Util.SWBForms.loadExtractorMapTable(engine, extractorDef);
                             // Mapeo de propiedades definidas en la tabla con los a encontrar en los catálogos 
                             // Se actualizan las propiedades del DataObject
                             if (!hmmaptable.isEmpty()) {
-                                Util.findProps(result, hmmaptable, engine);
+                                Util.SWBForms.findProps(result, hmmaptable, engine);
                             }
                             //System.out.println("Antes de agregar el objeto");
                             result.put("forIndex", true);
