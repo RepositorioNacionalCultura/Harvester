@@ -2,6 +2,7 @@ package mx.gob.cultura.transformer;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import mx.gob.cultura.commons.mapper.Mapper;
+import org.apache.log4j.Logger;
 import org.semanticwb.datamanager.DataObject;
 import org.semanticwb.datamanager.DataUtils;
 
@@ -13,6 +14,7 @@ import javax.script.ScriptException;
  * @author Hasdai Pacheco
  */
 public class DataObjectScriptEngineMapper implements Mapper<DataObject, DataObject> {
+    private static final Logger log = Logger.getLogger(DataObjectScriptEngineMapper.class);
     private ScriptObjectMirror mapFunction;
     private ScriptEngine engine;
 
@@ -27,7 +29,7 @@ public class DataObjectScriptEngineMapper implements Mapper<DataObject, DataObje
         try {
             this.mapFunction = (ScriptObjectMirror) engine.eval(mapFunction);
         }catch (ScriptException scex) {
-            scex.printStackTrace();
+            log.error("Error parsing map function", scex);
         }
     }
 
@@ -40,7 +42,7 @@ public class DataObjectScriptEngineMapper implements Mapper<DataObject, DataObje
                     return DataUtils.toDataObject(result);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("Error mapping object ", e);
             }
         }
 

@@ -1,39 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mx.gob.cultura.extractor;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 import org.semanticwb.datamanager.DataObject;
 import org.semanticwb.datamanager.SWBDataSource;
 import org.semanticwb.datamanager.SWBScriptEngine;
 
 /**
- *
+ * Base class that implements core methods of an {@link Extractor}.
  * @author juan.fernandez
  */
 public abstract class ExtractorBase implements Extractor {
-
-    static Logger log = Logger.getLogger(ExtractorBase.class.getName());
-
+    static Logger log = Logger.getLogger(ExtractorBase.class);
     protected DataObject extractorDef;
     protected SWBScriptEngine engine;
     protected SWBDataSource dsExtract;
-    
-    private boolean extracting;
-
     private SWBDataSource ds;
-//    public static enum STATUS {
-//        LOADED, STARTED, EXTRACTING, STOPPED, ABORTED, FAILLOAD
-//    }
-//
-//    private STATUS status;
+    private STATUS status = STATUS.LOADED;
 
-    private String status = "LOADED";
-
+    /**
+     * Constructor. Creates a new instance of {@link ExtractorBase}.
+     * @param doID Identifier of {@link DataObject} with extractor definition.
+     * @param eng {@link SWBScriptEngine} object to use.
+     */
     public ExtractorBase(String doID, SWBScriptEngine eng)
     {
         engine = eng;
@@ -41,81 +31,77 @@ public abstract class ExtractorBase implements Extractor {
             dsExtract = engine.getDataSource("Extractor");
             try {
                 extractorDef = dsExtract.fetchObjById(doID);
-                status = extractorDef.getString("status");
+                log.debug("Extractor status: "+extractorDef.getString("status"));
+                status = STATUS.valueOf(extractorDef.getString("status", "LOADED"));
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error getting DataObject definition for extractor "+doID, e);
             }
-            //status = "STOPPED";
         }
     }
 
     @Override
     public boolean update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public boolean replace() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void start() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void stop() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public String getStatus() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public STATUS getStatus() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public boolean canStart() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public String getType() //URL, URI(Support File) 
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void extract() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public String getScript() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void process() throws Exception{
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public DataObject getDefinitionObject() {
         return extractorDef;
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void index() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-
-
-    
 }

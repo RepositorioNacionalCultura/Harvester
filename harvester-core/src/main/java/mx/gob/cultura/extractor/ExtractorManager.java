@@ -1,36 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mx.gob.cultura.extractor;
 
 import com.mongodb.MongoClient;
+import org.apache.log4j.Logger;
+import org.semanticwb.datamanager.*;
+
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.semanticwb.datamanager.DataList;
-import org.semanticwb.datamanager.DataMgr;
-import org.semanticwb.datamanager.DataObject;
-import org.semanticwb.datamanager.SWBDataSource;
-import org.semanticwb.datamanager.SWBScriptEngine;
 
 /**
- *
+ * Class that manages Extractor execution.
  * @author juan.fernandez
  */
-
 public class ExtractorManager {
-
     protected static HashMap<String, Extractor> hmExtractor = new HashMap(); //id del DataObject, instancia del extractor
     //protected static HashMap<String, DataObject> hmExtractorDef = new HashMap(); //id del DataObject, DataObject de la definición del extractor
     protected static SWBDataSource datasource = null;
+    protected static MongoClient client = null;
+    private static Logger log = Logger.getLogger(ExtractorManager.class);
     private static SWBScriptEngine engine = null;
     private static ExtractorManager instance = null; //  Instancia del ExtractorManager
     private long TIME_INTERVAL_REVIEW = 60000; //Se ejecutará cada 60 segundos la revisión de todos los extractores con periodicidad
-    protected static MongoClient client = null;
 
     public ExtractorManager() {
     }
@@ -43,7 +34,15 @@ public class ExtractorManager {
         return instance;
     }
 
-    ;
+    /**
+     * Gets MongoClient to MongoDB
+     * @return client
+     */
+    public static MongoClient getMongoClient(){
+
+        return client;
+    }
+
     /**
      * Initializes extractor manager
      */
@@ -84,55 +83,45 @@ public class ExtractorManager {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);
         }
         // Inicializando el Timer para que empiece a ejecutar los extractores con periodicidad
         TimerTask timerTask = new ExtractorTask();
         //Corriendo el  TimerTask como daemon thread
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(timerTask, 0, TIME_INTERVAL_REVIEW);
-        System.out.println("TimerTask periodicidad started");
+        log.info("TimerTask periodicidad started");
     }
 
     /**
      * Loads an extractor from its configuration object
-     *
      * @param extractorConfig
      */
     public void loadExtractor(DataObject extractorConfig) {
-
         if (null != extractorConfig) {
-            System.out.println("Revisando estatus del extractor.....");
+            log.trace("Revisando estatus del extractor.....");
             String className = extractorConfig.getString("class");
             Extractor extractor = hmExtractor.get(extractorConfig.getId());
-            String status = null;
+            Extractor.STATUS status = null;
             if ((null != extractor)) {  //Revisando el tipo de extractor para saber su estaus.
-               
-                if (extractor instanceof CSVExtractor) {
-                    status = ((CSVExtractor) extractor).getStatus();
-                } else if (extractor instanceof OAIExtractor) {
-                    status = ((OAIExtractor) extractor).getStatus();
-                }
-                 System.out.println("LOADEXTRACTOR..."+status);
-                if (null == status && status.equals("EXTRACTING")) {
-                    while(status.equals("EXTRACTING")||status.equals("PROCESSING")||status.equals("INDEXING")){ //Esperando a que termine el extractor
+                status = extractor.getStatus();
+                log.trace("LOADEXTRACTOR..."+status);
+                if (null == status && status == Extractor.STATUS.EXTRACTING) {
+                    while(status == Extractor.STATUS.EXTRACTING ||status == Extractor.STATUS.PROCESSING ||status == Extractor.STATUS.INDEXING){ //Esperando a que termine el extractor
                         try {
                             // el extractor tiene el status de EXTRACTING, se espera 2 segundos  a que termine y se verifica el status
                             Thread.sleep(2000);
-                            if (extractor instanceof CSVExtractor) {
-                                status = ((CSVExtractor) extractor).getStatus();
-                            } else if (extractor instanceof OAIExtractor) {
-                                status = ((OAIExtractor) extractor).getStatus();
-                            }
-                             System.out.println("===>LOADEXTRACTOR..."+status);
+                            status = extractor.getStatus();
+                            log.trace("===>LOADEXTRACTOR..."+status);
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(ExtractorManager.class.getName()).log(Level.SEVERE, null, ex);
+                            log.error(ex);
                         }
                     }
                 }
             }
             extractor=null;
-            if (null != status && (status.equals("STOPPED") || status.equals("ABORT")|| status.equals("FINISHED")) || null == extractor) {
+            if (null != status && (status == Extractor.STATUS.STOPPED || status == Extractor.STATUS.ABORTED ||
+                    status == Extractor.STATUS.FINISHED) || null == extractor) {
                 if (null != className) { // Generando la nueva instancia del extractor
                     if (className.endsWith("CSVExtractor")) {
                         extractor = new CSVExtractor(extractorConfig.getId(),engine);
@@ -142,7 +131,6 @@ public class ExtractorManager {
                     hmExtractor.put(extractorConfig.getId(), extractor);  // actualizando instancia del extractor en el HashMap
 //                    hmExtractorDef.put(extractorConfig.getId(), extractorConfig);  // actualizando configuración del extractor en el HashMap
                 }
-               
             }
         }
     }
@@ -158,7 +146,7 @@ public class ExtractorManager {
         if (null != extractorId) {
             ret = hmExtractor.get(extractorId);
         }
-        return null!=ret?ret.getStatus():null;
+        return null!=ret?ret.getStatus().name():null;
     }
 
     /**
@@ -173,7 +161,7 @@ public class ExtractorManager {
         if (null != extractorId) {
             ret = hmExtractor.get(extractorId);
             //revisando si se puede inicializar el extractor
-            if (null != ret && (ret.getStatus().equals("STOPPED")|| ret.getStatus().equals("LOADED"))) {
+            if (null != ret && (ret.getStatus() == Extractor.STATUS.STOPPED || ret.getStatus() == Extractor.STATUS.LOADED)) {
                 ret.start();
                 return true;
             }
@@ -199,7 +187,7 @@ public class ExtractorManager {
         }
         return false;
     }
-    
+
     /**
      * Calls start method on a particular extractor
      *
@@ -212,14 +200,14 @@ public class ExtractorManager {
         if (null != extractorId) {
             ret = hmExtractor.get(extractorId);
             //revisando si se puede inicializar el extractor
-            if (null != ret && (ret.getStatus().equals("STOPPED")|| ret.getStatus().equals("LOADED"))) {
+            if (null != ret && (ret.getStatus() == Extractor.STATUS.STOPPED || ret.getStatus() == Extractor.STATUS.LOADED)) {
                 ret.replace();
                 return true;
             }
         }
         return false;
     }
-    
+
     /**
      * Calls update method on a particular extractor, retrives last updated records
      *
@@ -232,14 +220,14 @@ public class ExtractorManager {
         if (null != extractorId) {
             ret = hmExtractor.get(extractorId);
             //revisando si se puede inicializar el extractor
-            if (null != ret && (ret.getStatus().equals("STOPPED")|| ret.getStatus().equals("LOADED"))) {
+            if (null != ret && (ret.getStatus() == Extractor.STATUS.STOPPED || ret.getStatus() == Extractor.STATUS.LOADED)) {
                 ret.update();
                 return true;
             }
         }
         return false;
     }
-    
+
     /**
      * Calls process method on a particular extractor
      *
@@ -252,51 +240,37 @@ public class ExtractorManager {
         if (null != extractorId) {
             ret = hmExtractor.get(extractorId);
             //revisando si se puede procesar el extractor
-            System.out.println("Process..."+(null!=ret&&null!=ret.getStatus()?ret.getStatus():"No Status"));
-            if (null != ret && (ret.getStatus().equals("STOPPED")|| ret.getStatus().equals("LOADED"))) {
+            log.trace("Process..."+(null!=ret&&null!=ret.getStatus()?ret.getStatus():"No Status"));
+            if (null != ret && (ret.getStatus() == Extractor.STATUS.STOPPED || ret.getStatus() == Extractor.STATUS.LOADED)) {
                 try {
-                   ret.process(); 
+                    ret.process();
                 } catch (Exception e) {
-                    System.out.println("Error al ejecutar el process del Extractor...");
-                    e.printStackTrace();
+                    log.error("Error al ejecutar el process del Extractor...", e);
                 }
-
                 return true;
             }
         }
         return false;
     }
-    
-       public boolean indexExtractor(String extractorId) {
+
+    public boolean indexExtractor(String extractorId) {
         //throw new UnsupportedOperationException();
         Extractor ret;
         if (null != extractorId) {
             ret = hmExtractor.get(extractorId);
             //revisando si se puede procesar el extractor
-            System.out.println("Indexing..."+(null!=ret&&null!=ret.getStatus()?ret.getStatus():"No Status"));
-            if (null != ret && (ret.getStatus().equals("PROCESSED")|| ret.getStatus().equals("STOPPED") || ret.getStatus().equals("FINISHED")|| ret.getStatus().equals("LOADED"))) {
+            log.trace("Indexing..."+(null!=ret&&null!=ret.getStatus()?ret.getStatus():"No Status"));
+            if (null != ret && (ret.getStatus() == Extractor.STATUS.PROCESSED || ret.getStatus() == Extractor.STATUS.STOPPED ||
+                    ret.getStatus() == Extractor.STATUS.FINISHED || ret.getStatus() == Extractor.STATUS.LOADED)) {
                 try {
-                   ret.index(); 
+                    ret.index();
                 } catch (Exception e) {
-                    System.out.println("Error al ejecutar el index del Extractor...");
-                    e.printStackTrace();
+                    log.error("Error al ejecutar el index del Extractor...", e);
                 }
-
                 return true;
             }
         }
         return false;
     }
-    
-    
-    /**
-     * Gets MongoClient to MongoDB
-     * @return client
-     */
-    public static MongoClient getMongoClient(){
-
-        return client;
-    }
-
 }
 
