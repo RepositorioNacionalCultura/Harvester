@@ -3,15 +3,13 @@
     Created on : 23-nov-2017, 12:37:52
     Author     : juan.fernandez
 --%>
-<%@page import="mx.gob.cultura.util.Util"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Date"%>
+<%@page import="mx.gob.cultura.commons.Util"%>
 <%@page import="mx.gob.cultura.extractor.ExtractorManager"%>
-<%@page import="mx.gob.cultura.extractor.OAIExtractor"%>
-<%@page import="org.semanticwb.datamanager.DataObject"%>
 <%@page import="org.semanticwb.datamanager.DataMgr"%>
+<%@page import="org.semanticwb.datamanager.DataObject"%>
 <%@page import="org.semanticwb.datamanager.SWBDataSource"%>
 <%@page import="org.semanticwb.datamanager.SWBScriptEngine"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -67,7 +65,7 @@
             %>
             <strong>Status: <%=status%></strong><br>
             <strong>Extracted Records: <%=numItems%></strong><br>
-            <strong>Extraction time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
+            <strong>Extraction time: <%=Util.TEXT.getElapsedTime((endTime - startTime))%></strong><br>
             <%
                 }
             } else if (action.equals("STOP")) {
@@ -80,7 +78,7 @@
             %>
             <strong>Status:<%=status%></strong><br>
             <strong>Se detuvo el extractor.</strong><br>
-            <strong>Stopping time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
+            <strong>Stopping time: <%=Util.TEXT.getElapsedTime((endTime - startTime))%></strong><br>
             
             <%
                 }
@@ -99,7 +97,7 @@
             <strong>Se limpió la base de datos</strong><br>
             <strong>Se reinició la extracción de datos.</strong><br>
             <strong>Extracted Records: <%=numItems%></strong><br>
-            <strong>Extraction time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
+            <strong>Extraction time: <%=Util.TEXT.getElapsedTime((endTime - startTime))%></strong><br>
             <%
 
                 }
@@ -118,7 +116,7 @@
             <strong>Status:<%=status%></strong><br>
             <strong>Se procesaron los metadatos.</strong><br>
             <strong>Processed Records: <%=numItems%></strong><br>
-            <strong>Processing time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
+            <strong>Processing time: <%=Util.TEXT.getElapsedTime((endTime - startTime))%></strong><br>
             <%
                 }
             } else if (action.equals("INDEX")) {
@@ -138,7 +136,7 @@
             <strong>Se indexaron los metadatos.</strong><br>
             <strong>Se concluyó la indexación.</strong><br>
             <strong>Indexed Records: <%=numItems%></strong><br>
-            <strong>Indexing time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
+            <strong>Indexing time: <%=Util.TEXT.getElapsedTime((endTime - startTime))%></strong><br>
             <%
                 }
             } else if (action.equals("UPDATE")) {
@@ -155,14 +153,11 @@
             <strong>Status:<%=status%></strong><br>
             <strong>Se actualizaron los datos.</strong><br>
             <strong>Updated Records: <%=numItems%></strong><br>
-            <strong>Updating time: <%=Util.getElapsedTime((endTime - startTime))%></strong><br>
+            <strong>Updating time: <%=Util.TEXT.getElapsedTime((endTime - startTime))%></strong><br>
             <%
                     }
                 }
             %>
-
-
-
         </div>
     </body>
 </html>
