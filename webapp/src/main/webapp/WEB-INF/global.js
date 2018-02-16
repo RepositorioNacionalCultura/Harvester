@@ -80,6 +80,7 @@ eng.routes["global"]={
         { routePath: "work", isRestricted: "true"},
         { routePath: "work/*", jspMapTo: "/work/jsp/", isRestricted: "true" },
         { routePath: "cultura/*", jspMapTo: "/work/cultura/jsp/", isRestricted: "true" },
+        { routePath: "static/*", forwardTo: "/static/", isRestricted: "false" },
         { routePath: "ds", forwardTo: "/platform/jsp/datasource.jsp", isRestricted: "true" },
         { routePath: "ex", forwardTo: "/platform/jsp/export.jsp", isRestricted: "true" },
     ],
