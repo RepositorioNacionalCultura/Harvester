@@ -55,8 +55,4 @@
         padding-bottom: 1.5rem;
     }
 
-    .listGrid {
-        z-index: 0 !important;
-    }
-
 </style>

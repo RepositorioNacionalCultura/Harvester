@@ -182,12 +182,12 @@
                             ]
                         }, <%=id%>, "Extractor");
                         <%if (id != null) {%>
-                        form.buttons.addMember(isc.IButton.create(
+                        /*form.buttons.addMember(isc.IButton.create(
                                 {
                                     title: "Cosechar",
                                     padding: "10px",
                                     click: function (p1) {
-                                        window.location = "/cultura/harvest?_id=<%=pid%>&act=EXTRACT";
+                                        window.location = "/cultura/harvest?_id=<pid%>&act=EXTRACT";
                                         return false;
                                     }
                                 }));
@@ -196,13 +196,13 @@
                                     title: "Actualizar",
                                     padding: "10px",
                                     click: function (p1) {
-                                        window.location = "/cultura/harvest?_id=<%=pid%>&act=UPDATE";
+                                        window.location = "/cultura/harvest?_id=<pid%>&act=UPDATE";
                                         return false;
                                     }
-                                }));
+                                }));*/
                         form.buttons.addMember(isc.IButton.create(
                                 {
-                                    title: "Reemplazar",
+                                    title: "Cosechar",
                                     padding: "10px",
                                     click: function (p1) {
                                         window.location = "/cultura/harvest?_id=<%=pid%>&act=REPLACE";

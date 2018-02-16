@@ -5,6 +5,7 @@ import mx.gob.cultura.datasource.DataSourceObject;
 import mx.gob.cultura.exception.IndexException;
 import mx.gob.cultura.indexer.IndexerBase;
 import mx.gob.cultura.util.Util;
+import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * @author Hasdai Pacheco
  */
 public class ESIndexer extends IndexerBase {
+    private static final Logger log = Logger.getLogger(ESIndexer.class);
     String [] indexNames;
     String host;
     int port;
@@ -57,7 +59,7 @@ public class ESIndexer extends IndexerBase {
             try {
                 IndexResponse resp = client.index(req);
             } catch (IOException ioex) {
-                ioex.printStackTrace();
+                log.error("Error indexing objects in ES", ioex);
                 throw new IndexException();
             }
         }
