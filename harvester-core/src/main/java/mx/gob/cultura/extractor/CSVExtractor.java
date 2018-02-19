@@ -11,6 +11,8 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Indexes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -119,7 +121,7 @@ public class CSVExtractor extends ExtractorBase {
 
         //2017-12-01T13:05:00.000
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        
+
         String ext_name = null;
         String ext_coll = null;
         String ext_url = null;
@@ -200,7 +202,6 @@ public class CSVExtractor extends ExtractorBase {
                     extracting = true;
                     dsExtract.updateObj(extractorDef);
 
-
                     //arreglo con el nombre de las columnas
                     if (r == 0) {
                         int c = 0;
@@ -275,6 +276,8 @@ public class CSVExtractor extends ExtractorBase {
                 try {
                     DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
                     DBCollection objects = db.getCollection("fullobjects");
+                    MongoCollection mcoll = Util.DB.getMongoClient().getDatabase(extractorDef.getString("name").toUpperCase()).getCollection("TransObject");
+                    mcoll.createIndex(Indexes.compoundIndex(Indexes.text("identifier.value"),Indexes.text("resourcetitle"),Indexes.text("resourcedescription")));
                     SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
 
 //                System.out.println("encontro DB y colección...");
@@ -321,11 +324,10 @@ public class CSVExtractor extends ExtractorBase {
                         cursor.close();
                         System.out.println("Total Items Indexed: " + numItemsIndexed);
                         System.out.println("Total Items Deleted: " + numItemsDeleted);
-                        
+
                         //eliminando colección fullobjects
                         objects.drop();
-                        
-                        
+
                     } catch (Exception e) {
                         System.out.println("Error al indexar\n");
                         e.printStackTrace();

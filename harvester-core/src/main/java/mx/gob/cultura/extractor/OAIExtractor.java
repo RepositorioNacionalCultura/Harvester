@@ -12,6 +12,8 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Indexes;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import java.util.Date;
@@ -21,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import mx.gob.cultura.datasource.mongo.MongoDBDataSource;
 import mx.gob.cultura.indexer.SimpleESIndexer;
 import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
 
@@ -116,7 +119,7 @@ public class OAIExtractor extends ExtractorBase {
     public void extract() throws Exception {
 
         System.out.println("\n\n\n>>>>>>>>>>>> EXTRACTING <<<<<<<<<<<<<<\n\n\n");
-        System.out.println("DO Extract:"+extractorDef);
+        //System.out.println("DO Extract:"+extractorDef);
 
         //2017-12-01T13:05:00.000
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -648,8 +651,10 @@ public class OAIExtractor extends ExtractorBase {
             try {
                 DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
                 DBCollection objects = db.getCollection("fullobjects");
+                MongoCollection mcoll = Util.DB.getMongoClient().getDatabase(extractorDef.getString("name").toUpperCase()).getCollection("TransObject");
+                mcoll.createIndex(Indexes.compoundIndex(Indexes.text("identifier"),Indexes.text("resourcetitle"),Indexes.text("resourcedescription")));
                 SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
-
+                
                 DataObject dobj = null;
 
                 try {
@@ -705,7 +710,7 @@ public class OAIExtractor extends ExtractorBase {
                 extractorDef.put("status", "FINISHED");
                 extractorDef.put("transformed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
-                
+                   
                 //eliminando colección fullobjects
                 objects.drop();
 
