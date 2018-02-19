@@ -1,10 +1,11 @@
 package mx.gob.cultura.indexer.elastic;
 
+import mx.gob.cultura.commons.Util;
 import mx.gob.cultura.datasource.Cursor;
 import mx.gob.cultura.datasource.DataSourceObject;
 import mx.gob.cultura.exception.IndexException;
 import mx.gob.cultura.indexer.IndexerBase;
-import mx.gob.cultura.util.Util;
+import mx.gob.cultura.commons.Util;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.elasticsearch.action.index.IndexRequest;
@@ -47,7 +48,7 @@ public class ESIndexer extends IndexerBase {
 
     @Override
     public void index() throws IndexException {
-        RestHighLevelClient client = Util.DB.getElasticClient(null==host?"localhost":host, port>0?port:9200);
+        RestHighLevelClient client = Util.ELASTICSEARCH.getElasticClient(null==host?"localhost":host, port>0?port:9200);
         Cursor cur = getDataSource().fetch(null);
 
         while (cur.hasNext()) {
