@@ -1,5 +1,6 @@
 package mx.gob.cultura.util;
 
+import com.carrotsearch.hppc.CharSet;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
@@ -352,7 +354,7 @@ public final class Util {
                 int statusCode = con.getResponseCode();
 
                 if (statusCode == 200) {
-                    try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+                    try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(),Charset.forName("UTF-8")))) {
                         String inputLine;
 
                         while ((inputLine = in.readLine()) != null) {
@@ -810,5 +812,21 @@ public final class Util {
         }
         aux = ret.toString();
         return aux;
+    }
+    
+    public static String toStringHtmlEscape(String str){
+        StringBuilder buf=new StringBuilder();
+        int c=0;
+        int i=str.indexOf("\\u",c);
+        while(i>-1)
+        {
+            buf.append(str.substring(c,i));
+            int v=Integer.parseInt(str.substring(i+2,i+6),16);
+            buf.append("&#"+v+";");
+            c=i+6;
+            i=str.indexOf("\\u",c);
+        }
+        buf.append(str.substring(c));
+        return buf.toString();
     }
 }
