@@ -2,6 +2,7 @@ package mx.gob.cultura.extractor;
 
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import mx.gob.cultura.indexer.SimpleESIndexer;
 import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
@@ -258,10 +259,14 @@ public class CSVExtractor extends ExtractorBase {
 
                 //Generar el nuevo DataObject combinado por cada prefix
                 try {
+                    //Create index in spanish language
+                    IndexOptions opts = new IndexOptions();
+                    opts.defaultLanguage("spanish");
+
                     DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
                     DBCollection objects = db.getCollection("fullobjects");
                     MongoCollection mcoll = Util.MONGODB.getMongoClient().getDatabase(extractorDef.getString("name").toUpperCase()).getCollection("TransObject");
-                    mcoll.createIndex(Indexes.compoundIndex(Indexes.text("identifier.value"),Indexes.text("resourcetitle"),Indexes.text("resourcedescription")));
+                    mcoll.createIndex(Indexes.compoundIndex(Indexes.text("identifier.value"),Indexes.text("resourcetitle"),Indexes.text("resourcedescription")), opts);
                     SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
 
 //                System.out.println("encontro DB y colección...");

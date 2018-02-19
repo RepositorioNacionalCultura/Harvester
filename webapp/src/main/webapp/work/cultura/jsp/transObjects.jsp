@@ -2,7 +2,8 @@
     Document   : extractores
     Created on : 08-dic-2017, 10:19:49
     Author     : juan.fernandez
---%><%@page import="org.semanticwb.datamanager.DataObjectIterator"%><%@page import="org.semanticwb.datamanager.DataList"%><%@page import="org.semanticwb.datamanager.DataMgr"%><%@page import="org.semanticwb.datamanager.DataObject"%><%@page import="org.semanticwb.datamanager.SWBDataSource"%><%@page import="org.semanticwb.datamanager.SWBScriptEngine"%><%
+--%><%@page import="org.semanticwb.datamanager.*"%>
+<%
     String id = request.getParameter("_id");
     String pid = id;
     SWBScriptEngine engine = DataMgr.initPlatform("/work/cultura/jsp/datasources.js", session);
@@ -181,7 +182,7 @@
                                                 }
 //                                                tmpTitle = mx.gob.cultura.util.Util.toStringHtmlEscape(sbTitles.toString());
 //                                                tmpTitle = mx.gob.cultura.util.Util.toStringHtmlEscape(dotmp.getDataList("resourcetitle").getDataObject(0).getDataList("value").toString());
-                                                tmpTitle = mx.gob.cultura.util.Util.toStringHtmlEscape(dotmp.getDataList("resourcetitle").toString());
+                                                tmpTitle = mx.gob.cultura.commons.Util.TEXT.toStringHtmlEscape(dotmp.getDataList("resourcetitle").toString());
                                                 //tmpTitle = dotmp.getDataList("resourcetitle").getDataObject(0).getDataList("value").get(0).toString();
                                             } else if(dotmp.getString("resourcetitle")!=null){
                                                 tmpTitle = dotmp.getString("resourcetitle");
