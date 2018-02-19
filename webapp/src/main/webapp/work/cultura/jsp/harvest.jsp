@@ -44,6 +44,9 @@
             SWBScriptEngine engine = DataMgr.initPlatform("/work/cultura/jsp/datasources.js", session);
             SWBDataSource datasource = engine.getDataSource("Extractor");
             DataObject dobj = datasource.fetchObjById(id);
+            
+            //System.out.println("DO:\n"+dobj);
+
         %>
         <h1>JSON Extractor (<%=dobj.getString("name")%>)</h1>
         <div id="res">
