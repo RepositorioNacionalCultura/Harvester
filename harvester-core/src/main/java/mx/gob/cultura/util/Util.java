@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import org.apache.http.HttpHost;
+import org.apache.log4j.Logger;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RestClient;
@@ -25,6 +26,7 @@ import org.elasticsearch.rest.RestStatus;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.semanticwb.datamanager.DataList;
 import org.semanticwb.datamanager.DataObject;
 import org.semanticwb.datamanager.SWBDataSource;
@@ -36,6 +38,7 @@ import org.semanticwb.datamanager.SWBScriptEngine;
  * @author Hasdai Pacheco
  */
 public final class Util {
+    private static final Logger log = Logger.getLogger(Util.class);
 
     private Util() {
     }
@@ -138,7 +141,7 @@ public final class Util {
                     ret = resp.getId();
                 }
             } catch (IOException ioex) {
-                ioex.printStackTrace();
+                log.error("Error indexing object with ID " + objectId + " on index " + indexName, ioex);
             }
 
             return ret;
@@ -225,11 +228,10 @@ public final class Util {
                     }
                 }
             } catch (Exception e) {
-                System.out.println("Error al cargar el DataSource. " + e.getMessage());
-                e.printStackTrace(System.out);
+                log.error("Error al cargar el DataSource. ", e);
             }
         } else {
-            System.out.println("Error al cargar el DataSource al HashMap, falta inicializar el engine.");
+            log.error("Error al cargar el DataSource al HashMap, falta inicializar el engine.");
             return null;
         }
 
@@ -243,7 +245,6 @@ public final class Util {
      * @param dbName Nombre de la base de datos en donde se encuentra la
      * colección
      * @param metadataPrefix Nombre del prefijo de metadatos a cargar
-     * @param hm HashMap con los id de la colección
      * @return ConcurrentHashMap con la colección cargada en memoria.
      */
     public static ConcurrentHashMap<String, String> loadMetadataPrefixCollection(String dbName, String metadataPrefix) {
@@ -267,8 +268,7 @@ public final class Util {
                 }
                 //System.out.println("copiados al HM: " + hm.size());
             } catch (Exception e) {
-                System.out.println("Error al cargar el DataSource. " + e.getMessage());
-                e.printStackTrace(System.out);
+                log.error("Error al cargar el DataSource. ", e);
             }
         } else {
 //            System.out.println("Error al cargar el DataSource al HashMap, falta inicializar el engine.");
@@ -297,8 +297,7 @@ public final class Util {
                 DBCollection datasource = db.getCollection(metadataPrefix);
                 collSize = datasource.count();
             } catch (Exception e) {
-                System.out.println("Error while trying to get collection size. " + e.getMessage());
-                e.printStackTrace(System.out);
+                log.error("Error while trying to get collection size. ", e);
             }
         } else {
 //            System.out.println("Error DB no encontrada.");
@@ -361,7 +360,7 @@ public final class Util {
                             response.append(inputLine);
                         }
                     } catch (IOException ioex) {
-                        ioex.printStackTrace();
+                        log.error(ioex);
                     }
                 } else {
                     errorMsg = "#Error: No se puede conectar al servidor#";
@@ -376,10 +375,10 @@ public final class Util {
                 try {
                     Thread.sleep(5000);
                 } catch (Exception te) {
-                    te.printStackTrace();
+                    log.error(te);
                 }
 
-                e.printStackTrace();
+                log.error(e);
                 isConnOk = false;
                 if (retries == 5) {
                     errorMsg = "#Error: No se puede conectar al servidor#";
@@ -510,8 +509,6 @@ public final class Util {
      *
      * @param prop DataObject a revisar para obtener la lista de propiedades
      * existentes
-     * @param propName Nombre de la propiedad actual que se revisa
-     * @param hm HashMap con la lista de propiedades
      */
     public static HashMap<String, String> listProps(DataObject prop, HashMap<String, String> collection) {
 
@@ -537,7 +534,6 @@ public final class Util {
      * @param prop DataObject a revisar para obtener la lista de propiedades
      * existentes
      * @param propName Nombre de la propiedad actual que se revisa
-     * @param hm HashMap con la lista de propiedades
      */
     private static void findProps(DataObject prop, String propName, HashMap<String, String> collection, SWBScriptEngine engine) {
         Iterator<String> it = prop.keySet().iterator();
@@ -581,10 +577,8 @@ public final class Util {
                             }
                         } catch (Exception e) {
                             //No se encontró la propiedad con el valor actual
-                            System.out.println("Error al buscar el valor en la colección");
-                            e.printStackTrace();
+                            log.error("Error al buscar el valor en la colección", e);
                         }
-
                     }
                 }
             }
@@ -647,9 +641,7 @@ public final class Util {
                             }
                         } catch (Exception e) {
                             //No se encontró la propiedad con el valor actual
-                            System.out.println("Error al buscar el valor en la colección");
-                            e.printStackTrace();
-
+                            log.error("Error al buscar el valor en la colección", e);
                         }
 
                     }
@@ -690,15 +682,14 @@ public final class Util {
                     }
 
                 } catch (Exception e) {
-                    System.out.println("Error al cargar el DataSource. " + e.getMessage());
-                    e.printStackTrace(System.out);
+                    log.error("Error al cargar el DataSource. ", e);
                 }
             } else {
-                System.out.println("Error al cargar el DataSource al HashMap, falta inicializar el engine.");
+                log.error("Error al cargar el DataSource al HashMap, falta inicializar el engine.");
                 return null;
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error(ex);
         }
 
         return hm;

@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mx.gob.cultura.extractor;
 
+<<<<<<< HEAD
 import java.util.logging.Logger;
 import org.json.XML;
 import com.mongodb.BasicDBObject;
@@ -15,12 +11,27 @@ import com.mongodb.DBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Indexes;
 import org.json.JSONObject;
+=======
+import com.mongodb.*;
+import mx.gob.cultura.indexer.SimpleESIndexer;
+import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
+import mx.gob.cultura.util.Util;
+import org.apache.log4j.Logger;
+>>>>>>> bd8ae94a6079f57ea1acace5ea6e9f1655e9bd34
 import org.json.JSONArray;
-import java.util.Date;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
+import org.semanticwb.datamanager.*;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+<<<<<<< HEAD
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import mx.gob.cultura.datasource.mongo.MongoDBDataSource;
@@ -34,25 +45,21 @@ import org.semanticwb.datamanager.DataObject;
 import org.semanticwb.datamanager.DataObjectIterator;
 import org.semanticwb.datamanager.SWBDataSource;
 import org.semanticwb.datamanager.SWBScriptEngine;
+=======
+>>>>>>> bd8ae94a6079f57ea1acace5ea6e9f1655e9bd34
 
 /**
- *
+ * Extractor implementation for OAI-PMH data sources.
  * @author juan.fernandez
  */
 public class OAIExtractor extends ExtractorBase {
-
-    static Logger log = Logger.getLogger(OAIExtractor.class.getName());
-
+    static Logger log = Logger.getLogger(OAIExtractor.class);
     protected DataObject extractorDef;
     private SWBScriptEngine engine;
     private SWBDataSource dsExtract;
     private boolean extracting;
     private boolean update;
-
-//    public static enum STATUS {
-//        LOADED, STARTED, EXTRACTING, STOPPED, ABORTED, FAILLOAD
-//    }
-    private String status = "LOADED";
+    private STATUS status = STATUS.LOADED;
 
     /**
      *
@@ -64,7 +71,6 @@ public class OAIExtractor extends ExtractorBase {
         extractorDef = super.extractorDef;
         engine = super.engine;
         dsExtract = super.dsExtract;
-        //dsEPoint = super.dsEPoint;
     }
 
     @Override
@@ -75,22 +81,26 @@ public class OAIExtractor extends ExtractorBase {
             try {
                 extract();
             } catch (Exception ex) {
-                ex.printStackTrace();
+                log.error("Error starting extractor", ex);
             }
         }
     }
 
     @Override
     public void stop() {
-        status = "STOPPED";
+        status = STATUS.STOPPED;
     }
 
     @Override
-    public String getStatus() {
-        return status.toString();
+    public STATUS getStatus() {
+        return status;
     }
 
     public void setStatus(String s) {
+        status = STATUS.valueOf(s);
+    }
+
+    public void setStatus(STATUS s) {
         status = s;
     }
 
@@ -104,22 +114,25 @@ public class OAIExtractor extends ExtractorBase {
 
     @Override
     public boolean canStart() {
-
-        return !status.equals("FAILLOAD") && (status.equals("STOPPED") || status.equals("LOADED"));
+        return status != STATUS.FAILLOAD && (status == STATUS.STOPPED || status == STATUS.LOADED);
     }
 
     @Override
     public String getType() {
-
         String ret = extractorDef.getString("OAIExtractor");
         return ret;
     }
 
     @Override
     public void extract() throws Exception {
+<<<<<<< HEAD
 
         System.out.println("\n\n\n>>>>>>>>>>>> EXTRACTING <<<<<<<<<<<<<<\n\n\n");
         //System.out.println("DO Extract:"+extractorDef);
+=======
+        log.trace("\n\n\n>>>>>>>>>>>> EXTRACTING <<<<<<<<<<<<<<\n\n\n");
+        log.trace("DO Extract:"+extractorDef);
+>>>>>>> bd8ae94a6079f57ea1acace5ea6e9f1655e9bd34
 
         //2017-12-01T13:05:00.000
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -170,7 +183,7 @@ public class OAIExtractor extends ExtractorBase {
                 ext_script = extractorDef.getString("script");
                 ext_verbs = extractorDef.getString("verbs");
                 DataList dlpfx = extractorDef.getDataList("prefix");
-                System.out.println("num items:" + dlpfx.size());
+                log.debug("num items:" + dlpfx.size());
                 ext_prefix = new String[dlpfx.size()];
                 for (int i = 0; i < dlpfx.size(); i++) {
                     ext_prefix[i] = dlpfx.getString(i);
@@ -208,7 +221,7 @@ public class OAIExtractor extends ExtractorBase {
                     }
                 }
 
-                extractorDef.put("status", "STARTED");
+                extractorDef.put("status", STATUS.STARTED.name());
                 dsExtract.updateObj(extractorDef);
 
                 DB db = ExtractorManager.client.getDB(ext_name.toUpperCase());
@@ -233,10 +246,10 @@ public class OAIExtractor extends ExtractorBase {
                                 continue;
                             }
 
-                            if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                            if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
                                 break;
                             }
-                            System.out.println("\n\nEmpezando con:...." + pfx);
+                            log.trace("\n\nEmpezando con:...." + pfx);
                             // creando la colección por prefijo
                             DBCollection objects = db.getCollection(pfx);
                             objects.createIndex("oaiid");
@@ -265,14 +278,14 @@ public class OAIExtractor extends ExtractorBase {
                             int numextract = 0;
                             int numalready = 0;
                             int retries = 0;
-                            System.out.println("Empezando extracción..." + ext_name.toUpperCase());
+                            log.trace("Empezando extracción..." + ext_name.toUpperCase());
                             do {
                                 tknFound = false;
                                 try {
 
                                     jsonstr = Util.makeRequest(theUrl, true);
                                     if (jsonstr != null && jsonstr.startsWith("#Error") && jsonstr.endsWith("#")) {
-                                        System.out.println(jsonstr.substring(1, jsonstr.length() - 1));
+                                        log.debug(jsonstr.substring(1, jsonstr.length() - 1));
                                         break;
                                     }
                                     jsonstr = Util.replaceOccurrences(hm, jsonstr);
@@ -313,16 +326,14 @@ public class OAIExtractor extends ExtractorBase {
                                                     try {
                                                         listSize = Integer.parseInt(listSize_str);
                                                     } catch (Exception e) {
-                                                        System.out.println("Error: Invalid records size number");
-                                                        e.printStackTrace();
+                                                        log.error("Error: Invalid records size number", e);
                                                         listSize = -1;
                                                     }
                                                 }
                                                 try {
                                                     cursor = Integer.parseInt(cursor_str);
                                                 } catch (Exception e) {
-                                                    System.out.println("Error: Invalid cursor size number");
-                                                    e.printStackTrace();
+                                                    log.error("Error: Invalid cursor size number", e);
                                                     cursor = -1;
                                                 }
                                             }
@@ -338,7 +349,7 @@ public class OAIExtractor extends ExtractorBase {
 
                                     JSONArray jsonRd = jsonLst.getJSONArray("record");
 
-                                    extractorDef.put("status", "EXTRACTING");
+                                    extractorDef.put("status", STATUS.EXTRACTING.name());
                                     extracting = true;
                                     extractorDef.put("rows2harvest", (listSize - numextract));
                                     extractorDef.put("cursor", cursor);
@@ -375,12 +386,11 @@ public class OAIExtractor extends ExtractorBase {
                                                 }
 
                                             } catch (Exception e) {
-                                                System.out.println("Error..." + e.toString());
-                                                e.printStackTrace();
+                                                log.error("Error...", e);
                                             }
                                         }
                                     } else {
-                                        setStatus("STOPPED");
+                                        setStatus(STATUS.STOPPED);
                                     }
 
                                     if (resTkn_str != null) {
@@ -395,23 +405,23 @@ public class OAIExtractor extends ExtractorBase {
                                 } catch (JSONException jex) {
                                     Thread.sleep(5000);
                                     retries++;
-                                    jex.printStackTrace();
+                                    log.error(jex);
                                 }
 
-                                if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                                if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
                                     break;
                                 }
                                 if (numextract % 1000 == 0 && numextract > 0) {
-                                    System.out.println("Extracted ==>" + numextract);
+                                    log.trace("Extracted ==>" + numextract);
                                 }
                                 if (numalready % 1000 == 0 && numalready > 0) {
-                                    System.out.println("Already ==>" + numalready + "(" + listSize + ")");
+                                    log.trace("Already ==>" + numalready + "(" + listSize + ")");
                                 }
                                 if (retries > 0) {
-                                    System.out.println("Retries ==>" + retries);
+                                    log.trace("Retries ==>" + retries);
                                 }
                                 if (itemsExtracted % 1000 == 0 && itemsExtracted > 0) {
-                                    System.out.println("Retries(" + retries + ")Token(" + tmpTkn + "), List(" + listSize + "), Extracted(" + numextract + "),Existing(" + numalready + "), Total Extracted(" + itemsExtracted + ")");
+                                    log.trace("Retries(" + retries + ")Token(" + tmpTkn + "), List(" + listSize + "), Extracted(" + numextract + "),Existing(" + numalready + "), Total Extracted(" + itemsExtracted + ")");
                                 }
                                 tmpTkn = null;
                             } while (retries < 5 && tknFound && listSize > (numextract + numalready));  //(listSize > numextract && listSize > numalready) && 
@@ -426,7 +436,7 @@ public class OAIExtractor extends ExtractorBase {
                             extractorDef.put("pfxExtracted", ext_pfxExtracted);
                             dsExtract.updateObj(extractorDef);
                             ExtractorManager.getInstance().loadExtractor(extractorDef);
-                            System.out.println("Finalizando extracción..." + ext_name.toUpperCase() + " ==> Extracted(" + numextract + "), EXISTING(" + numalready + ")");
+                            log.trace("Finalizando extracción..." + ext_name.toUpperCase() + " ==> Extracted(" + numextract + "), EXISTING(" + numalready + ")");
                             numextract = 0;
                             numalready = 0;
                             listSize = 0;
@@ -436,8 +446,8 @@ public class OAIExtractor extends ExtractorBase {
                         }
                         extractorDef.put("harvestered", itemsExtracted);
                         extractorDef.put("rows2Processed", itemsExtracted);
-                        extractorDef.put("status", getStatus());
-                        if (getStatus().equals("STOPPED")) {
+                        extractorDef.put("status", getStatus().name());
+                        if (getStatus() == STATUS.STOPPED) {
                             extracting = false;
                         }
                         extractorDef.put("rows2harvest", 0);
@@ -448,21 +458,17 @@ public class OAIExtractor extends ExtractorBase {
                         dsExtract.updateObj(extractorDef);
                         ExtractorManager.getInstance().loadExtractor(extractorDef);
                     } catch (Exception e) {
-                        System.out.println("Error extracción de metadatos");
-                        e.printStackTrace();
+                        log.error("Error extracción de metadatos", e);
                     }
                 }
-
             }
         }
-
     }
 
     @Override
     public boolean replace() {
         boolean ret = false;
         try {
-
             DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
             db.dropDatabase();
 //            String collName = extractorDef.getString("collection", "objects");
@@ -472,8 +478,7 @@ public class OAIExtractor extends ExtractorBase {
             ret = true;
             extract();
         } catch (Exception e) {
-            System.out.println("Error al tratar de borrar la Base de Datos");
-            e.printStackTrace();
+            log.error("Error al tratar de borrar la Base de Datos", e);
         }
         return ret;
     }
@@ -489,30 +494,26 @@ public class OAIExtractor extends ExtractorBase {
         try {
             extract();
             ret = true;
-
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);
         }
-
-        return ret; //To change body of generated methods, choose Tools | Templates.
+        return ret;
     }
 
     @Override
     public String getScript() {
-
         String ret = extractorDef.getString("script");
-
         return ret;
     }
 
     @Override
     public void process() throws Exception {
-        System.out.println("\n\n\n>>>>>>>>>> PROCESSING <<<<<<<<<<<<<<<<<\n\n\n");
+        log.trace("\n\n\n>>>>>>>>>> PROCESSING <<<<<<<<<<<<<<<<<\n\n\n");
 
         long numItems = 0;
         long numAlready = 0;
 
-        extractorDef.put("status", "PROCESSING");
+        extractorDef.put("status", STATUS.PROCESSING.name());
         dsExtract.updateObj(extractorDef);
 
         DataList dlpfx = extractorDef.getDataList("prefix");
@@ -528,18 +529,18 @@ public class OAIExtractor extends ExtractorBase {
             DataObject dobj = null;
 
             for (int i = 0; i < dlpfx.size(); i++) {
-                if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
                     break;
                 }
                 String pfx = dlpfx.getString(i).trim();
-                System.out.println("Revisando colección: " + pfx);
+                log.debug("Revisando colección: " + pfx);
                 try {
                     DBCollection datasource = db.getCollection(pfx);
                     DBCursor cursor = datasource.find();
-                    System.out.println(pfx + " cursor size: " + (null != cursor ? cursor.count() : "NULO"));
+                    log.debug(pfx + " cursor size: " + (null != cursor ? cursor.count() : "NULO"));
 
                     while (null != cursor && cursor.hasNext()) {
-                        if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                        if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
                             break;
                         }
                         DBObject next = cursor.next();
@@ -604,7 +605,7 @@ public class OAIExtractor extends ExtractorBase {
                         }
                         numItems++;
                         if (numItems % 1000 == 0 && numItems > 0) {
-                            System.out.println("Items Processed: " + numItems);
+                            log.trace("Items Processed: " + numItems);
                         }
                     }
                     try {
@@ -613,25 +614,22 @@ public class OAIExtractor extends ExtractorBase {
                     }
 
                 } catch (Exception e) {
-                    System.out.println("Error al cargar el DataSource. " + e.getMessage());
-                    e.printStackTrace(System.out);
+                    log.error("Error al cargar el DataSource. ", e);
                 }
-
             }
 
             extractorDef.put("rows2Processed", 0);
             extractorDef.put("processed", numItems);
-            extractorDef.put("status", "FINISHED");
+            extractorDef.put("status", STATUS.FINISHED.name());
             dsExtract.updateObj(extractorDef);
 
         } catch (Exception e) {
-            System.out.println("Error al procesar la Base de Datos");
-            e.printStackTrace();
+            log.error("Error al procesar la Base de Datos", e);
             extractorDef.put("processed", numItems);
             dsExtract.updateObj(extractorDef);
         }
 
-        System.out.println("\n\n\n>>>>>>>>>> TRANSFORMING <<<<<<<<<<<<<<<<<\n\n\n");
+        log.trace("\n\n\n>>>>>>>>>> TRANSFORMING <<<<<<<<<<<<<<<<<\n\n\n");
         String idScript = extractorDef.getString("transScript");
         SWBDataSource dsTScript = engine.getDataSource("TransformationScript");
         DataObject doTS = dsTScript.fetchObjById(idScript);
@@ -640,9 +638,10 @@ public class OAIExtractor extends ExtractorBase {
         long numItemsIndexed = 0;
         long numItemsDeleted = 0;
 
-        if (null != scriptsrc && scriptsrc.trim().length() > 0 && (getStatus().equals("STOPPED") || getStatus().equals("FINISHED") || getStatus().equals("LOADED"))) {
+        if (null != scriptsrc && scriptsrc.trim().length() > 0 && (getStatus() == STATUS.STOPPED ||
+                getStatus() == STATUS.FINISHED || getStatus() == STATUS.LOADED)) {
 
-            extractorDef.put("status", "PROCESSING");
+            extractorDef.put("status", STATUS.PROCESSING.name());
             dsExtract.updateObj(extractorDef);
             ScriptEngine scrptengine = factory.getEngineByName("JavaScript");
             DataObjectScriptEngineMapper mapper = new DataObjectScriptEngineMapper(scrptengine, scriptsrc);
@@ -660,7 +659,7 @@ public class OAIExtractor extends ExtractorBase {
                 try {
                     DBCursor cursor = objects.find();
                     while (null != cursor && cursor.hasNext()) {
-                        if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                        if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
                             break;
                         }
                         DBObject next = cursor.next();
@@ -691,32 +690,33 @@ public class OAIExtractor extends ExtractorBase {
                             //System.out.println("Resultado del Mapeo:....\n" + result);
                             numItemsIndexed++;
                         } catch (Exception e) {
-                            System.out.println("Error en el mapeo e indexación...");
-
+                            log.error("Error en el mapeo e indexación...", e);
                         }
 
                         if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
-                            System.out.println("Items Transformed: " + numItemsIndexed);
+                            log.trace("Items Transformed: " + numItemsIndexed);
                         }
 
                     }
                     cursor.close();
-                    System.out.println("Total Items Transformed: " + numItemsIndexed);
-                    System.out.println("Total Items Deleted: " + numItemsDeleted);
+                    log.trace("Total Items Transformed: " + numItemsIndexed);
+                    log.trace("Total Items Deleted: " + numItemsDeleted);
                 } catch (Exception e) {
-                    System.out.println("Error en la transformación y mapeo\n");
-                    e.printStackTrace();
+                    log.error("Error en la transformación y mapeo\n", e);
                 }
-                extractorDef.put("status", "FINISHED");
+                extractorDef.put("status", STATUS.FINISHED.name());
                 extractorDef.put("transformed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
+<<<<<<< HEAD
                    
+=======
+
+>>>>>>> bd8ae94a6079f57ea1acace5ea6e9f1655e9bd34
                 //eliminando colección fullobjects
                 objects.drop();
 
             } catch (Exception e) {
-                System.out.println("Error al procesar la Base de Datos");
-                e.printStackTrace();
+                log.error("Error al procesar la Base de Datos", e);
                 extractorDef.put("transformed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
             }
@@ -726,20 +726,18 @@ public class OAIExtractor extends ExtractorBase {
 
     @Override
     public void index() throws Exception {
-        System.out.println("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
-
+        log.trace("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
         SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
         long numItemsIndexed = 0;
 
-        if ((getStatus().equals("STOPPED") || getStatus().equals("FINISHED") || getStatus().equals("LOADED"))) {
-
-            extractorDef.put("status", "INDEXING");
+        if ((getStatus() == STATUS.STOPPED || getStatus() == STATUS.FINISHED || getStatus() == STATUS.LOADED)) {
+            extractorDef.put("status", STATUS.INDEXING.name());
             dsExtract.updateObj(extractorDef);
 
             try {
                 DataObjectIterator cursor = transobjs.find();
                 while (null != cursor && cursor.hasNext()) {
-                    if (getStatus().equals("STOPPED") || getStatus().equals("ABORT")) {
+                    if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
                         break;
                     }
                     DataObject next = cursor.next();
@@ -754,12 +752,11 @@ public class OAIExtractor extends ExtractorBase {
                             sesidx.index(next.toString());
                             numItemsIndexed++;
                         } catch (Exception e) {
-                            System.out.println("Error en el mapeo e indexación...");
-
+                            log.error("Error en el mapeo e indexación...", e);
                         }
                     }
                     if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
-                        System.out.println("Items Indexed: " + numItemsIndexed);
+                        log.trace("Items Indexed: " + numItemsIndexed);
                     }
                     //Sólo para pruebas
 //                    if (numItemsIndexed == 10) {
@@ -767,13 +764,12 @@ public class OAIExtractor extends ExtractorBase {
 //                    }
                 }
                 cursor.close();
-                System.out.println("Total Items Indexed: " + numItemsIndexed);
-                extractorDef.put("status", "FINISHED");
+                log.trace("Total Items Indexed: " + numItemsIndexed);
+                extractorDef.put("status", STATUS.FINISHED.name());
                 extractorDef.put("indexed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
             } catch (Exception e) {
-                System.out.println("Error al indexar\n");
-                e.printStackTrace();
+                log.error("Error al indexar\n", e);
                 extractorDef.put("indexed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
             }

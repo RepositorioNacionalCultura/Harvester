@@ -1,8 +1,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-<script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/css/animate.css">
+<script defer src="/static/js/fontawesome-all.js"></script>
 <script src="/platform/js/eng.js" type="text/javascript"></script>
 <script type="text/javascript">
     eng.initPlatform("/work/cultura/jsp/datasources.js", false);
@@ -53,10 +53,6 @@
     .placeholder img {
         padding-top: 1.5rem;
         padding-bottom: 1.5rem;
-    }
-
-    .listGrid {
-        z-index: 0 !important;
     }
 
 </style>
