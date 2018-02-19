@@ -1,23 +1,12 @@
 package mx.gob.cultura.extractor;
 
-<<<<<<< HEAD
-import java.util.logging.Logger;
-import org.json.XML;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Indexes;
-import org.json.JSONObject;
-=======
-import com.mongodb.*;
 import mx.gob.cultura.indexer.SimpleESIndexer;
 import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
 import mx.gob.cultura.util.Util;
 import org.apache.log4j.Logger;
->>>>>>> bd8ae94a6079f57ea1acace5ea6e9f1655e9bd34
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,22 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-<<<<<<< HEAD
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import mx.gob.cultura.datasource.mongo.MongoDBDataSource;
-import mx.gob.cultura.indexer.SimpleESIndexer;
-import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
-
-import mx.gob.cultura.util.Util;
-import org.json.JSONException;
-import org.semanticwb.datamanager.DataList;
-import org.semanticwb.datamanager.DataObject;
-import org.semanticwb.datamanager.DataObjectIterator;
-import org.semanticwb.datamanager.SWBDataSource;
-import org.semanticwb.datamanager.SWBScriptEngine;
-=======
->>>>>>> bd8ae94a6079f57ea1acace5ea6e9f1655e9bd34
 
 /**
  * Extractor implementation for OAI-PMH data sources.
@@ -125,14 +98,8 @@ public class OAIExtractor extends ExtractorBase {
 
     @Override
     public void extract() throws Exception {
-<<<<<<< HEAD
-
-        System.out.println("\n\n\n>>>>>>>>>>>> EXTRACTING <<<<<<<<<<<<<<\n\n\n");
-        //System.out.println("DO Extract:"+extractorDef);
-=======
         log.trace("\n\n\n>>>>>>>>>>>> EXTRACTING <<<<<<<<<<<<<<\n\n\n");
         log.trace("DO Extract:"+extractorDef);
->>>>>>> bd8ae94a6079f57ea1acace5ea6e9f1655e9bd34
 
         //2017-12-01T13:05:00.000
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -707,11 +674,6 @@ public class OAIExtractor extends ExtractorBase {
                 extractorDef.put("status", STATUS.FINISHED.name());
                 extractorDef.put("transformed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
-<<<<<<< HEAD
-                   
-=======
-
->>>>>>> bd8ae94a6079f57ea1acace5ea6e9f1655e9bd34
                 //eliminando colección fullobjects
                 objects.drop();
 

@@ -1,16 +1,8 @@
 package mx.gob.cultura.extractor;
 
-<<<<<<< HEAD
-import java.util.logging.Logger;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Indexes;
-=======
-import com.mongodb.*;
 import mx.gob.cultura.indexer.SimpleESIndexer;
 import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
 import mx.gob.cultura.util.Util;
@@ -21,7 +13,6 @@ import org.semanticwb.datamanager.*;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
->>>>>>> bd8ae94a6079f57ea1acace5ea6e9f1655e9bd34
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -314,21 +305,11 @@ public class CSVExtractor extends ExtractorBase {
                             }
                         }
                         cursor.close();
-<<<<<<< HEAD
-                        System.out.println("Total Items Indexed: " + numItemsIndexed);
-                        System.out.println("Total Items Deleted: " + numItemsDeleted);
-=======
                         log.trace("Total Items Indexed: " + numItemsIndexed);
                         log.trace("Total Items Deleted: " + numItemsDeleted);
->>>>>>> bd8ae94a6079f57ea1acace5ea6e9f1655e9bd34
 
                         //eliminando colección fullobjects
                         objects.drop();
-
-<<<<<<< HEAD
-=======
-
->>>>>>> bd8ae94a6079f57ea1acace5ea6e9f1655e9bd34
                     } catch (Exception e) {
                         log.error("Error al indexar\n", e);
                     }
