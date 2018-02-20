@@ -2,7 +2,8 @@
     Document   : extractores
     Created on : 08-dic-2017, 10:19:49
     Author     : juan.fernandez
---%><%@page import="org.semanticwb.datamanager.DataObjectIterator"%><%@page import="org.semanticwb.datamanager.DataList"%><%@page import="org.semanticwb.datamanager.DataMgr"%><%@page import="org.semanticwb.datamanager.DataObject"%><%@page import="org.semanticwb.datamanager.SWBDataSource"%><%@page import="org.semanticwb.datamanager.SWBScriptEngine"%><%
+--%><%@page import="org.semanticwb.datamanager.*"%>
+<%
     String id = request.getParameter("_id");
     String pid = id;
     SWBScriptEngine engine = DataMgr.initPlatform("/work/cultura/jsp/datasources.js", session);
@@ -37,8 +38,9 @@
         }
         return;
     }
+    String query = request.getParameter("q");
 %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
     <head>
         <jsp:include page="../../templates/metas.jsp" flush="true"></jsp:include>
@@ -56,7 +58,12 @@
                 </jsp:include>
                 <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
                     <h2>Objetos transformados</h2>
+                    <form method="post" action="/cultura/transObjects">
+                        <input type="hidden" name="_id" value="<%=id%>" >
+                        <input type="text" placeholder="Busca palabra en título y/o descripción" name="q" value="<%=query != null ? query : ""%>" size="100" ><button type="submit">filtrar</button>
+                    </form>
                     <%
+
                         String status = "";
                         long numItems = 0;
 
@@ -89,15 +96,26 @@
                                 totalPages++;
                             }
                         }
-                        if(numpage<0){
-                            numpage=0;
+                        if (numpage < 0) {
+                            numpage = 0;
                         }
-                        if(numpage>totalPages){
-                           numpage=totalPages; 
+                        if (numpage > totalPages) {
+                            numpage = totalPages;
                         }
                         DataObject doItems = new DataObject();
                         doItems.put("startRow", numpage * 50);
                         doItems.put("endRow", (numpage * 50) + 50);
+                        if (query != null && query.trim().length() > 0) {
+//                            System.out.println("QUERY:" + query);
+                            DataObject data = new DataObject();
+                            doItems.put("data", data);
+                            //IDENTIFIER, TITLE, DESCRIPTION
+                            DataObject sub = data.addSubObject("$text");
+                            sub.addParam("$search", query);
+//                            System.out.println("query:" + data.toString());
+
+                            //sub.addParam("identifier", query).addParam("title", query).addParam("description", query);
+                        }
                         DataObjectIterator res = dsTO.find(doItems);
                         //System.out.println("RES:" + res);
                         totalRows = res.total();
@@ -107,9 +125,6 @@
                             if ((totalRows / 50) > totalPages) {
                                 totalPages++;
                             }
-                        }
-                        
-                        //System.out.println("num pages..." + totalPages);
 
                     %>
                     <form>
@@ -123,7 +138,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <%                                int numItem = numpage * 50;
+                                <%                                    int numItem = numpage * 50;
                                     while (res.hasNext()) {
                                         DataObject dotmp = res.next();
                                         String mymodalid = dotmp.getId();
@@ -132,48 +147,79 @@
                                         try {
                                             tmpId = dotmp.getDataList("identifier").getDataObject(0).getString("value");
                                         } catch (Exception e) {
-                                            tmpId = dotmp.getString("identifier");
+                                            tmpId = dotmp.get("identifier").toString();
                                             //System.out.println("No identifier");
                                         }
                                         //revisar si tiene título
                                         String tmpTitle = "No disponible";
                                         try {
-                                            if(!dotmp.getDataList("title").isEmpty()){
-                                                tmpTitle = dotmp.getDataList("title").getDataObject(0).getString("value","NO TITLE AVAILABLE");
+                                            if (dotmp.getDataList("resourcetitle") != null && !dotmp.getDataList("resourcetitle").isEmpty()) {
+//                                                System.out.println("size:" + dotmp.getDataList("resourcetitle").size());
+                                                StringBuilder sbTitles = new StringBuilder();
+                                                for (int idx = 0; idx < dotmp.getDataList("resourcetitle").size(); idx++) {
+                                                    DataObject dotitle = dotmp.getDataList("resourcetitle").getDataObject(idx);
+//                                                        String titleType = dotitle.getString("type",null);
+//                                                        if(null!=titleType){
+//                                                            if("dc".equals(titleType)){
+                                                    if (dotitle.getDataList("value") != null && !dotitle.getDataList("value").isEmpty()) {
+                                                        for (int j = 0; j < dotitle.getDataList("value").size(); j++) {
+                                                            String tmpTitleValue = dotitle.getDataList("value").get(j).toString();
+                                                            if (null != tmpTitleValue && tmpTitleValue.trim().length() > 0) {
+                                                                if (sbTitles.toString().length() > 0) {
+                                                                    sbTitles.append("<br>");
+                                                                }
+                                                                sbTitles.append(tmpTitleValue);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        if (sbTitles.toString().length() > 0) {
+                                                            sbTitles.append("<br>");
+                                                        }
+
+                                                        sbTitles.append(dotitle.getString("value")).append(" ");
+                                                    }
+
+                                                }
+//                                                tmpTitle = mx.gob.cultura.util.Util.toStringHtmlEscape(sbTitles.toString());
+//                                                tmpTitle = mx.gob.cultura.util.Util.toStringHtmlEscape(dotmp.getDataList("resourcetitle").getDataObject(0).getDataList("value").toString());
+                                                tmpTitle = mx.gob.cultura.commons.Util.TEXT.toStringHtmlEscape(dotmp.getDataList("resourcetitle").toString());
+                                                //tmpTitle = dotmp.getDataList("resourcetitle").getDataObject(0).getDataList("value").get(0).toString();
+                                            } else if(dotmp.getString("resourcetitle")!=null){
+                                                tmpTitle = dotmp.getString("resourcetitle");
+
                                             } else {
                                                 tmpTitle = "NO TITLE AVAILABLE";
-                                                
                                             }
                                         } catch (Exception e) {
-                                            tmpTitle = dotmp.getString("title");
+                                            tmpTitle = dotmp.get("resourcetitle").toString();
                                             //System.out.println("No title");
                                         }
                                         //revisar si tiene descripción
-                                        String tmpDescrip = dotmp.getString("description","NO DESCRIPTION AVAILABLE");
-                                        String tmpDigital = dotmp.getString("digitalObject","NO DIGITAL OBJECT FOUND");
+                                        String tmpDescrip = dotmp.getString("resourcedescription", "NO DESCRIPTION AVAILABLE");
+                                        String tmpDigital = dotmp.getString("digitalObject", "NO DIGITAL OBJECT FOUND");
 
-                                        String tipos = dotmp.get("type").toString();
+                                        String tipos = dotmp.get("resourcetype").toString();
                                         try {
-                                            if(!dotmp.getDataList("type").isEmpty()){
-                                                tipos = dotmp.getDataList("title").getDataObject(0).getString("value","NO TYPE AVAILABLE");
+                                            if (!dotmp.getDataList("resourcetype").isEmpty()) {
+                                                tipos = dotmp.getDataList("resourcetype").getDataObject(0).getString("value", "NO TYPE AVAILABLE");
                                             } else {
                                                 tipos = "NO TYPE AVAILABLE";
-                                                
+
                                             }
                                         } catch (Exception e) {
-                                            tipos = dotmp.get("type").toString();
+                                            tipos = dotmp.get("resourcetype").toString();
                                             //System.out.println("No title");
                                         }
-                                        
-                                        String rights = dotmp.getString("rights","NO RIGHTS FOUND");
-                                        
-                                        String autor = dotmp.getString("creator","NO AUTHOR FOUND");
-                                        
+
+                                        String rights = dotmp.getString("rights", "NO RIGHTS FOUND");
+
+                                        String autor = dotmp.getString("creator", "NO AUTHOR FOUND");
+
                                         String datecreated = dotmp.getString("datecreated", "NO CREATION DATE FOUND");
-                                        
-                                        String periodcreated = dotmp.getString("periodcreated","NO CREATION PERIOD FOUND");
-                                        
-                                        String holder = dotmp.getString("holder","NO HOLDER FOUND");
+
+                                        String periodcreated = dotmp.getString("periodcreated", "NO CREATION PERIOD FOUND");
+
+                                        String holder = dotmp.getString("holder", "NO HOLDER FOUND");
 
                                         numItem++;
                                 %>
@@ -182,36 +228,36 @@
                                     <td data-toggle="modal" data-target="#myModal<%=mymodalid%>"><%=tmpTitle%>
                                         <!-- Modal -->
                                         <div class="modal fade" id="myModal<%=mymodalid%>" role="dialog">
-                                          <div class="modal-dialog modal-lg">
+                                            <div class="modal-dialog modal-lg">
 
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                              <div class="modal-header">
-                                                  <h4 class="modal-title">Información</h4>
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                
-                                              </div>
-                                              <div class="modal-body">
-                                                  <table class="table table-sm">
-                                                      <tr><th scope="row">ID</th><td><%=tmpId%></td></tr>
-                                                      <tr><th scope="row">TITULO</th><td><%=tmpTitle%></td></tr>
-                                                      <tr><th scope="row">DESCRIPCIÓN</th><td><%=tmpDescrip%></td></tr>
-                                                      <tr><th scope="row">OBJETO DIGITAL</th><td><%=tmpDigital%></td></tr>
-                                                      <tr><th scope="row">TIPO</th><td><%=tipos%></td></tr>
-                                                      
-                                                      <tr><th scope="row">DERECHOS</th><td><%=rights%></td></tr>
-                                                      <tr><th scope="row">AUTOR</th><td><%=autor%></td></tr>
-                                                      <tr><th scope="row">FECHA</th><td><%=datecreated%></td></tr>
-                                                      <tr><th scope="row">PERIODO</th><td><%=periodcreated%></td></tr>
-                                                      <tr><th scope="row">HOLDER</th><td><%=holder%></td></tr>
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Información</h4>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                                                  </table>
-                                              </div>
-                                              <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                              </div>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table table-sm">
+                                                            <tr><th scope="row">ID</th><td><%=tmpId%></td></tr>
+                                                            <tr><th scope="row">TITULO</th><td><%=tmpTitle%></td></tr>
+                                                            <tr><th scope="row">DESCRIPCIÓN</th><td><%=tmpDescrip%></td></tr>
+                                                            <tr><th scope="row">OBJETO DIGITAL</th><td><%=tmpDigital%></td></tr>
+                                                            <tr><th scope="row">TIPO</th><td><%=tipos%></td></tr>
+
+                                                            <tr><th scope="row">DERECHOS</th><td><%=rights%></td></tr>
+                                                            <tr><th scope="row">AUTOR</th><td><%=autor%></td></tr>
+                                                            <tr><th scope="row">FECHA</th><td><%=datecreated%></td></tr>
+                                                            <tr><th scope="row">PERIODO</th><td><%=periodcreated%></td></tr>
+                                                            <tr><th scope="row">HOLDER</th><td><%=holder%></td></tr>
+
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                          </div>
                                         </div>                                 
                                     </td>
                                     <td><%=tipos%></td>
@@ -225,16 +271,20 @@
                             </tbody>
                         </table>
                     </form>
-                                <hr> <div align="center"><%if (numpage > 0) {%><button onclick="window.location = '?_id=<%=id%>&page=<%=numpage - 1%>&total=<%=totalRows%>';">Anterior</button>    
-                                        <% } if (numpage < totalPages) {%><button onclick="window.location = '?_id=<%=id%>&page=<%=numpage + 1%>&total=<%=totalRows%>';">Siguiente</button><% }%> 
-                         
-                            <%if ((totalPages+1) > 0) {%>
-                            <form action="/cultura/transObjects" method="post">
-                                <input type="hidden" name="_id" value="<%=id%>"><input type="hidden" name="total" value="<%=totalRows%>">
-                                Página <input type="text" name="npage" size="5" value="<%=numpage + 1%>"> de <%=totalPages+1%> <button type="submit" >Ir</button>
-                            </form>
-                                <%}%>
-                         </div>
+                        <hr> <div align="center"><%if (numpage > 0) {%><button onclick="window.location = '?_id=<%=id%>&page=<%=numpage - 1%>&total=<%=totalRows%>&q=<%=query != null ? query : ""%>';">Anterior</button>    
+                        <% }
+                            if (numpage < totalPages) {%><button onclick="window.location = '?_id=<%=id%>&page=<%=numpage + 1%>&total=<%=totalRows%>&q=<%=query != null ? query : ""%>';">Siguiente</button><% }%> 
+
+                        <%if ((totalPages + 1) > 0) {%>
+                        <form action="/cultura/transObjects" method="post">
+                            <input type="hidden" name="_id" value="<%=id%>"><input type="hidden" name="total" value="<%=totalRows%>"><input type="hidden" name="q" value="<%=query != null ? query : ""%>">
+                            Página <input type="text" name="npage" size="5" value="<%=numpage + 1%>"> de <%=totalPages + 1%> <button type="submit" >Ir</button>
+                        </form>
+                        <%}%>
+                    </div>
+                    <% } else { %>
+                    <h3>No se encontró información.</h3>
+                    <% }%>
                 </main>
             </div>
         </div>
@@ -245,7 +295,9 @@
                 $('[data-toggle="tooltip"]').tooltip();
                 $('.tobj').click(function () {
 //                    alert(this.value);
-                    getAjax("/cultura/transObjects?_id=<%=id%>&act=update&val=" + this.checked + "&objid=" + this.value, function(data){ console.log(data); })
+                    getAjax("/cultura/transObjects?_id=<%=id%>&act=update&val=" + this.checked + "&objid=" + this.value, function (data) {
+                        console.log(data);
+                    })
                 });
             });
 

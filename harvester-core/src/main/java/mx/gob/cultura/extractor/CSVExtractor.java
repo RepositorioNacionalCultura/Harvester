@@ -1,9 +1,12 @@
 package mx.gob.cultura.extractor;
 
 import com.mongodb.*;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 import mx.gob.cultura.indexer.SimpleESIndexer;
 import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
-import mx.gob.cultura.util.Util;
+import mx.gob.cultura.commons.Util;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
@@ -174,7 +177,7 @@ public class CSVExtractor extends ExtractorBase {
                 extractorDef.put("lastExecution", sdf.format(new Date()));
 
                 dsExtract.updateObj(extractorDef);
-                HashMap<String, String> hm = Util.loadOccurrences(engine);
+                HashMap<String, String> hm = Util.SWBForms.loadOccurrences(engine);
                 int r = 0;
                 ArrayList<String> arr = new ArrayList();
                 for (CSVRecord record : CSVFormat.DEFAULT.parse(in)) {
@@ -182,7 +185,6 @@ public class CSVExtractor extends ExtractorBase {
                     extractorDef.put("status", STATUS.EXTRACTING.name());
                     extracting = true;
                     dsExtract.updateObj(extractorDef);
-
 
                     //arreglo con el nombre de las columnas
                     if (r == 0) {
@@ -193,8 +195,8 @@ public class CSVExtractor extends ExtractorBase {
                                     arr.add(c, "oaiid");
                                 } else {
                                     field = field.toLowerCase().trim();
-                                    field = Util.replaceSpecialCharacters(field, true);
-                                    field = Util.replaceOccurrences(hm, field.trim());
+                                    field = Util.TEXT.replaceSpecialCharacters(field, true);
+                                    field = Util.TEXT.replaceOccurrences(hm, field.trim());
 
                                     arr.add(c, field);
                                 }
@@ -216,7 +218,7 @@ public class CSVExtractor extends ExtractorBase {
                             }
                             c++;
                         }
-                        BasicDBObject bjson = Util.toBasicDBObject(rec);
+                        BasicDBObject bjson = Util.SWBForms.toBasicDBObject(rec);
                         objects.insert(bjson);
                     }
                     r++;
@@ -257,8 +259,14 @@ public class CSVExtractor extends ExtractorBase {
 
                 //Generar el nuevo DataObject combinado por cada prefix
                 try {
+                    //Create index in spanish language
+                    IndexOptions opts = new IndexOptions();
+                    opts.defaultLanguage("spanish");
+
                     DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
                     DBCollection objects = db.getCollection("fullobjects");
+                    MongoCollection mcoll = Util.MONGODB.getMongoClient().getDatabase(extractorDef.getString("name").toUpperCase()).getCollection("TransObject");
+                    mcoll.createIndex(Indexes.compoundIndex(Indexes.text("identifier.value"),Indexes.text("resourcetitle"),Indexes.text("resourcedescription")), opts);
                     SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
 
 //                System.out.println("encontro DB y colección...");
@@ -281,12 +289,12 @@ public class CSVExtractor extends ExtractorBase {
                             dobj = (DataObject) DataObject.parseJSON(next.toString());
                             try {
                                 DataObject result = mapper.map(dobj);
-                                HashMap<String, String> hmmaptable = Util.loadExtractorMapTable(engine, extractorDef);
+                                HashMap<String, String> hmmaptable = Util.SWBForms.loadExtractorMapTable(engine, extractorDef);
 
                                 // Mapeo de propiedades definidas en la tabla con los a encontrar en los catálogos 
                                 // Se actualizan las propiedades del DataObject
                                 if (!hmmaptable.isEmpty()) {
-                                    Util.findProps(result, hmmaptable, engine);
+                                    Util.SWBForms.findProps(result, hmmaptable, engine);
                                 }
                                 //System.out.println("Antes de agregar el objeto");
                                 result.put("forIndex", true);
@@ -307,8 +315,6 @@ public class CSVExtractor extends ExtractorBase {
 
                         //eliminando colección fullobjects
                         objects.drop();
-
-
                     } catch (Exception e) {
                         log.error("Error al indexar\n", e);
                     }
