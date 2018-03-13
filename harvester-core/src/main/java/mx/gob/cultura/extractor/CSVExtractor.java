@@ -397,13 +397,14 @@ public class CSVExtractor extends ExtractorBase {
                     DataObject next = cursor.next();
                     if (next.getBoolean("forIndex", true)) {
                         try {
+                            String iddo = next.getId();
                             next.remove("_id");
                             // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
                             //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
                             //SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "repositorio", "bic");
                             SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");
                             //System.out.println("\n\n\n"+next.toString());
-                            sesidx.index(next.toString());
+                            sesidx.index(next.toString(),iddo);
                             numItemsIndexed++;
                         } catch (Exception e) {
                             log.error("Error en el mapeo e indexación...");
