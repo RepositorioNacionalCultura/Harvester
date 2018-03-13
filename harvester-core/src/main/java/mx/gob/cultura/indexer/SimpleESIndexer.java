@@ -57,6 +57,16 @@ public class SimpleESIndexer {
     }
 
     /**
+     * Indexes object in ElasticSearch using specified id.
+     * @param objectJson Object JSON.
+     * @param id Identifier to use.
+     * @return ID of indexed object or null if indexing fails.
+     */
+    public String index(String objectJson, String id) {
+        return Util.ELASTICSEARCH.indexObject(client, indexName, indexType, id, objectJson);
+    }
+
+    /**
      * Indexes a list of objects in ElasticSearch.
      * @param objects {@link ArrayList} of JSON Strings for objects.
      * @return {@link ArrayList} of identifiers of indexed objects.
