@@ -680,7 +680,7 @@ public class OAIExtractor extends ExtractorBase {
                 extractorDef.put("transformed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
                 //eliminando colección fullobjects
-                objects.drop();
+                //objects.drop();
 
             } catch (Exception e) {
                 log.error("Error al procesar la Base de Datos", e);

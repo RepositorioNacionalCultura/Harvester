@@ -7,7 +7,6 @@ import org.semanticwb.datamanager.*;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
 
 /**
  * Class that manages Extractor execution.
@@ -73,8 +72,10 @@ public class ExtractorManager {
                         if (null != className) {
                             if (className.endsWith("CSVExtractor")) {
                                 extractor = new CSVExtractor(key,engine);
-                            } else if (className.endsWith("OAIDCExtractor")) {
+                            } else if (className.endsWith("OAIExtractor")) {
                                 extractor = new OAIExtractor(key,engine);
+                            } else if (className.endsWith("JSONExtractor")) {
+                                extractor = new JSONExtractor(key,engine);
                             }
                         }
                     }
@@ -127,6 +128,8 @@ public class ExtractorManager {
                         extractor = new CSVExtractor(extractorConfig.getId(),engine);
                     } else if (className.endsWith("OAIExtractor")) {
                         extractor = new OAIExtractor(extractorConfig.getId(),engine);
+                    } else if (className.endsWith("JSONExtractor")) {
+                        extractor = new JSONExtractor(extractorConfig.getId(),engine);
                     }
                     hmExtractor.put(extractorConfig.getId(), extractor);  // actualizando instancia del extractor en el HashMap
 //                    hmExtractorDef.put(extractorConfig.getId(), extractorConfig);  // actualizando configuración del extractor en el HashMap
