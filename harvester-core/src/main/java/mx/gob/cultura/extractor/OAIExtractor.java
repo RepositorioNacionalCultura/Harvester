@@ -480,7 +480,7 @@ public class OAIExtractor extends ExtractorBase {
 
         long numItems = 0;
         long numAlready = 0;
-
+        
         extractorDef.put("status", STATUS.PROCESSING.name());
         dsExtract.updateObj(extractorDef);
 
@@ -605,6 +605,7 @@ public class OAIExtractor extends ExtractorBase {
         ScriptEngineManager factory = new ScriptEngineManager();
         long numItemsIndexed = 0;
         long numItemsDeleted = 0;
+        String oaiKey = null;
 
         if (null != scriptsrc && scriptsrc.trim().length() > 0 && (getStatus() == STATUS.STOPPED ||
                 getStatus() == STATUS.FINISHED || getStatus() == STATUS.LOADED)) {
@@ -645,6 +646,7 @@ public class OAIExtractor extends ExtractorBase {
                         }
 
                         dobj = (DataObject) DataObject.parseJSON(next.toString());
+                        oaiKey = dobj.getString("oaiid");
                         //System.out.println("DataObject: " + dobj);
                         try {
 
@@ -659,10 +661,11 @@ public class OAIExtractor extends ExtractorBase {
                             //System.out.println("Antes de agregar el objeto");
                             result.put("forIndex", true);
                             DataObject dobjnew = transobjs.addObj(result);
-                            //System.out.println("Resultado del Mapeo:....\n" + result);
+                            //System.out.println("\n===============================================\nResultado del Mapeo:....\n==========================================\n" + result);
                             numItemsIndexed++;
                         } catch (Exception e) {
-                            log.error("Error en el mapeo e indexación...", e);
+                            log.error("Error en el mapeo e indexación..."+oaiKey, e);
+                            System.out.println("ERROR--in: \n\n================================\n"+e.toString());
                         }
 
                         if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
@@ -675,6 +678,7 @@ public class OAIExtractor extends ExtractorBase {
                     log.trace("Total Items Deleted: " + numItemsDeleted);
                 } catch (Exception e) {
                     log.error("Error en la transformación y mapeo\n", e);
+                    System.out.println("ERROR--ext: \n\n================================\n"+e.toString());
                 }
                 extractorDef.put("status", STATUS.FINISHED.name());
                 extractorDef.put("transformed", numItemsIndexed);
