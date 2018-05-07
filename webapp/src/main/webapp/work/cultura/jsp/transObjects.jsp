@@ -2,8 +2,8 @@
     Document   : extractores
     Created on : 08-dic-2017, 10:19:49
     Author     : juan.fernandez
---%><%@page import="org.semanticwb.datamanager.*"%>
-<%
+--%><%@page import="mx.gob.cultura.commons.Util"%>
+<%@page import="org.semanticwb.datamanager.DataObjectIterator"%><%@page import="org.semanticwb.datamanager.DataList"%><%@page import="org.semanticwb.datamanager.DataMgr"%><%@page import="org.semanticwb.datamanager.DataObject"%><%@page import="org.semanticwb.datamanager.SWBDataSource"%><%@page import="org.semanticwb.datamanager.SWBScriptEngine"%><%
     String id = request.getParameter("_id");
     String pid = id;
     SWBScriptEngine engine = DataMgr.initPlatform("/work/cultura/jsp/datasources.js", session);
@@ -18,10 +18,8 @@
         return;
     }
     String action = request.getParameter("act");
-//System.out.println("Action:"+action);
     if (null != action && action.equals("update")) {
 //                                                        act = update & objid = "+this.value+" & val = true
-//System.out.println("Actualizando por ajax");
         String objid = request.getParameter("objid");
         DataObject transDO = dsTO.fetchObjById(objid);
         String val = request.getParameter("val");
@@ -106,20 +104,18 @@
                         doItems.put("startRow", numpage * 50);
                         doItems.put("endRow", (numpage * 50) + 50);
                         if (query != null && query.trim().length() > 0) {
-//                            System.out.println("QUERY:" + query);
                             DataObject data = new DataObject();
                             doItems.put("data", data);
                             //IDENTIFIER, TITLE, DESCRIPTION
                             DataObject sub = data.addSubObject("$text");
                             sub.addParam("$search", query);
-//                            System.out.println("query:" + data.toString());
 
                             //sub.addParam("identifier", query).addParam("title", query).addParam("description", query);
                         }
                         DataObjectIterator res = dsTO.find(doItems);
-                        //System.out.println("RES:" + res);
+
                         totalRows = res.total();
-                        //System.out.println("regs:" + totalRows);
+
                         if (totalRows > 0) {
                             totalPages = totalRows / 50;
                             if ((totalRows / 50) > totalPages) {
@@ -138,7 +134,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <%                                    int numItem = numpage * 50;
+                                <%    
+                                    //System.out.println("0");
+                                    int numItem = numpage * 50;
                                     while (res.hasNext()) {
                                         DataObject dotmp = res.next();
                                         String mymodalid = dotmp.getId();
@@ -148,8 +146,8 @@
                                             tmpId = dotmp.getDataList("identifier").getDataObject(0).getString("value");
                                         } catch (Exception e) {
                                             tmpId = dotmp.get("identifier").toString();
-                                            //System.out.println("No identifier");
                                         }
+                                        //System.out.println("1");
                                         //revisar si tiene título
                                         String tmpTitle = "No disponible";
                                         try {
@@ -182,9 +180,9 @@
                                                 }
 //                                                tmpTitle = mx.gob.cultura.util.Util.toStringHtmlEscape(sbTitles.toString());
 //                                                tmpTitle = mx.gob.cultura.util.Util.toStringHtmlEscape(dotmp.getDataList("resourcetitle").getDataObject(0).getDataList("value").toString());
-                                                tmpTitle = mx.gob.cultura.commons.Util.TEXT.toStringHtmlEscape(dotmp.getDataList("resourcetitle").toString());
+                                                tmpTitle = Util.TEXT.toStringHtmlEscape(dotmp.getDataList("resourcetitle").toString());
                                                 //tmpTitle = dotmp.getDataList("resourcetitle").getDataObject(0).getDataList("value").get(0).toString();
-                                            } else if(dotmp.getString("resourcetitle")!=null){
+                                            } else if (dotmp.getString("resourcetitle") != null) {
                                                 tmpTitle = dotmp.getString("resourcetitle");
 
                                             } else {
@@ -194,33 +192,96 @@
                                             tmpTitle = dotmp.get("resourcetitle").toString();
                                             //System.out.println("No title");
                                         }
+//                                        System.out.println("2");
                                         //revisar si tiene descripción
                                         String tmpDescrip = dotmp.getString("resourcedescription", "NO DESCRIPTION AVAILABLE");
-                                        String tmpDigital = dotmp.getString("digitalObject", "NO DIGITAL OBJECT FOUND");
 
-                                        String tipos = dotmp.get("resourcetype").toString();
+//                                        System.out.println("3");
+                                        String tmpDigital = "NO DIGITAL OBJECT FOUND";
+                                        String rights = "NO RIGHTS FOUND";
+                                        String format = "NO DIGITAL OBJECT FORMAT FOUND";
                                         try {
-                                            if (!dotmp.getDataList("resourcetype").isEmpty()) {
+                                            if (dotmp.get("digitalObject")!=null&&!dotmp.getDataList("digitalObject").isEmpty()) {
+                                                tmpDigital = dotmp.getDataList("digitalObject").getDataObject(0).getString("url", "NO DIGITAL OBJECT FOUND");
+                                                rights = dotmp.getDataList("digitalObject").getDataObject(0).getString("rights", "NO RIGHTS FOUND");
+                                                format = dotmp.getDataList("digitalObject").getDataObject(0).getString("format", "NO DIGITAL OBJECT FORMAT FOUND");
+
+                                            } else {
+                                                tmpDigital = "NO DIGITAL OBJECT FOUND";
+                                                rights = "NO RIGHTS FOUND";
+                                                format = "NO DIGITAL OBJECT FORMAT FOUND";
+                                            }
+                                        } catch (Exception e) {
+                                            tmpDigital = dotmp.get("digitalObject").toString();
+                                            //System.out.println("No Digital Object");
+                                        }
+//                                        System.out.println("4");
+                                        String tipos = "NO TYPE AVAILABLE"; //dotmp.get("resourcetype").toString();
+                                        try {
+                                            if (null!=dotmp.get("resourcetype")&&!dotmp.getDataList("resourcetype").isEmpty()) {
                                                 tipos = dotmp.getDataList("resourcetype").getDataObject(0).getString("value", "NO TYPE AVAILABLE");
                                             } else {
-                                                tipos = "NO TYPE AVAILABLE";
+                                                //tipos = "NO TYPE AVAILABLE";
+                                                tipos = format;
 
                                             }
                                         } catch (Exception e) {
                                             tipos = dotmp.get("resourcetype").toString();
-                                            //System.out.println("No title");
+                                            //System.out.println("No Type");
                                         }
+//                                        System.out.println("5");
+//                                        String rights = "NO RIGHTS FOUND";
+//                                        try {
+//                                            if (dotmp.get("rights")!=null&&!dotmp.getDataList("rights").isEmpty()) {
+//                                                rights = dotmp.getDataList("rights").getDataObject(0).getString("value", "NO RIGHTS FOUND");
+//                                            } else {
+//                                                rights = "NO RIGHTS FOUND";
+//
+//                                            }
+//                                        } catch (Exception e) {
+//                                            rights = dotmp.get("rights").toString();
+//                                            //System.out.println("No Rights");
+//                                        }
+//                                        System.out.println("6");
+                                        String autor = "NO AUTHOR FOUND"; //dotmp.get("creator").toString();
+                                        try {
+                                            if (dotmp.get("creator")!=null&&!dotmp.getDataList("creator").isEmpty()) {
+                                                autor = dotmp.getDataList("creator").getDataObject(0).getString("value", "NO AUTHOR FOUND");
+                                            } else {
+                                                autor = "NO AUTHOR FOUND";
 
-                                        String rights = dotmp.getString("rights", "NO RIGHTS FOUND");
+                                            }
+                                        } catch (Exception e) {
+                                            autor = dotmp.get("creator").toString();
+                                        }
+//                                        System.out.println("7");
+                                        String datecreated = "NO CREATION DATE FOUND"; //dotmp.get("datecreated").toString(); //, "NO CREATION DATE FOUND");
+                                        try {
+                                            if (dotmp.get("datecreated")!=null&&!dotmp.getDataList("datecreated").isEmpty()) {
+                                                datecreated = dotmp.getDataList("datecreated").getDataObject(0).getString("value", "NO CREATION DATE FOUND");
+                                            } else if(null!=dotmp.get("datecreated")){
+                                                datecreated = dotmp.get("datecreated").toString();
+                                            } else {
+                                                datecreated = "NO CREATION DATE FOUND";
+                                            }
+                                        } catch (Exception e) {
+                                            datecreated = dotmp.get("datecreated").toString();
+                                        }
+//                                        System.out.println("8");
+                                        String periodcreated = "NO CREATION PERIOD FOUND"; //dotmp.get("periodcreated").toString(); 
+                                        try {
+                                            if (null!=dotmp.get("periodcreated")&&!dotmp.getDataList("periodcreated").isEmpty()) {
+                                                periodcreated = dotmp.getDataList("periodcreated").getDataObject(0).getString("value", "NO CREATION PERIOD FOUND");
+                                            } else {
+                                                periodcreated = "NO CREATION PERIOD FOUND";
 
-                                        String autor = dotmp.getString("creator", "NO AUTHOR FOUND");
-
-                                        String datecreated = dotmp.getString("datecreated", "NO CREATION DATE FOUND");
-
-                                        String periodcreated = dotmp.getString("periodcreated", "NO CREATION PERIOD FOUND");
-
+                                            }
+                                        } catch (Exception e) {
+                                            periodcreated = dotmp.get("periodcreated").toString();
+                                        }
+//                                        System.out.println("9");
                                         String holder = dotmp.getString("holder", "NO HOLDER FOUND");
-
+//                                        System.out.println("10");
                                         numItem++;
                                 %>
                                 <tr>
@@ -271,7 +332,7 @@
                             </tbody>
                         </table>
                     </form>
-                        <hr> <div align="center"><%if (numpage > 0) {%><button onclick="window.location = '?_id=<%=id%>&page=<%=numpage - 1%>&total=<%=totalRows%>&q=<%=query != null ? query : ""%>';">Anterior</button>    
+                    <hr> <div align="center"><%if (numpage > 0) {%><button onclick="window.location = '?_id=<%=id%>&page=<%=numpage - 1%>&total=<%=totalRows%>&q=<%=query != null ? query : ""%>';">Anterior</button>    
                         <% }
                             if (numpage < totalPages) {%><button onclick="window.location = '?_id=<%=id%>&page=<%=numpage + 1%>&total=<%=totalRows%>&q=<%=query != null ? query : ""%>';">Siguiente</button><% }%> 
 
@@ -285,6 +346,7 @@
                     <% } else { %>
                     <h3>No se encontró información.</h3>
                     <% }%>
+                    <button onclick="window.location = '/cultura/extractor?_id=<%=pid%>';" >Regresar</button>
                 </main>
             </div>
         </div>
