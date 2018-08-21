@@ -37,7 +37,7 @@
     if (dobj != null) {
 
         String clase = dobj.getString("class", null);
-        if (clase != null && clase.equals("CSVExtractor")) {
+        if (clase != null && (clase.equals("CSVExtractor")||clase.equals("JSONExtractor"))) {
             isFile = true;
         }
         if(dobj.getBoolean("periodicity", false)){
@@ -73,9 +73,11 @@
                             numCols: 6,
                             titleOrientation: "top",
                             title: "Extractor",
+                            //canEdit:false,
                             fields: [
-                                {name: "name", title: "Nombre/Modelo", type: "string", required:true, colSpan: 3, width: "100%"},
-                                {name: "class", title: "Extractor a utilizar", type: "select", valueMap: {"OAIExtractor": "OAIExtractor", "CSVExtractor": "CSVExtractor"}, endRow: true,
+                                {name: "fullHolderName", title: "Nombre completo del proveedor de datos", type: "string", required:true, colSpan: 3, width: "100%", canEdit:true, endRow:true},
+                                {name: "name", title: "Nombre/Modelo", type: "string", required:true, colSpan: 3, width: "100%", canEdit:true},
+                                {name: "class", title: "Extractor a utilizar", endRow: true, canEdit:true,
                                     changed: function (form, field, value) {
                                         var mostrar = false;
                                         if (value !== null && value === "OAIExtractor") {
@@ -110,11 +112,11 @@
                                         }
                                     }
                                 },
-                                {name: "url", title: "URL", type: "string", colSpan: 4, width: "100%", endRow: "true", defaultValue: "OAIExtractor", <%=isFile ? "showIf:\"false\"" : ""%>},
-                                {name: "verbs", title: "Verbos", colSpan: 2, width: "100%",<%=isFile ? "showIf:\"false\"" : ""%>},
-                                {name: "prefix", title: "MetaData PREFIX", colSpan: 2, width: "100%", endRow: true,<%=isFile ? "showIf:\"false\"" : ""%>},
-                                {name: "csvfile", title: "Archivo CSV", stype: "file", colSpan: 4, width: "100%", endRow: true, <%=!isFile ? "showIf:\"false\"" : ""%>},
-                                {name: "periodicity", title: "Periodicidad", type: "boolean",
+                                {name: "url", title: "URL", type: "string", colSpan: 4, width: "100%", endRow: "true", canEdit:true, defaultValue: "OAIExtractor", <%=isFile ? "showIf:\"false\"" : ""%>},
+                                {name: "verbs", title: "Verbos", colSpan: 2, width: "100%", canEdit:true, <%=isFile ? "showIf:\"false\"" : ""%>},
+                                {name: "prefix", title: "MetaData PREFIX", colSpan: 2, width: "100%", endRow: true, canEdit:true, <%=isFile ? "showIf:\"false\"" : ""%>},
+                                {name: "csvfile", title: "Archivo CSV", stype: "file", colSpan: 4, width: "100%",canEdit:true, endRow: true, <%=!isFile ? "showIf:\"false\"" : ""%>},
+                                {name: "periodicity", title: "Periodicidad", type: "boolean", canEdit:true,
                                     changed: function (form, field, value) {
                                         var mostrar = false;
                                         if (value !== null && value === true) {
@@ -135,7 +137,7 @@
                                         }
                                     }
                                 },
-                                {name: "interval", title: "Intervalo de tiempo (días)", type: "int", colSpan: 2, width: "100%", endRow: true, <%=!havePeriodicity ? "showIf:\"false\"" : ""%>},
+                                {name: "interval", title: "Intervalo de tiempo (días)", type: "int", colSpan: 2, canEdit:true, width: "100%", endRow: true, <%=!havePeriodicity ? "showIf:\"false\"" : ""%>},
 
                         <%if (id != null) {%>
 
@@ -161,6 +163,7 @@
                                     titleOrientation: "top",
                                     fileds: [
                                         {name: "script", title: "Script",
+                                            canEdit:true,
                                             type: "textArea",
                                             editorType_: "richText",
                                             width: "100%",
@@ -178,28 +181,29 @@
                                     stype: "tab",
                                     dataSource: "MapDefinition",
                                     titleOrientation: "top",
+                                    canEdit:true,
                                 },
                             ]
                         }, <%=id%>, "Extractor");
                         <%if (id != null) {%>
-                        /*form.buttons.addMember(isc.IButton.create(
-                                {
-                                    title: "Cosechar",
-                                    padding: "10px",
-                                    click: function (p1) {
-                                        window.location = "/cultura/harvest?_id=<pid%>&act=EXTRACT";
-                                        return false;
-                                    }
-                                }));
-                        form.buttons.addMember(isc.IButton.create(
-                                {
-                                    title: "Actualizar",
-                                    padding: "10px",
-                                    click: function (p1) {
-                                        window.location = "/cultura/harvest?_id=<pid%>&act=UPDATE";
-                                        return false;
-                                    }
-                                }));*/
+//                        form.buttons.addMember(isc.IButton.create(
+//                                {
+//                                    title: "Cosechar",
+//                                    padding: "10px",
+//                                    click: function (p1) {
+//                                        window.location = "/cultura/harvest?_id=<%=pid%>&act=EXTRACT";
+//                                        return false;
+//                                    }
+//                                }));
+//                        form.buttons.addMember(isc.IButton.create(
+//                                {
+//                                    title: "Actualizar",
+//                                    padding: "10px",
+//                                    click: function (p1) {
+//                                        window.location = "/cultura/harvest?_id=<%=pid%>&act=UPDATE";
+//                                        return false;
+//                                    }
+//                                }));
                         form.buttons.addMember(isc.IButton.create(
                                 {
                                     title: "Cosechar",
@@ -288,5 +292,66 @@
             </div>
         </div>
         <jsp:include page="../../templates/bodyscripts.jsp" flush="true"></jsp:include>
+<!--         MODAL 
+        <div data-toggle="modal" data-target="#myModal001"><% //=tmpTitle%>
+             Modal 
+            <div class="modal fade" id="myModal001" role="dialog">
+                <div class="modal-dialog modal-lg">
+
+                     Modal content
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Información</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-sm">
+                                <tr><th scope="row">ID</th><td><% //=tmpId%></td></tr>
+                                <tr><th scope="row">TITULO</th><td><% //=tmpTitle%></td></tr>
+                                <tr><th scope="row">DESCRIPCIÓN</th><td><% //=tmpDescrip%></td></tr>
+                                <tr><th scope="row">OBJETO DIGITAL</th><td><% //=tmpDigital%></td></tr>
+                                <tr><th scope="row">TIPO</th><td><% //=tipos%></td></tr>
+
+                                <tr><th scope="row">DERECHOS</th><td><% //=rights%></td></tr>
+                                <tr><th scope="row">AUTOR</th><td><% //=autor%></td></tr>
+                                <tr><th scope="row">FECHA</th><td><% //=datecreated%></td></tr>
+                                <tr><th scope="row">PERIODO</th><td><% //=periodcreated%></td></tr>
+                                <tr><th scope="row">HOLDER</th><td><% //=holder%></td></tr>
+
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>                                 
+        </div>-->
+        
     </body>
+<!--        <script>
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+                $('.tobj').click(function () {
+//                    alert(this.value);
+                    getAjax("/cultura/transObjects?_id=<% //=id%>&act=update&val=" + this.checked + "&objid=" + this.value, function (data) {
+                        console.log(data);
+                    })
+                });
+            });
+
+            function getAjax(url, success) {
+                var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+                xhr.open('GET', url);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState > 3 && xhr.status == 200)
+                        success(xhr.responseText);
+                };
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.send();
+                return xhr;
+            }
+
+    </script>-->
 </html>

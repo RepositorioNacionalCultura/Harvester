@@ -165,10 +165,10 @@ eng.dataSources["Extractor"] = {
     scls: "Extractor",
     modelid: "Cultura",
     dataStore: "mongodb",
-    displayField: "endpoint",
+    displayField: "fullHolderName",
 
     fields: [
-        {name: "name", title: "Nombre/Modelo", type: "string"},
+        {name: "fullHolderName", title: "Nombre completo proveedor de datos", type: "string", required:true},
 //        {name:"collection",title:"Nombre de la colección",type:"string"},
         {name: "url", title: "URL", type: "string"},
 //        {name:"endpoint",title:"EndPoint",stype:"select", dataSource:"EndPoint", required:true},

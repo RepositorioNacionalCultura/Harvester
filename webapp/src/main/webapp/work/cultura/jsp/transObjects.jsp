@@ -135,7 +135,7 @@
                             </thead>
                             <tbody>
                                 <%    
-                                    //System.out.println("0");
+//                                    System.out.println("0");
                                     int numItem = numpage * 50;
                                     while (res.hasNext()) {
                                         DataObject dotmp = res.next();
@@ -147,15 +147,15 @@
                                         } catch (Exception e) {
                                             tmpId = dotmp.get("identifier").toString();
                                         }
-                                        //System.out.println("1");
+//                                        System.out.println("1");
                                         //revisar si tiene título
                                         String tmpTitle = "No disponible";
                                         try {
-                                            if (dotmp.getDataList("resourcetitle") != null && !dotmp.getDataList("resourcetitle").isEmpty()) {
+                                            if (dotmp.getDataList("recordtitle") != null && !dotmp.getDataList("recordtitle").isEmpty()) {
 //                                                System.out.println("size:" + dotmp.getDataList("resourcetitle").size());
                                                 StringBuilder sbTitles = new StringBuilder();
-                                                for (int idx = 0; idx < dotmp.getDataList("resourcetitle").size(); idx++) {
-                                                    DataObject dotitle = dotmp.getDataList("resourcetitle").getDataObject(idx);
+                                                for (int idx = 0; idx < dotmp.getDataList("recordtitle").size(); idx++) {
+                                                    DataObject dotitle = dotmp.getDataList("recordtitle").getDataObject(idx);
 //                                                        String titleType = dotitle.getString("type",null);
 //                                                        if(null!=titleType){
 //                                                            if("dc".equals(titleType)){
@@ -180,21 +180,31 @@
                                                 }
 //                                                tmpTitle = mx.gob.cultura.util.Util.toStringHtmlEscape(sbTitles.toString());
 //                                                tmpTitle = mx.gob.cultura.util.Util.toStringHtmlEscape(dotmp.getDataList("resourcetitle").getDataObject(0).getDataList("value").toString());
-                                                tmpTitle = Util.TEXT.toStringHtmlEscape(dotmp.getDataList("resourcetitle").toString());
+                                                tmpTitle = Util.TEXT.toStringHtmlEscape(dotmp.getDataList("recordtitle").toString());
                                                 //tmpTitle = dotmp.getDataList("resourcetitle").getDataObject(0).getDataList("value").get(0).toString();
-                                            } else if (dotmp.getString("resourcetitle") != null) {
-                                                tmpTitle = dotmp.getString("resourcetitle");
+                                            } else if (dotmp.getString("recordtitle") != null) {
+                                                tmpTitle = dotmp.getString("recordtitle");
 
                                             } else {
                                                 tmpTitle = "NO TITLE AVAILABLE";
                                             }
                                         } catch (Exception e) {
-                                            tmpTitle = dotmp.get("resourcetitle").toString();
+                                            tmpTitle = dotmp.get("recordtitle").toString();
                                             //System.out.println("No title");
                                         }
 //                                        System.out.println("2");
                                         //revisar si tiene descripción
-                                        String tmpDescrip = dotmp.getString("resourcedescription", "NO DESCRIPTION AVAILABLE");
+                                        String tmpDescrip = "NO DESCRIPTION AVAILABLE";
+                                        try {
+                                            if (dotmp.get("description")!=null&&!dotmp.getDataList("description").isEmpty()) {
+                                                tmpDescrip = dotmp.getDataList("description").toString();
+                                            } else {
+                                                tmpDescrip = "NO DESCRIPTION AVAILABLE";
+                                            }
+                                        } catch (Exception e) {
+                                            tmpDescrip = dotmp.get("description").toString();
+                                            //System.out.println("No Digital Object");
+                                        }
 
 //                                        System.out.println("3");
                                         String tmpDigital = "NO DIGITAL OBJECT FOUND";
@@ -203,7 +213,7 @@
                                         try {
                                             if (dotmp.get("digitalObject")!=null&&!dotmp.getDataList("digitalObject").isEmpty()) {
                                                 tmpDigital = dotmp.getDataList("digitalObject").getDataObject(0).getString("url", "NO DIGITAL OBJECT FOUND");
-                                                rights = dotmp.getDataList("digitalObject").getDataObject(0).getString("rights", "NO RIGHTS FOUND");
+                                                rights = dotmp.getDataList("digitalObject").getDataObject(0).getString("rights", "NO DIGITAL OBJECT FOUND");
                                                 format = dotmp.getDataList("digitalObject").getDataObject(0).getString("format", "NO DIGITAL OBJECT FORMAT FOUND");
 
                                             } else {

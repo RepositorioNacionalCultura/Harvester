@@ -25,9 +25,11 @@
             }
 
         </script>
+        
     </head>
     <body>
 
+                                        
         <%
             String id = request.getParameter("_id");
             String pid = id;
@@ -38,8 +40,8 @@
             if (null == action) {
                 action = "";
             }
-
-            SWBScriptEngine engine = DataMgr.initPlatform("/work/cultura/jsp/datasources.js", session);
+            String dspath = "/work/cultura/jsp/datasources.js";
+            SWBScriptEngine engine = DataMgr.initPlatform(dspath, session);
             SWBDataSource datasource = engine.getDataSource("Extractor");
             DataObject dobj = datasource.fetchObjById(id);
             
@@ -55,7 +57,7 @@
                 if (action.equals("EXTRACT")) {
                     if (null != pid) {
 
-                        ExtractorManager extMgr = ExtractorManager.getInstance();
+                        ExtractorManager extMgr = ExtractorManager.getInstance(dspath);
                         extMgr.loadExtractor(dobj);
 //                        status = extMgr.getStatus(id);
                         extMgr.startExtractor(id);
@@ -73,7 +75,7 @@
                 }
             } else if (action.equals("STOP")) {
                 if (null != pid) {
-                    ExtractorManager extMgr = ExtractorManager.getInstance();
+                    ExtractorManager extMgr = ExtractorManager.getInstance(dspath);
                     //extMgr.loadExtractor(dobj);
                     extMgr.stopExtractor(id);
                     status = extMgr.getStatus(id);
@@ -87,7 +89,7 @@
                 }
             } else if (action.equals("REPLACE")) {
                 if (null != pid) {
-                    ExtractorManager extMgr = ExtractorManager.getInstance();
+                    ExtractorManager extMgr = ExtractorManager.getInstance(dspath);
                     extMgr.loadExtractor(dobj);
                     extMgr.replaceExtractor(id);
 //                    status = extMgr.getStatus(id);
@@ -106,7 +108,7 @@
                 }
             } else if (action.equals("PROCESS")) {
                 if (null != pid) {
-                    ExtractorManager extMgr = ExtractorManager.getInstance();
+                    ExtractorManager extMgr = ExtractorManager.getInstance(dspath);
                     extMgr.loadExtractor(dobj);
 //System.out.println("dobj: \n"+dobj.toString());
                     extMgr.processExtractor(id);
@@ -124,7 +126,7 @@
                 }
             } else if (action.equals("INDEX")) {
                 if (null != pid) {
-                    ExtractorManager extMgr = ExtractorManager.getInstance();
+                    ExtractorManager extMgr = ExtractorManager.getInstance(dspath);
                     extMgr.loadExtractor(dobj);
 //System.out.println("dobj: \n"+dobj.toString());
                     extMgr.indexExtractor(id);
@@ -144,7 +146,7 @@
                 }
             } else if (action.equals("UPDATE")) {
                 if (null != pid) {
-                    ExtractorManager extMgr = ExtractorManager.getInstance();
+                    ExtractorManager extMgr = ExtractorManager.getInstance(dspath);
                     extMgr.loadExtractor(dobj);
                     extMgr.updateExtractor(pid);
                     endTime = System.currentTimeMillis();
@@ -165,5 +167,8 @@
 
 
         </div>
+            
     </body>
+    
+
 </html>

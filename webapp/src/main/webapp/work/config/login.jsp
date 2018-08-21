@@ -13,7 +13,7 @@
 
     if(email!=null && password!=null)
     {
-        SWBScriptEngine engine=DataMgr.initPlatform(session);
+        SWBScriptEngine engine=DataMgr.initPlatform("/work/cultura/jsp/datasources.js",session);
         SWBDataSource ds=engine.getDataSource("User");
         DataObject r=new DataObject();
         DataObject data=new DataObject();
@@ -69,9 +69,13 @@
                 border-top-right-radius: 0;
             }
         </style>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Oswald:200,500,600" rel="stylesheet">
+<link href="https://unpkg.com/ionicons@4.2.0/dist/css/ionicons.min.css" rel="stylesheet">
+<link href="/work/cultura/jsp/harvester.css" rel="stylesheet">
         <title>Inicio de sesión</title>
     </head>
-    <body class="animated slideInDown">
+    <body class="animated slideInDown harvester">
         <div class="container">
             <form action="/login" method="post" class="form-signin">
                 <h2 class="form-signin-heading">Iniciar sesión</h2>
