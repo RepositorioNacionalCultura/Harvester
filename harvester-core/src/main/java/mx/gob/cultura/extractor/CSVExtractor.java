@@ -182,7 +182,7 @@ public class CSVExtractor extends ExtractorBase {
                 dsExtract.updateObj(extractorDef);
                 HashMap<String, String> hm = Util.SWBForms.loadOccurrences(engine);
                 int r = 0;
-                ArrayList<String> arr = new ArrayList();
+                ArrayList<String> arr = new ArrayList();  // nombres de columnas
                 for (CSVRecord record : CSVFormat.DEFAULT.parse(in)) {
 
                     extractorDef.put("status", STATUS.EXTRACTING.name());
@@ -209,34 +209,64 @@ public class CSVExtractor extends ExtractorBase {
                             c++;
                         }
                     } else {
+                        
+                        //revisa si tiene datos el registro
+                        boolean isEmpty = true;
+                        for (String field : record) {
+                            if(field!=null&&field.trim().length()>0){
+                                isEmpty = false;
+                                break;
+                            }
+                        }
+                        if(isEmpty) continue;
                         //Agregar a la coleccion fullobjects cada record como DataObject
                         int c = 0;
                         boolean add = true;
                         DataObject rec = new DataObject();
                         BasicDBObject dbQuery = null;
                         DBObject dbres = null;
+                        String tmpColName = "";
                         for (String field : record) {
                             String colname = arr.get(c);
-                            if (colname != null && colname.trim().length() > 0) {
+                            if (null == colname || (colname != null && colname.trim().length() == 0)) { //revisando si la columna tiene nombre
+                                colname = tmpColName;
+//                                System.out.println("reutilizando..."+colname);
+                            } else {
+//                                System.out.println("Conservando..."+colname);
+                                tmpColName = colname;
+                            }
+                            if (colname.trim().length() > 0) {
+//                                System.out.println("cell value: "+field);
                                 Object val = field.trim();
+//                                System.out.println("cell size: "+field.trim().length());
                                 if (colname.equals("oaiid")) {
                                     //buscar si el registro no se capturó previamente
+                                    if(val.toString().trim().length()==0) continue;
                                     dbQuery = new BasicDBObject("oaiid", val.toString());
                                     dbres = objects.findOne(dbQuery);
                                 }
-                                rec.put(colname, val);
                                 if (dbres != null && !colname.equals("oaiid")) {
                                     if (dbres.get(colname) != null) {
                                         String objval = dbres.get(colname).toString().trim();
-                                        if (!objval.equals(val.toString().trim())) {
+                                        if (!objval.equals(val.toString().trim()) && val.toString().trim().length()>0) {
                                             dbres.put(colname, objval + " - " + val.toString().trim());
                                         }
                                     }
                                 }
+                                if (colname.trim().equals("digital_object")) {
+                                    String urldo = rec.getString("digital_object",null);
+                                    if(urldo!=null){
+                                        rec.put("digital_object", urldo + "," + val.toString().trim());
+                                    } else {
+                                        rec.put("digital_object",val.toString().trim());
+                                    }
+                                } else {
+                                    rec.put(colname, val);
+                                }
                             }
                             c++;
                         }
-                        if (dbres != null && dbQuery!=null) {
+                        if (dbres != null && dbQuery != null) {
                             objects.update(dbQuery, dbres);
                         } else {
                             BasicDBObject bjson = Util.SWBForms.toBasicDBObject(rec);
@@ -260,9 +290,11 @@ public class CSVExtractor extends ExtractorBase {
                 dsExtract.updateObj(extractorDef);
 
                 log.trace("Finalizando extracción..." + ext_name.toUpperCase() + " ==> Extracted(" + r + ")");
+                System.out.println("Finalizando extracción..." + ext_name.toUpperCase() + " ==> Extracted(" + r + ")");
             }
 
             log.trace("\n\n\n>>>>>>>>>> TRANSFORMING <<<<<<<<<<<<<<<<<\n\n\n");
+//            System.out.println("\n\n\n>>>>>>>>>> TRANSFORMING <<<<<<<<<<<<<<<<<\n\n\n");
             String idScript = extractorDef.getString("transScript");
             SWBDataSource dsTScript = engine.getDataSource("TransformationScript");
             DataObject doTS = dsTScript.fetchObjById(idScript);
@@ -309,6 +341,8 @@ public class CSVExtractor extends ExtractorBase {
                             }
 
                             dobj = (DataObject) DataObject.parseJSON(next.toString());
+                            String annotationKey = dobj.getString("oaiid", "").replace(":", "_").replace("/", "__");
+                            dobj.put("annKey", annotationKey);
                             try {
                                 DataObject result = mapper.map(dobj);
                                 HashMap<String, String> hmmaptable = Util.SWBForms.loadExtractorMapTable(engine, extractorDef);
@@ -336,7 +370,7 @@ public class CSVExtractor extends ExtractorBase {
                         log.trace("Total Items Deleted: " + numItemsDeleted);
 
                         //eliminando colección fullobjects
-                        objects.drop();
+                        //objects.drop();
                     } catch (Exception e) {
                         log.error("Error al indexar\n", e);
                     }
@@ -403,6 +437,7 @@ public class CSVExtractor extends ExtractorBase {
     @Override
     public void index() throws Exception {
         log.trace("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
+        String ext_fullHoldername = extractorDef.getString("fullHolderName", "N/A");
         SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
         long numItemsIndexed = 0;
 
@@ -411,6 +446,7 @@ public class CSVExtractor extends ExtractorBase {
             dsExtract.updateObj(extractorDef);
 
             try {
+//                long objsDeleted = Util.ELASTICSEARCH.deleteObjectsByHolder(ext_fullHoldername);
                 DataObjectIterator cursor = transobjs.find();
                 while (null != cursor && cursor.hasNext()) {
                     if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
@@ -421,6 +457,7 @@ public class CSVExtractor extends ExtractorBase {
                         try {
                             String iddo = next.getId();
                             next.remove("_id");
+                            next.put("indexcreated", System.currentTimeMillis());
                             // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
                             //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
                             //SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "repositorio", "bic");

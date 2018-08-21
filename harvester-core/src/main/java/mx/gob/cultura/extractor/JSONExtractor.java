@@ -27,6 +27,7 @@ import mx.gob.cultura.commons.Util;
 import mx.gob.cultura.indexer.SimpleESIndexer;
 import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
 import org.apache.log4j.Logger;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.semanticwb.datamanager.DataMgr;
 import org.semanticwb.datamanager.DataObject;
 import org.semanticwb.datamanager.DataObjectIterator;
@@ -188,7 +189,7 @@ public class JSONExtractor extends ExtractorBase {
                 //System.out.println("JSON:\n" + jsf);
                 HashMap<String, String> hm = Util.SWBForms.loadOccurrences(engine);
                 jsf = Util.TEXT.replaceOccurrences(hm, jsf);
-                BasicDBList jarr = (BasicDBList)JSON.parse(jsf);
+                BasicDBList jarr = (BasicDBList) JSON.parse(jsf);
 
                 DB db = Util.MONGODB.getMongoClient().getDB(ext_name.toUpperCase());
                 DBCollection objects = db.getCollection("fullobjects");
@@ -205,13 +206,13 @@ public class JSONExtractor extends ExtractorBase {
                 String nid = null;
                 for (int i = 0; i < jarr.size(); i++) {
 
-                    BasicDBObject jo = (BasicDBObject)jarr.get(i);
+                    BasicDBObject jo = (BasicDBObject) jarr.get(i);
 
                     extractorDef.put("status", STATUS.EXTRACTING.name());
                     extracting = true;
                     dsExtract.updateObj(extractorDef);
 
-                    BasicDBObject jid = (BasicDBObject)((BasicDBList)jo.get("identifier")).get(0);
+                    BasicDBObject jid = (BasicDBObject) ((BasicDBList) jo.get("identifier")).get(0);
                     nid = jid.getString("value");
 
                     try {
@@ -293,6 +294,8 @@ public class JSONExtractor extends ExtractorBase {
                             }
 
                             dobj = (DataObject) DataObject.parseJSON(next.toString());
+                            String annotationKey = dobj.getString("oaiid", "").replace(":", "_").replace("/", "__");
+                            dobj.put("annKey", annotationKey);
                             try {
                                 DataObject result = mapper.map(dobj);
                                 HashMap<String, String> hmmaptable = Util.SWBForms.loadExtractorMapTable(engine, extractorDef);
@@ -383,6 +386,7 @@ public class JSONExtractor extends ExtractorBase {
     @Override
     public void index() throws Exception {
         log.trace("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
+        String ext_fullHoldername = extractorDef.getString("fullHolderName", "N/A");
         SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
         long numItemsIndexed = 0;
 
@@ -391,6 +395,7 @@ public class JSONExtractor extends ExtractorBase {
             dsExtract.updateObj(extractorDef);
 
             try {
+//                long objsDeleted = Util.ELASTICSEARCH.deleteObjectsByHolder(ext_fullHoldername);
                 DataObjectIterator cursor = transobjs.find();
                 while (null != cursor && cursor.hasNext()) {
                     if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
@@ -401,10 +406,11 @@ public class JSONExtractor extends ExtractorBase {
                         try {
                             String iddo = next.getId();
                             next.remove("_id");
+                            next.put("indexcreated", System.currentTimeMillis());
                             // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
                             //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
-                            //SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "repositorio", "bic");
                             SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");
+
                             //System.out.println("\n\n\n"+next.toString());
                             sesidx.index(next.toString(), iddo);
                             numItemsIndexed++;
