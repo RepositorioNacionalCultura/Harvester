@@ -1,8 +1,10 @@
 function (data) {
     /**
-     FONOTECA CSV file Script
+     INEHRM INSTITUTO NACIONAL DE ESTUDIOS HISTÓRICOS DE LAS REVOLUCIONES DE MÉXICO CSV file Script
      **/
-    var doURL = "http://35.193.209.163/multimedia/FONOTECA/";
+    var doURL = "http://35.193.209.163/multimedia/inehrm/";
+    var paththumbnail = doURL + "thumbnail/";
+    var pathtimelineth = doURL + "cronologia/";
     var ret = {};
     var idArray = [];
     var elType = [];
@@ -26,9 +28,13 @@ function (data) {
     var dotype = {};
     var reccollection = [];
 // Más de la colección
-    if (data.coleccion) {
-        if (data.coleccion.indexOf(",") > -1) {
-            var colles = data.coleccion.split(',');
+
+
+    var mascoleccion = data.coleccion || undefined;
+
+    if (mascoleccion && mascoleccion.trim().length > 0) {
+        if (mascoleccion.indexOf(",") > -1) {
+            var colles = mascoleccion.split(',');
             for (var i = 0; i < colles.length; i++) {
                 var coleccion = colles[i];
                 reccollection.push(coleccion);
@@ -43,25 +49,31 @@ function (data) {
         }
         ret.reccollection = reccollection;
     }
+
+    if (elCollection.length === 0 && data.institucion) {
+        elCollection.push(data.institucion);
+    }
     ret.collection = elCollection;
 // Identificador
     idArray.push({type: "oai", value: data.oaiid, preferred: true});
 // Tipo de BIC  
-    /*
-     if(data.media && typeof data.media == 'string'){
-     elType.push(data.media);
-     }  
-     */
-    if (data.tipo_del_bic) {
-        if (data.tipo_del_bic.indexOf(",") > -1) {
-            var colles = data.tipo_del_bic.split(',');
+
+    if (data.media && typeof data.media === 'string') {
+        elType.push(data.media);
+    }
+
+    var tipoBic = data.tipo_de_bic || undefined;
+    if (tipoBic) {
+        if (tipoBic.trim().length > 0 && tipoBic.indexOf(",") > -1) {
+            var colles = tipoBic.split(',');
             for (var i = 0; i < colles.length; i++) {
                 elType.push(colles[i]);
             }
         } else {
-            elType.push(data.tipo_del_bic);
+            elType.push(tipoBic);
         }
     }
+
 // Título
     var tmpTitle = "";
     if (data.titulo_del_bic && typeof data.titulo_del_bic === 'string') {
@@ -128,29 +140,31 @@ function (data) {
             }
 
         } else {  //es un creador
-            
-            var fullname = ""; 
-            if(dc_creatorsName && !dc_creatorsLast){
+
+            var fullname = "";
+            if (dc_creatorsName && dc_creatorsLast) {
+                fullname = dc_creatorsName.trim() + " " + dc_creatorsLast;
+            } else if (dc_creatorsName && !dc_creatorsLast) {
                 fullname = dc_creatorsName.trim();
-            } else if(!dc_creatorsName && dc_creatorsLast){
+            } else if (!dc_creatorsName && dc_creatorsLast) {
                 fullname = dc_creatorsLast.trim();
             }
             elCreator.push(fullname);
         }
         ret.creator = elCreator;
     } else {  //es un creador
-        print("solo un nombre o apellido...");
-            var fullname = ""; 
-            if(dc_creatorsName && !dc_creatorsLast){
-                fullname = dc_creatorsName.trim();
-            } else if(!dc_creatorsName && dc_creatorsLast){
-                fullname = dc_creatorsLast.trim();
-            }
-            elCreator.push(fullname);
-            ret.creator = elCreator;
+
+        var fullname = "";
+        if (dc_creatorsName && !dc_creatorsLast) {
+            fullname = dc_creatorsName.trim();
+        } else if (!dc_creatorsName && dc_creatorsLast) {
+            fullname = dc_creatorsLast.trim();
         }
-        
-    
+        elCreator.push(fullname);
+        ret.creator = elCreator;
+    }
+
+
     // nota del creador
     var creatornote = data.nota_creador_del_bic || undefined;
     if (creatornote) {
@@ -201,14 +215,19 @@ function (data) {
         elLang.push(lengua);
         ret.lang = elLang;
     }
-// Grupo linguistico
-    if (data.grupo_linguistico) {
-        elLang2.push(data.grupo_linguistico);
-        ret.grplang = elLang2;
-    }
+//// Grupo linguistico
+//    if (data.grupo_linguistico) {
+//        elLang2.push(data.grupo_linguistico);
+//        ret.grplang = elLang2;
+//    }
 // Lugar
     if (data.lugar) {
         ret.lugar = data.lugar;
+    }
+
+    // Nota lugar
+    if (data.nota_lugar) {
+        ret.lugar += ", " + data.nota_lugar;
     }
 
 // Generador del BIC        
@@ -223,48 +242,52 @@ function (data) {
             elGenerator.push(generators);
         }
     }
-// Fecha
+
+//    // Fecha cronología
+//    var timeline_date = data.nota_fecha || undefined;
+//    if (timeline_date && timeline_date.trim().length > 0 ) {
+//        timeline_date = timeline_date.trim();
+//        ret.timelinedate = {"format": "", "value": timeline_date};
+//    } 
+//// Fecha
+//    var bic_dates = data.fecha || undefined;
+//    if (bic_dates && bic_dates.trim().length > 0 ) {
+//        
+//        ret.datecreated = {"format": "",  "note": bic_dates.trim()};
+//        if(timeline_date && timeline_date.trim().length > 0){
+//            ret.datecreated = {"format": "", "value": timeline_date.trim(), "note": bic_dates.trim()};
+//        } else {
+//            ret.datecreated = {"format": "",  "note": bic_dates.trim()};
+//        }
+//    }
+
+    // Fecha cronología
+    var timeline_date = data.nota_fecha || undefined;
+    if (timeline_date && timeline_date.trim().length > 0) {
+        ret.timelinedate = {"format": "", "value": timeline_date.trim()};
+    }
+
 // Fecha
     var bic_dates = data.fecha || undefined;
-    if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada") {
-        bic_dates = bic_dates.replace(new RegExp("/", 'g'), "-");
-        if (bic_dates.indexOf("-")>-1){
-            var arrklist = bic_dates.split('-');
-            var fechayear = 0;
-            var fechaday = 0;
-            var fechamonth = 0;
-            if (arrklist.length === 3) {
-                if (arrklist[0] > 1000) {
-                    fechayear = arrklist[0];
-                    fechamonth = arrklist[1];
-                    fechaday = arrklist[2];
-                } else {
-                    fechayear = arrklist[2];
-                    fechamonth = arrklist[1];
-                    fechaday = arrklist[0];
-                }
-                bic_dates = fechayear + "-" + fechamonth + "-" + fechaday;
-            }
+    if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada" && bic_dates.trim().toLowerCase() !== "s/f" && bic_dates.trim().toLowerCase() !== "sin fecha") {
+        if (timeline_date && timeline_date.trim().length > 0) {
+            ret.datecreated = {"format": "", "value": timeline_date.trim(), note: bic_dates.trim()};
+        } else {
+            ret.datecreated = {"format": "", note: bic_dates.trim()};
         }
+    }
 
-        ret.datecreated = {"format": "", "value": bic_dates.trim()};
-    }
-// Fecha cronología
-    var timeline_date = data.nota_fecha || undefined;
-    if (timeline_date) {
-        ret.timelinedate = {"format": "", "value": timeline_date};
-    }
 //Rangos de fecha
     var datestart = {};
     var dateend = {};
     var fechaIni = data.rango_inicial || undefined;
     var fechaFin = data.rango_final || undefined;
-    if(fechaIni && fechaFin){
+    if (fechaIni && fechaFin) {
         datestart = {"format": "", "value": fechaIni.trim()};
         dateend = {"format": "", "value": fechaFin.trim()};
         ret.periodcreated = {"datestart": datestart, "dateend": dateend};
     }
-    
+
 
 // Rights digital objects
     var derechos = {};
@@ -283,11 +306,19 @@ function (data) {
         urlLicense = rights;
         derechos.url = urlLicense;
     }
+    var strFormato = data.formato || undefined;
+    if (strFormato) {
+        strFormato = strFormato.trim();
+        if (strFormato.startsWith(".")) {
+            strFormato = strFormato.substring(1).toLowerCase();
+        }
+        dotype.mime = strFormato;
+    }
     if (data.media) {
-        dotype.mime = data.media.toLowerCase();
+        dotype.name = data.media.toLowerCase();
         derechos.media = dotype;
     } else {
-        dotype.mime = "";
+        dotype.name = "";
         derechos.media = dotype;
     }
 
@@ -297,13 +328,11 @@ function (data) {
         if (digObj.length > 0) {
             var objDO = {};
             var objMedia = {};
-            
-            var strFormato = data.formato;
-            strFormato = strFormato.trim();
-            if(strFormato.startsWith(".")){
-                strFormato = strFormato.substring(1).toLowerCase();
+
+            if (strFormato) {
+
+                objMedia.mime = strFormato;
             }
-            objMedia.mime = strFormato;
             objMedia.name = digObj;
             var originalName = data.nombre_del_objeto_digital_original || undefined;
             if (originalName && originalName.trim().length > 0) {
@@ -319,7 +348,7 @@ function (data) {
                 o_rights.description = rights;
             }
             objDO.rights = o_rights;
-            objDO.url = doURL + digObj;
+            objDO.url = doURL + digObj;  // 
             dObjs.push(objDO);
         } else {
             ret.forIndex = false;
@@ -328,11 +357,12 @@ function (data) {
         ret.forIndex = false;
     }
 
-    // Publisher
-    ret.publisher = "";
-    if (data.institucion_creadora_del_bic) {
-        ret.publisher = data.institucion_creadora_del_bic;
+    //validando id_formato
+    var formatoid = data.id_formato || undefined;
+    if (formatoid && typeof formatoid === "string" && formatoid.trim().length > 0) {
+        ret.formatid = formatoid;
     }
+
 
     // Holder
     if (data.institucion) {
@@ -349,15 +379,17 @@ function (data) {
     var thumbnail = data.thumbnail || undefined;
     ret.resourcethumbnail = "";
     if (thumbnail && typeof thumbnail === "string" && thumbnail.trim().length > 0) {
-        ret.resourcethumbnail = thumbnail;
+        ret.resourcethumbnail = paththumbnail + thumbnail;
     }
 
     //thumbnail cronologia
     var timelinethumbnail = data.cronologia || undefined;
     ret.timelinethumbnail = "";
     if (timelinethumbnail && typeof timelinethumbnail === "string" && timelinethumbnail.trim().length > 0) {
-        ret.timelinethumbnail = timelinethumbnail;
+        ret.timelinethumbnail = pathtimelineth + timelinethumbnail;
     }
+
+
 
     if (data.dimension && typeof data.dimension === 'string') {
         ret.dimension = "";
@@ -367,12 +399,14 @@ function (data) {
             for (var i = 0; i < arrklist.length; i++) {
                 ret.dimension += arrklist[i];
                 if ((i + 1) < arrklist.length)
-                    ret.dimension += ":";
+                    ret.dimension += " x ";
             }
+        } else {
+            ret.dimension = mydim;
         }
 
         if (data.unidad && typeof data.unidad === "string") {
-            ret.dimension += " "
+            ret.dimension += " ";
             var myunit = data.unidad;
             if (mydim.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
                 var arrklist = myunit.split(" - ");
@@ -381,12 +415,12 @@ function (data) {
                     if ((i + 1) < arrklist.length)
                         ret.dimension += " ";
                 }
+            } else {
+                ret.dimension += " " + myunit;
             }
         }
 
     }
-
-
     // validar id tipo del bic
     var bictypeid = data.id_tipo_del_bic || undefined;
     if (bictypeid && typeof bictypeid === "string" && bictypeid.trim().length > 0) {
@@ -435,11 +469,30 @@ function (data) {
         ret.dimensiontype = dimensiontype;
     }
 
-    // validar capítulo
-    var chapter = data.capitulo || undefined;
-    if (chapter && typeof chapter === "string" && chapter.trim().length > 0) {
-        ret.chapter = chapter;
+    // validar director
+    var director = data.director || undefined;
+    if (director && typeof director === "string" && director.trim().length > 0) {
+        ret.director = director;
     }
+
+    // validar productor
+    var producer = data.productor || undefined;
+    if (producer && typeof producer === "string" && producer.trim().length > 0) {
+        ret.producer = producer;
+    }
+
+    // validar guion
+    var screenplay = data.guion || undefined;
+    if (screenplay && typeof screenplay === "string" && screenplay.trim().length > 0) {
+        ret.screenplay = screenplay;
+    }
+
+    // validar reparto
+    var reparto = data.reparto || undefined;
+    if (reparto && typeof reparto === "string" && reparto.trim().length > 0) {
+        ret.distribution = reparto;
+    }
+
     //validar destacados
     var destacado = data.destacados || undefined;
     if (destacado && typeof destacado === "string" && destacado.trim().length > 0) {
@@ -447,12 +500,6 @@ function (data) {
     } else {
         ret.destacado = false;
     }
-    // validar formatos disponibles
-    var availableformats = data.formatos_disponibles || undefined;
-    if (availableformats && typeof availableformats === "string" && availableformats.trim().length > 0) {
-        ret.availableformats = availableformats;
-    }
-
 
     // validar id media
     var mediaid = data.id_media || undefined;
@@ -460,10 +507,116 @@ function (data) {
         ret.mediaid = mediaid;
     }
 
-    // validar id formato
-    var formatid = data.id_formato || undefined;
-    if (formatid && typeof formatid === "string" && formatid.trim().length > 0) {
-        ret.formatid = formatid;
+    // validar invitado
+    var invitado = data.invitado || undefined;
+    if (invitado && typeof invitado === "string" && invitado.trim().length > 0) {
+        ret.invited = invitado;
+    }
+
+    // validar tema
+    var tema = data.tema || undefined;
+    if (tema && typeof tema === "string" && tema.trim().length > 0) {
+        ret.theme = tema;
+    }
+
+    // validar sinopsis
+    var sinopsis = data.sinopsis || undefined;
+    if (sinopsis && typeof sinopsis === "string" && sinopsis.trim().length > 0) {
+        ret.synopsis = sinopsis;
+    }
+
+    // validar liga al programa
+    var liga_prog = data.liga_al_programa || undefined;
+    if (liga_prog && typeof liga_prog === "string" && liga_prog.trim().length > 0) {
+        ret.programurl = liga_prog;
+    }
+    // validar id_fondo
+    var fundid = data.id_fondo || undefined;
+    if (fundid && typeof fundid === "string" && fundid.trim().length > 0) {
+        ret.fundid = fundid;
+    }
+    // validar id_productor
+    var producerid = data.id_productor || undefined;
+    if (producerid && typeof producerid === "string" && producerid.trim().length > 0) {
+        ret.producerid = producerid;
+    }
+    // validar folio
+    var folio = data.folio || undefined;
+    if (folio && typeof folio === "string" && folio.trim().length > 0) {
+        ret.folio = folio;
+    }
+
+    // validar id_soporte
+    var supportid = data.id_soporte || undefined;
+    if (supportid && typeof supportid === "string" && supportid.trim().length > 0) {
+        ret.supportid = supportid;
+    }
+
+    // validar id_color
+    var colorid = data.id_color || undefined;
+    if (colorid && typeof colorid === "string" && colorid.trim().length > 0) {
+        ret.colorid = colorid;
+    }
+
+    // validar estado de conservacion
+    var conservationstate = data.edo_conservacion || undefined;
+    if (conservationstate && typeof conservationstate === "string" && conservationstate.trim().length > 0) {
+        ret.conservationstate = conservationstate;
+    }
+
+    // validar técnica
+    var technique = data.tecnica || undefined;
+    if (technique && typeof technique === "string" && technique.trim().length > 0) {
+        ret.technique = technique;
+    }
+
+    // validar personajes
+    var characters = data.personajes || undefined;
+    if (characters && typeof characters === "string" && characters.trim().length > 0) {
+        ret.characters = characters;
+    }
+
+    // validar observaciones
+    var observations = data.observaciones || undefined;
+    if (observations && typeof observations === "string" && observations.trim().length > 0) {
+        ret.observations = observations;
+    }
+
+    // validar etiquetas
+    var labels = data.etiquetas || undefined;
+    if (labels && typeof labels === "string" && labels.trim().length > 0) {
+        ret.labels = labels;
+    }
+
+    // validar id_usuario
+    var userid = data.id_usuario || undefined;
+    if (userid && typeof userid === "string" && userid.trim().length > 0) {
+        ret.userid = userid;
+    }
+
+    // validar sobre
+    var no_sobre = data.no_sobre || undefined;
+    if (no_sobre && typeof no_sobre === "string" && no_sobre.trim().length > 0) {
+        ret.no_sobre = no_sobre;
+    }
+
+    // validar catálogo
+    var catalog = data.catalogo || undefined;
+    if (catalog && typeof catalog === "string" && catalog.trim().length > 0) {
+        ret.catalog = catalog;
+    }
+
+    // Fecha subida
+    var dateupload = data.fecha_de_subida || undefined;
+    if (dateupload && dateupload.trim().length > 0) {
+
+        ret.dateupload = {"format": "", "value": dateupload.trim()};
+    }
+
+    // validar ruta
+    var path = data.ruta || undefined;
+    if (path && typeof path === "string" && path.trim().length > 0) {
+        ret.path = path;
     }
 
     ret.rights = derechos;
@@ -474,7 +627,7 @@ function (data) {
     ret.recordtitle = elTitle;
     ret.resourcetype = elType;
     if (arrHolder.length === 0) {
-        arrHolder.push("FONOTECA Nacional");
+        arrHolder.push("Instituto Nacional de Estudios Históricos de las Revoluciones de México");
     }
     ret.holder = arrHolder;
     ret.description = elDescrip;
@@ -484,5 +637,3 @@ function (data) {
 
     return ret;
 }
-
-

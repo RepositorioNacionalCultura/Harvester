@@ -1,8 +1,10 @@
 function (data) {
     /**
-     FONOTECA CSV file Script
+     CENTRO NACIONAL DE LAS ARTES CSV file Script
      **/
-    var doURL = "http://35.193.209.163/multimedia/FONOTECA/";
+    var doURL = "http://35.193.209.163/multimedia/CENART/";
+    var paththumbnail = doURL + "thumbnail/";
+    var pathtimelineth = doURL + "cronologia/";
     var ret = {};
     var idArray = [];
     var elType = [];
@@ -128,29 +130,31 @@ function (data) {
             }
 
         } else {  //es un creador
-            
-            var fullname = ""; 
-            if(dc_creatorsName && !dc_creatorsLast){
+
+            var fullname = "";
+            if (dc_creatorsName && dc_creatorsLast) {
+                fullname = dc_creatorsName.trim() + " " + dc_creatorsLast;
+            } else if (dc_creatorsName && !dc_creatorsLast) {
                 fullname = dc_creatorsName.trim();
-            } else if(!dc_creatorsName && dc_creatorsLast){
+            } else if (!dc_creatorsName && dc_creatorsLast) {
                 fullname = dc_creatorsLast.trim();
             }
             elCreator.push(fullname);
         }
         ret.creator = elCreator;
     } else {  //es un creador
-        print("solo un nombre o apellido...");
-            var fullname = ""; 
-            if(dc_creatorsName && !dc_creatorsLast){
-                fullname = dc_creatorsName.trim();
-            } else if(!dc_creatorsName && dc_creatorsLast){
-                fullname = dc_creatorsLast.trim();
-            }
-            elCreator.push(fullname);
-            ret.creator = elCreator;
+
+        var fullname = "";
+        if (dc_creatorsName && !dc_creatorsLast) {
+            fullname = dc_creatorsName.trim();
+        } else if (!dc_creatorsName && dc_creatorsLast) {
+            fullname = dc_creatorsLast.trim();
         }
-        
-    
+        elCreator.push(fullname);
+        ret.creator = elCreator;
+    }
+
+
     // nota del creador
     var creatornote = data.nota_creador_del_bic || undefined;
     if (creatornote) {
@@ -167,7 +171,7 @@ function (data) {
     }
 
     // grupo del creador del bic ﻿
-    var creatorgroup = data.grupo_ceador_del_bic || undefined;
+    var creatorgroup = data.grupo_creador_del_bic || undefined;
     if (creatorgroup) {
 
         if (creatorgroup.indexOf(';') > -1) { //revisando si son palabras clave separadas por ","
@@ -224,11 +228,10 @@ function (data) {
         }
     }
 // Fecha
-// Fecha
     var bic_dates = data.fecha || undefined;
     if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada") {
         bic_dates = bic_dates.replace(new RegExp("/", 'g'), "-");
-        if (bic_dates.indexOf("-")>-1){
+        if (bic_dates.indexOf("-") > -1) {
             var arrklist = bic_dates.split('-');
             var fechayear = 0;
             var fechaday = 0;
@@ -237,11 +240,27 @@ function (data) {
                 if (arrklist[0] > 1000) {
                     fechayear = arrklist[0];
                     fechamonth = arrklist[1];
-                    fechaday = arrklist[2];
+                    if (fechamonth > 12) {
+                        fechamonth = arrklist[2];
+                        fechaday = arrklist[1];
+                    } else {
+                        fechaday = arrklist[2];
+                    }
                 } else {
                     fechayear = arrklist[2];
                     fechamonth = arrklist[1];
-                    fechaday = arrklist[0];
+                    if (fechamonth > 12) {
+                        fechamonth = arrklist[0];
+                        fechaday = arrklist[1];
+                    } else {
+                        fechaday = arrklist[1];
+                    }
+                }
+                if(fechamonth.length===1){
+                    fechamonth = "0"+fechamonth;
+                }
+                if(fechaday.length===1){
+                    fechaday = "0"+fechaday;
                 }
                 bic_dates = fechayear + "-" + fechamonth + "-" + fechaday;
             }
@@ -251,7 +270,7 @@ function (data) {
     }
 // Fecha cronología
     var timeline_date = data.nota_fecha || undefined;
-    if (timeline_date) {
+    if (timeline_date && timeline_date.trim().length > 0 && timeline_date.trim().toLowerCase() != "no identificada") {
         ret.timelinedate = {"format": "", "value": timeline_date};
     }
 //Rangos de fecha
@@ -259,12 +278,16 @@ function (data) {
     var dateend = {};
     var fechaIni = data.rango_inicial || undefined;
     var fechaFin = data.rango_final || undefined;
-    if(fechaIni && fechaFin){
+    if (fechaIni && fechaFin) {
         datestart = {"format": "", "value": fechaIni.trim()};
         dateend = {"format": "", "value": fechaFin.trim()};
         ret.periodcreated = {"datestart": datestart, "dateend": dateend};
     }
-    
+// Fecha digitalizacion
+    var digital_date = data.fecha_de_digitalizacion_del_bic || undefined;
+    if (digital_date) {
+        ret.datedigital = {"format": "", "value": digital_date};
+    }
 
 // Rights digital objects
     var derechos = {};
@@ -297,10 +320,10 @@ function (data) {
         if (digObj.length > 0) {
             var objDO = {};
             var objMedia = {};
-            
+
             var strFormato = data.formato;
             strFormato = strFormato.trim();
-            if(strFormato.startsWith(".")){
+            if (strFormato.startsWith(".")) {
                 strFormato = strFormato.substring(1).toLowerCase();
             }
             objMedia.mime = strFormato;
@@ -349,14 +372,14 @@ function (data) {
     var thumbnail = data.thumbnail || undefined;
     ret.resourcethumbnail = "";
     if (thumbnail && typeof thumbnail === "string" && thumbnail.trim().length > 0) {
-        ret.resourcethumbnail = thumbnail;
+        ret.resourcethumbnail = paththumbnail + thumbnail;
     }
 
     //thumbnail cronologia
     var timelinethumbnail = data.cronologia || undefined;
     ret.timelinethumbnail = "";
     if (timelinethumbnail && typeof timelinethumbnail === "string" && timelinethumbnail.trim().length > 0) {
-        ret.timelinethumbnail = timelinethumbnail;
+        ret.timelinethumbnail = pathtimelineth + timelinethumbnail;
     }
 
     if (data.dimension && typeof data.dimension === 'string') {
@@ -466,6 +489,55 @@ function (data) {
         ret.formatid = formatid;
     }
 
+    // validar episodio
+    var episodio = data.episodio || undefined;
+    if (episodio && typeof episodio === "string" && episodio.trim().length > 0) {
+        ret.episode = episodio;
+    }
+
+    // validar fondo documental del bic
+    var fondodocu = data.fondo_documental_del_bic || undefined;
+    if (fondodocu && typeof fondodocu === "string" && fondodocu.trim().length > 0) {
+        ret.documentalfund = fondodocu;
+    }
+
+    // validar serie
+    var serie = data.serie || undefined;
+    if (serie && typeof serie === "string" && serie.trim().length > 0) {
+        ret.serie = serie;
+    }
+
+    // validar dirección
+    var direccion = data.direccion || undefined;
+    if (direccion && typeof direccion === "string" && direccion.trim().length > 0) {
+        ret.direction = direccion;
+    }
+
+    // validar producción
+    var produccion = data.produccion || undefined;
+    if (produccion && typeof produccion === "string" && produccion.trim().length > 0) {
+        ret.production = produccion;
+    }
+
+    // validar música
+    var musica = data.musica || undefined;
+    if (musica && typeof musica === "string" && musica.trim().length > 0) {
+        ret.music = musica;
+    }
+
+    // validar libreto
+    var libreto = data.libreto || undefined;
+    if (libreto && typeof libreto === "string" && libreto.trim().length > 0) {
+        ret.libretto = libreto;
+    }
+
+    // validar dirección de música
+    var musicadir = data.direccion_de_musica || undefined;
+    if (musicadir && typeof musicadir === "string" && musicadir.trim().length > 0) {
+        ret.musicdirection = musicadir;
+    }
+
+
     ret.rights = derechos;
     ret.digitalObject = dObjs;
     ret.identifier = idArray;
@@ -474,7 +546,7 @@ function (data) {
     ret.recordtitle = elTitle;
     ret.resourcetype = elType;
     if (arrHolder.length === 0) {
-        arrHolder.push("FONOTECA Nacional");
+        arrHolder.push("Centro Nacional de las Artes");
     }
     ret.holder = arrHolder;
     ret.description = elDescrip;
@@ -484,5 +556,3 @@ function (data) {
 
     return ret;
 }
-
-

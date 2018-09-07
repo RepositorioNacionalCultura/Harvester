@@ -80,15 +80,15 @@ function(data) {
         palabras = palabras.replace(new RegExp("“", 'g'),'"');
         palabras = palabras.replace(new RegExp("”", 'g'),'"');
         palabras = palabras.replace(new RegExp("`", 'g'),"'");
-        if (palabras.indexOf(',') > -1){ //revisando si son palabras clave separadas por ","
-            var arrklist = palabras.split(',');
+        if (palabras.indexOf(';') > -1){ //revisando si son palabras clave separadas por ","
+            var arrklist = palabras.split(';');
             for(var i = 0; i<arrklist.length; i++){
-                if(elkeys.indexOf(arrklist[i])==-1){
+                if(elkeys.indexOf(arrklist[i])===-1){
                     elkeys.push(arrklist[i]);
                 }
             }
         } else {  //es una palabra clave
-            if(elkeys.indexOf(palabras)==-1){
+            if(elkeys.indexOf(palabras)===-1){
                 elkeys.push(palabras);
             }
         }
@@ -97,8 +97,8 @@ function(data) {
 // Creadores
     var dc_creators = data.oai_dcoai_dc_dcdc_creator || undefined;
     if (dc_creators) {
-        if (dc_creators.indexOf(',') > -1){ //revisando si son autores separados por ","
-            var arrklist = dc_creators.split(',');
+        if (dc_creators.indexOf(';') > -1){ //revisando si son autores separados por ","
+            var arrklist = dc_creators.split(';');
             for(var i = 0; i<arrklist.length; i++){
                 elCreator.push(arrklist[i]);
             }
@@ -110,7 +110,7 @@ function(data) {
     if (data.modsmods_modsmods_languagemods_languageterm) {
         elLang.push(data.modsmods_modsmods_languagemods_languageterm); 
     }
-    if(data.oai_dcoai_dc_dcdc_language && elLang.indexOf(data.oai_dcoai_dc_dcdc_language)==-1){
+    if(data.oai_dcoai_dc_dcdc_language && elLang.indexOf(data.oai_dcoai_dc_dcdc_language)===-1){
         elLang.push(data.oai_dcoai_dc_dcdc_language);
     }
 // Grupo linguistico
