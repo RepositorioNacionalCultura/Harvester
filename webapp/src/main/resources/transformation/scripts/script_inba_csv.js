@@ -141,16 +141,34 @@ function(data) {
             elGenerator.push(generators);
         }
     }
-// Fecha
-    var bic_dates = data.modsmods_modsmods_origininfomods_dateissuedcontent || undefined;
-    if (bic_dates) {
-        ret.datecreated = {"format":"","value":bic_dates};
-    }
-// Fecha cronología
+//// Fecha
+//    var bic_dates = data.modsmods_modsmods_origininfomods_dateissuedcontent || undefined;
+//    if (bic_dates) {
+//        ret.datecreated = {"format":"","value":bic_dates};
+//    }
+//// Fecha cronología
+//    var timeline_date = data.nota_fecha || undefined;
+//    if (timeline_date) {
+//        ret.timelinedate = {"format":"","value":timeline_date};
+//    }
+    
+            // Fecha cronología
     var timeline_date = data.nota_fecha || undefined;
-    if (timeline_date) {
-        ret.timelinedate = {"format":"","value":timeline_date};
+    if (timeline_date && timeline_date.trim().length > 0) {
+        ret.timelinedate = {"format": "", "value": timeline_date.trim()};
     }
+
+// Fecha
+    var bic_dates = data.fecha || undefined;
+    if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada" && bic_dates.trim().toLowerCase() !== "s/f" && bic_dates.trim().toLowerCase() !== "sin fecha") {
+        if (timeline_date && timeline_date.trim().length > 0) {
+            ret.datecreated = {"format": "", "value": timeline_date.trim(), note: bic_dates.trim()};
+        } else {
+            ret.datecreated = {"format": "", note: bic_dates.trim()};
+        }
+    }
+    
+    
 // Rights digital objects
     var derechos = {};
     if(data.derechos_bic){

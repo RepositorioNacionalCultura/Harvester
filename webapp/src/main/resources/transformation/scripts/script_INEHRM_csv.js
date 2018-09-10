@@ -62,7 +62,7 @@ function (data) {
         elType.push(data.media);
     }
 
-    var tipoBic = data.tipo_de_bic || undefined;
+    var tipoBic = data.tipo_del_bic || undefined;
     if (tipoBic) {
         if (tipoBic.trim().length > 0 && tipoBic.indexOf(",") > -1) {
             var colles = tipoBic.split(',');
@@ -268,7 +268,7 @@ function (data) {
     }
 
 // Fecha
-    var bic_dates = data.fecha || undefined;
+    var bic_dates = data.fecha_de_creacion_del_bic || undefined;
     if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada" && bic_dates.trim().toLowerCase() !== "s/f" && bic_dates.trim().toLowerCase() !== "sin fecha") {
         if (timeline_date && timeline_date.trim().length > 0) {
             ret.datecreated = {"format": "", "value": timeline_date.trim(), note: bic_dates.trim()};
@@ -452,7 +452,7 @@ function (data) {
     }
 
     // validar tipo unidad
-    var unidadtype = data.tipo_unidad || undefined;
+    var unidadtype = data.tipo_de_unidad || undefined;
     if (unidadtype && typeof unidadtype === "string" && unidadtype.trim().length > 0) {
         ret.unidadtype = unidadtype;
     }

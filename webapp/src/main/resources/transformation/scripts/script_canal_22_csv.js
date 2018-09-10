@@ -45,6 +45,9 @@ function (data) {
         }
         ret.reccollection = reccollection;
     }
+    if(data.institucion_creadora_del_bic && data.institucion_creadora_del_bic.trim().length>0){
+        elCollection.push(data.institucion_creadora_del_bic.trim());
+    }
     ret.collection = elCollection;
 // Identificador
     idArray.push({type: "oai", value: data.oaiid, preferred: true});

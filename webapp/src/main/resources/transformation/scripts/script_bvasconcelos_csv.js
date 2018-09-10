@@ -49,6 +49,9 @@ function (data) {
         }
         ret.reccollection = reccollection;
     }
+    if(data.institucion_creadora_del_bic && data.institucion_creadora_del_bic.trim().length>0){
+        elCollection.push(data.institucion_creadora_del_bic.trim());
+    }
     ret.collection = elCollection;
 // Identificador
     idArray.push({type: "oai", value: data.oaiid, preferred: true});
@@ -237,41 +240,51 @@ function (data) {
             elGenerator.push(generators);
         }
     }
-// Fecha
-    var bic_dates = data.fecha_de_creacion_del_bic || undefined;
-    if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada") {
-        bic_dates = bic_dates.replace(new RegExp("/", 'g'), "-");
-        var arrklist = bic_dates.split('-');
-        var fechayear = 0;
-        var fechaday = 0;
-        var fechamonth = 0;
-        if(arrklist.length===3){
-            if(arrklist[0]>1000){
-                fechayear = arrklist[0];
-                fechamonth = arrklist[1];
-                fechaday = arrklist[2];
-            } else {
-                fechayear = arrklist[2];
-                fechamonth = arrklist[1];
-                fechaday = arrklist[0];
-            }
-            bic_dates = fechayear + "-" + fechamonth +"-" + fechaday;
-        }
+//// Fecha
+//    var bic_dates = data.fecha_de_creacion_del_bic || undefined;
+//    if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada") {
+//        bic_dates = bic_dates.replace(new RegExp("/", 'g'), "-");
+//        var arrklist = bic_dates.split('-');
+//        var fechayear = 0;
+//        var fechaday = 0;
+//        var fechamonth = 0;
+//        if(arrklist.length===3){
+//            if(arrklist[0]>1000){
+//                fechayear = arrklist[0];
+//                fechamonth = arrklist[1];
+//                fechaday = arrklist[2];
+//            } else {
+//                fechayear = arrklist[2];
+//                fechamonth = arrklist[1];
+//                fechaday = arrklist[0];
+//            }
+//            bic_dates = fechayear + "-" + fechamonth +"-" + fechaday;
+//        }
+//
+//        ret.datecreated = {"format": "", "value": bic_dates.trim()};
+//    }
+//// Fecha cronología
+//    var timeline_date = data.nota_fecha || undefined;
+//    if (timeline_date && timeline_date.trim().length > 0 && timeline_date.trim().toLowerCase() !== "no identificada") {
+//        ret.timelinedate = {"format": "", "value": timeline_date.trim()};
+//    } else if (ret.datecreated) {
+//        ret.timelinedate = ret.datecreated;
+//    }
 
-        ret.datecreated = {"format": "", "value": bic_dates.trim()};
-    }
 // Fecha cronología
     var timeline_date = data.nota_fecha || undefined;
     if (timeline_date && timeline_date.trim().length > 0 && timeline_date.trim().toLowerCase() !== "no identificada") {
         ret.timelinedate = {"format": "", "value": timeline_date.trim()};
-    } else if (ret.datecreated) {
-        ret.timelinedate = ret.datecreated;
     }
 
-    // Fecha cronología
-    var date_note = data.nota_fecha || undefined;
-    if (date_note && date_note.trim().length > 0 && date_note.trim().toLowerCase() !== "no identificada") {
-        ret.bicnotedate = date_note;
+// Fecha
+    var bic_dates = data. fecha_de_creacion_del_bic || undefined;
+    if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada" && bic_dates.trim().toLowerCase() !== "s/f" && bic_dates.trim().toLowerCase() !== "sin fecha") {
+        if (timeline_date && timeline_date.trim().length > 0) {
+            ret.datecreated = {"format": "", "value": timeline_date.trim(), note: bic_dates.trim()};
+        } else {
+            ret.datecreated = {"format": "", note: bic_dates.trim()};
+        }
     }
 //Rangos de fecha
     var datestart = {};

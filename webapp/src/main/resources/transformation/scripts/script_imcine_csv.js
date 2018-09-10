@@ -49,8 +49,8 @@ function (data) {
         }
         ret.reccollection = reccollection;
     }
-    
-    if(elCollection.length===0 && data.institucion){
+
+    if (elCollection.length === 0 && data.institucion) {
         elCollection.push(data.institucion);
     }
     ret.collection = elCollection;
@@ -64,7 +64,7 @@ function (data) {
 
     var tipoBic = data.tipo_de_bic || undefined;
     if (tipoBic) {
-        if (tipoBic.trim().length>0 && tipoBic.indexOf(",") > -1) {
+        if (tipoBic.trim().length > 0 && tipoBic.indexOf(",") > -1) {
             var colles = tipoBic.split(',');
             for (var i = 0; i < colles.length; i++) {
                 elType.push(colles[i]);
@@ -242,53 +242,70 @@ function (data) {
             elGenerator.push(generators);
         }
     }
-// Fecha
-    var bic_dates = data.fecha || undefined;
-    if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada") {
-        bic_dates = bic_dates.replace(new RegExp("/", 'g'), "-");
-        if (bic_dates.indexOf("-") > -1) {
-            var arrklist = bic_dates.split('-');
-            var fechayear = 0;
-            var fechaday = 0;
-            var fechamonth = 0;
-            if (arrklist.length === 3) {
-                if (arrklist[0] > 1000) {
-                    fechayear = arrklist[0];
-                    fechamonth = arrklist[1];
-                    if (fechamonth > 12) {
-                        fechamonth = arrklist[2];
-                        fechaday = arrklist[1];
-                    } else {
-                        fechaday = arrklist[2];
-                    }
-                } else {
-                    fechayear = arrklist[2];
-                    fechamonth = arrklist[1];
-                    if (fechamonth > 12) {
-                        fechamonth = arrklist[0];
-                        fechaday = arrklist[1];
-                    } else {
-                        fechaday = arrklist[1];
-                    }
-                }
-                if(fechamonth.length===1){
-                    fechamonth = "0"+fechamonth;
-                }
-                if(fechaday.length===1){
-                    fechaday = "0"+fechaday;
-                }
-                bic_dates = fechayear + "-" + fechamonth + "-" + fechaday;
-            }
-        }
+//// Fecha
+//    var bic_dates = data.fecha || undefined;
+//    if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada") {
+//        bic_dates = bic_dates.replace(new RegExp("/", 'g'), "-");
+//        if (bic_dates.indexOf("-") > -1) {
+//            var arrklist = bic_dates.split('-');
+//            var fechayear = 0;
+//            var fechaday = 0;
+//            var fechamonth = 0;
+//            if (arrklist.length === 3) {
+//                if (arrklist[0] > 1000) {
+//                    fechayear = arrklist[0];
+//                    fechamonth = arrklist[1];
+//                    if (fechamonth > 12) {
+//                        fechamonth = arrklist[2];
+//                        fechaday = arrklist[1];
+//                    } else {
+//                        fechaday = arrklist[2];
+//                    }
+//                } else {
+//                    fechayear = arrklist[2];
+//                    fechamonth = arrklist[1];
+//                    if (fechamonth > 12) {
+//                        fechamonth = arrklist[0];
+//                        fechaday = arrklist[1];
+//                    } else {
+//                        fechaday = arrklist[1];
+//                    }
+//                }
+//                if(fechamonth.length===1){
+//                    fechamonth = "0"+fechamonth;
+//                }
+//                if(fechaday.length===1){
+//                    fechaday = "0"+fechaday;
+//                }
+//                bic_dates = fechayear + "-" + fechamonth + "-" + fechaday;
+//            }
+//        }
+//
+//        ret.datecreated = {"format": "", "value": bic_dates.trim()};
+//    }
+//// Fecha cronología
+//    var timeline_date = data.nota_fecha || undefined;
+//    if (timeline_date && timeline_date.trim().length > 0 && timeline_date.trim().toLowerCase() !== "no identificada") {
+//        ret.timelinedate = {"format": "", "value": timeline_date.trim()};
+//    } else if (ret.datecreated) {
+//        ret.timelinedate = ret.datecreated;
+//    }
 
-        ret.datecreated = {"format": "", "value": bic_dates.trim()};
-    }
-// Fecha cronología
+
+    // Fecha cronología
     var timeline_date = data.nota_fecha || undefined;
     if (timeline_date && timeline_date.trim().length > 0 && timeline_date.trim().toLowerCase() !== "no identificada") {
         ret.timelinedate = {"format": "", "value": timeline_date.trim()};
-    } else if (ret.datecreated) {
-        ret.timelinedate = ret.datecreated;
+    }
+
+// Fecha
+    var bic_dates = data.fecha || undefined;
+    if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada" && bic_dates.trim().toLowerCase() !== "s/f" && bic_dates.trim().toLowerCase() !== "sin fecha") {
+        if (timeline_date && timeline_date.trim().length > 0) {
+            ret.datecreated = {"format": "", "value": timeline_date.trim(), note: bic_dates.trim()};
+        } else {
+            ret.datecreated = {"format": "", note: bic_dates.trim()};
+        }
     }
 
 //Rangos de fecha
@@ -324,19 +341,12 @@ function (data) {
         urlLicense = rights;
         derechos.url = urlLicense;
     }
-    var strFormato = data.formato || undefined;
-    if (strFormato){
-        strFormato = strFormato.trim();
-        if (strFormato.startsWith(".")) {
-            strFormato = strFormato.substring(1).toLowerCase();
-        }
-        dotype.mime=strFormato;
-    }
+
     if (data.media) {
-        dotype.name = data.media.toLowerCase();
+        dotype.mime = data.media.toLowerCase();
         derechos.media = dotype;
     } else {
-        dotype.name = "";
+        dotype.mime = "";
         derechos.media = dotype;
     }
 
@@ -347,10 +357,15 @@ function (data) {
             var objDO = {};
             var objMedia = {};
 
+            var strFormato = data.formato || undefined;
             if (strFormato) {
-
+                strFormato = strFormato.trim();
+                if (strFormato.startsWith(".")) {
+                    strFormato = strFormato.substring(1).toLowerCase();
+                }
                 objMedia.mime = strFormato;
             }
+
             objMedia.name = digObj;
             var originalName = data.nombre_del_objeto_digital_original || undefined;
             if (originalName && originalName.trim().length > 0) {

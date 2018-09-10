@@ -4,8 +4,6 @@ function (data) {
      **/
     var doURL = "http://35.193.209.163/multimedia/mediatecamedia/";
     var mediapath = "/storage/MULTIMEDIA/mediatecamedia/";
-//    var paththumbnail = doURL + "thumbnail/";
-//    var pathtimelineth = doURL + "cronologia/";
     var ret = {};
     var idArray = [];
     var elType = [];
@@ -13,17 +11,13 @@ function (data) {
     var elDescrip = [];
     var elkeys = [];
     var elLang = [];
-//    var elLang2 = [];
     var dObjs = [];
     var elCollection = [];
     var elCreator = [];
-//    var elCreatorNote = [];
-//    var elCreatorGroup = [];
     var elCredit = [];
     var arrHolder = [];
     var elGenerator = [];
     var urlLicense = "";
-//    var missing = [];
     var rightsTitle = "";
     var rights = "";
     var dotype = {};
@@ -53,6 +47,9 @@ function (data) {
 
     if (elCollection.length === 0 && data.institucion) {
         elCollection.push(data.institucion);
+    }
+    if(data.institucion && data.institucion.trim().length>0){
+        elCollection.push(data.institucion.trim());
     }
     ret.collection = elCollection;
 
@@ -177,14 +174,14 @@ function (data) {
 
     // Fecha cronología
     var timeline_date = data.nota_fecha || undefined;
-    if (timeline_date && timeline_date.trim().length > 0) {
+    if (timeline_date && timeline_date.trim().length > 0 && !isNaN(timeline_date.trim())) {
         ret.timelinedate = {"format": "", "value": timeline_date.trim()};
     }
 
 // Fecha
     var bic_dates = data.fecha || undefined;
     if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada" && bic_dates.trim().toLowerCase() !== "s/f" && bic_dates.trim().toLowerCase() !== "sin fecha") {
-        if (timeline_date && timeline_date.trim().length > 0) {
+        if (timeline_date && timeline_date.trim().length > 0  && !isNaN(timeline_date.trim())) {
             ret.datecreated = {"format": "", "value": timeline_date.trim(), note: bic_dates.trim()};
         } else {
             ret.datecreated = {"format": "", note: bic_dates.trim()};
