@@ -2,7 +2,7 @@ function (data) {
     /**
      Biblioteca Vasconcelos CSV file Script
      **/
-    var doURL = "http://35.193.209.163/multimedia/bv/";
+    var doURL = "https://mexicana.cultura.gob.mx/multimedia/biblioteca_vasconcelos/";
     var paththumbnail = doURL + "thumbnail/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};

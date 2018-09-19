@@ -2,7 +2,7 @@ function (data) {
     /**
      FONOTECA CSV file Script
      **/
-    var doURL = "http://35.193.209.163/multimedia/FONOTECA/";
+    var doURL = "https://mexicana.cultura.gob.mx/multimedia/FONOTECA/";
     var ret = {};
     var idArray = [];
     var elType = [];

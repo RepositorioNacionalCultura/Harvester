@@ -1,9 +1,9 @@
 function (data) {
     /**
-     IMUSEO NACIONAL DE ARTE CSV file Script
+     MUSEO NACIONAL DE ARTE CSV file Script
      **/
-    var doURL = "http://35.193.209.163/multimedia/munart/";
-    var paththumbnail = doURL + "thumbnail/";
+    var doURL = "https://mexicana.cultura.gob.mx/multimedia/munal/";
+    var paththumbnail = doURL + "thumbs/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};
     var idArray = [];
@@ -180,21 +180,6 @@ function (data) {
         ret.creatornote = elCreatorNote;
     }
 
-    // grupo del creador del bic ﻿
-//    var creatorgroup = data.grupo_ceador_del_bic || undefined;
-//    if (creatorgroup) {
-//
-//        if (creatorgroup.indexOf(';') > -1) { //revisando si son palabras clave separadas por ","
-//            var arrklist = creatorgroup.split(';');
-//            for (var i = 0; i < arrklist.length; i++) {
-//                elCreatorGroup.push(arrklist[i]);
-//            }
-//        } else {  //es una nota
-//            elCreatorGroup.push(creatorgroup);
-//        }
-//        ret.creatorgroup = elCreatorGroup;
-//    }
-
     // créditos
     var dc_credits = data.creditos || undefined;
     if (dc_credits) {
@@ -215,11 +200,7 @@ function (data) {
         elLang.push(lengua);
         ret.lang = elLang;
     }
-//// Grupo linguistico
-//    if (data.grupo_linguistico) {
-//        elLang2.push(data.grupo_linguistico);
-//        ret.grplang = elLang2;
-//    }
+
 // Lugar
     if (data.lugar) {
         ret.lugar = data.lugar;
@@ -270,12 +251,7 @@ function (data) {
         dateend = {"format": "", "value": fechaFin.trim()};
         ret.periodcreated = {"datestart": datestart, "dateend": dateend};
     }
-//// Fecha digitalizacion
-//    var digital_date = data.fecha_de_digitalizacion_del_bic || undefined;
-//    if (digital_date) {
-//        ret.datedigital = {"format": "", "value": digital_date};
-//    }
-
+    
 // Rights digital objects
     var derechos = {};
     if (data.derechos_de_autor) {
@@ -337,6 +313,7 @@ function (data) {
             objDO.rights = o_rights;
             objDO.url = digObj;  // doURL +
             dObjs.push(objDO);
+            ret.resourcethumbnail = paththumbnail + digObj;
         } else {
             ret.forIndex = false;
         }
@@ -350,12 +327,6 @@ function (data) {
         ret.formatid = formatoid;
     }
 
-//    // Publisher
-//    ret.publisher = "";
-//    if (data.institucion_creadora_del_bic && data.institucion_creadora_del_bic.trim().length > 0) {
-//        ret.publisher = data.institucion_creadora_del_bic;
-//    }
-
     // Holder
     if (data.institucion) {
         arrHolder.push(data.institucion);
@@ -366,37 +337,6 @@ function (data) {
     if (holderid && typeof holderid === "string" && holderid.trim().length > 0) {
         ret.holderid = holderid;
     }
-
-    // Thumbnail
-    var thumbnail = data.thumbnail || undefined;
-    ret.resourcethumbnail = "";
-    if (thumbnail && typeof thumbnail === "string" && thumbnail.trim().length > 0) {
-        ret.resourcethumbnail = paththumbnail + thumbnail;
-    }
-
-    //thumbnail cronologia
-    var timelinethumbnail = data.cronologia || undefined;
-    ret.timelinethumbnail = "";
-    if (timelinethumbnail && typeof timelinethumbnail === "string" && timelinethumbnail.trim().length > 0) {
-        ret.timelinethumbnail = pathtimelineth + timelinethumbnail;
-    }
-
-//    if (data.dimension && typeof data.dimension === 'string') {
-//        ret.dimension = "";
-//        var mydim = data.dimension;
-//        var myunit = data.unidad;
-//        if (mydim.indexOf(" - ") > -1 && myunit.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
-//            var arrklist = mydim.split(" - ");
-//            var arrkunit = myunit.split(" - ");
-//            for (var i = 0; i < arrklist.length; i++) {
-//                if(arrklist.length > arrkunit)
-//                ret.dimension += arrklist[i]+" "+arrkunit[i];
-//                if ((i + 1) < arrklist.length)
-//                    ret.dimension += " ";
-//            }
-//        }
-//
-//    }
 
     if (data.dimension && typeof data.dimension === 'string') {
         ret.dimension = "";

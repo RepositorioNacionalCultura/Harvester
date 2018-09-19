@@ -2,7 +2,7 @@ function (data) {
     /**
      Dirección General de Publicaciones CSV file Script
      **/
-    var doURL = "http://35.193.209.163/multimedia/dgp/";
+    var doURL = "https://mexicana.cultura.gob.mx/multimedia/dgp/";
     var paththumbnail = doURL + "thumbnail/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};
@@ -27,6 +27,7 @@ function (data) {
     var rights = "";
     var dotype = {};
     var reccollection = [];
+    var serie = [];
 // Más de la colección
     if (data.coleccion) {
         if (data.coleccion.indexOf(",") > -1) {
@@ -49,6 +50,25 @@ function (data) {
         elCollection.push(data.institucion.trim());
     }
     ret.collection = elCollection;
+    
+        // validar serie
+    if (data.serie) {
+        if (data.serie.indexOf(",") > -1) {
+            var colles = data.serie.split(',');
+            for (var i = 0; i < colles.length; i++) {
+                var coleccion = colles[i];
+                serie.push(coleccion);
+            }
+        } else {
+            var coleccion = data.serie;
+            serie.push(coleccion);
+        }
+        ret.serie = serie;
+    }
+    
+    
+    
+    
 // Identificador
     idArray.push({type: "oai", value: data.oaiid, preferred: true});
 // Tipo de BIC  
@@ -541,11 +561,7 @@ function (data) {
         ret.documentalfund = fondodocu;
     }
 
-    // validar serie
-    var serie = data.serie || undefined;
-    if (serie && typeof serie == "string" && serie.trim().length > 0) {
-        ret.serie = serie;
-    }
+
 
     // validar dirección
     var direccion = data.direccion || undefined;

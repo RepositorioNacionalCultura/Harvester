@@ -2,7 +2,7 @@ function (data) {
     /**
      RADIO EDUCACION CSV file Script
      **/
-    var doURL = "http://35.193.209.163/multimedia/radioeducacion/";
+    var doURL = "https://mexicana.cultura.gob.mx/multimedia/radioeducacion/";
     var ret = {};
     var idArray = [];
     var elType = [];

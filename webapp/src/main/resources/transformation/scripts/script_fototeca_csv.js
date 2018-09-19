@@ -2,7 +2,7 @@ function (data) {
     /**
      FOTOTECA - Instituto Nacional de Antropología e Historia  CSV file Script
      **/
-    var doURL = "http://35.193.209.163/multimedia/mediatecamedia/";
+    var doURL = "https://mexicana.cultura.gob.mx/multimedia/mediatecamedia/";
     var mediapath = "/storage/MULTIMEDIA/mediatecamedia/";
     var ret = {};
     var idArray = [];
@@ -45,9 +45,6 @@ function (data) {
         //ret.reccollection = reccollection;
     }
 
-    if (elCollection.length === 0 && data.institucion) {
-        elCollection.push(data.institucion);
-    }
     if(data.institucion && data.institucion.trim().length>0){
         elCollection.push(data.institucion.trim());
     }
@@ -75,8 +72,8 @@ function (data) {
 
 // Título
     var tmpTitle = "";
-    if (data.titulo_del_bic && typeof data.titulo_del_bic === 'string') {
-        tmpTitle = data.titulo_del_bic;
+    if (data.titulo && typeof data.titulo === 'string') {
+        tmpTitle = data.titulo;
         tmpTitle = tmpTitle.replace(new RegExp("´", 'g'), "'");
         tmpTitle = tmpTitle.replace(new RegExp("‘", 'g'), "'");
         tmpTitle = tmpTitle.replace(new RegExp("“", 'g'), '"');

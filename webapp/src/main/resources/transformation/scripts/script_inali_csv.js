@@ -2,7 +2,7 @@ function(data) {
 /**
 INALI CSV file Script
 **/
-    var doURL = "http://35.193.209.163/multimedia/INALI/";
+    var doURL = "https://mexicana.cultura.gob.mx/multimedia/INALI/";
     var ret = {};
     var idArray =[];
     var elType = [];

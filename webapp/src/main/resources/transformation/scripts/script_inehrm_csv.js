@@ -2,7 +2,7 @@ function (data) {
     /**
      INEHRM INSTITUTO NACIONAL DE ESTUDIOS HISTÓRICOS DE LAS REVOLUCIONES DE MÉXICO CSV file Script
      **/
-    var doURL = "http://35.193.209.163/multimedia/inehrm/";
+    var doURL = "https://mexicana.cultura.gob.mx/multimedia/inehrm/";
     var paththumbnail = doURL + "thumbnail/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};
@@ -325,7 +325,7 @@ function (data) {
 // Digital Objects
     var digObj = data.nombre_del_objeto_digital || undefined;
     if (digObj) {
-        if (digObj.length > 0) {
+        if (digObj.trim().length > 0) {
             var objDO = {};
             var objMedia = {};
 
@@ -348,7 +348,11 @@ function (data) {
                 o_rights.description = rights;
             }
             objDO.rights = o_rights;
-            objDO.url = doURL + digObj;  // 
+            if (digObj.startsWith("https://")) {
+                objDO.url = digObj.trim();
+            } else {
+                objDO.url = doURL + digObj;  // 
+            }
             dObjs.push(objDO);
         } else {
             ret.forIndex = false;

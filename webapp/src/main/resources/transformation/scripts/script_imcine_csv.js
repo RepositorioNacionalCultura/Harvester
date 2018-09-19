@@ -2,7 +2,7 @@ function (data) {
     /**
      IMCINE CSV file Script
      **/
-    var doURL = "http://35.193.209.163/multimedia/IMCINE/";
+    var doURL = "https://mexicana.cultura.gob.mx/multimedia/IMCINE/";
     var paththumbnail = doURL + "thumbnail/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};

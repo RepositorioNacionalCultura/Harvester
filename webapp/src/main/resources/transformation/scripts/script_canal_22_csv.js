@@ -2,7 +2,7 @@ function (data) {
     /**
      CANAL 22 CSV file Script
      **/
-    var doURL = "http://35.193.209.163/multimedia/canal22/";
+    var doURL = "https://mexicana.cultura.gob.mx/multimedia/canal22/";
     var paththumbnail = doURL + "thumbnail/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};
@@ -282,7 +282,7 @@ function (data) {
         derechos.description = rights;
     }
     if (data.declaracion_de_uso_sobre_el_objeto_digital_que_representa_el_bic_url) {
-        urlLicense = data.declaracion_de_uso_sobre_el_objeto_digital_que_representa_el_bic_url
+        urlLicense = data.declaracion_de_uso_sobre_el_objeto_digital_que_representa_el_bic_url;
         derechos.url = urlLicense;
     } else {
         urlLicense = rights;
@@ -346,25 +346,25 @@ function (data) {
 
     // Holder id
     var holderid = data.id_institucion || undefined;
-    if (holderid && typeof holderid == "string" && holderid.trim().length > 0) {
+    if (holderid && typeof holderid === "string" && holderid.trim().length > 0) {
         ret.holderid = holderid;
     }
 
     // Thumbnail
     var thumbnail = data.thumbnail || undefined;
     ret.resourcethumbnail = "";
-    if (thumbnail && typeof thumbnail == "string" && thumbnail.trim().length > 0) {
+    if (thumbnail && typeof thumbnail === "string" && thumbnail.trim().length > 0) {
         ret.resourcethumbnail = paththumbnail+thumbnail;
     }
 
     //thumbnail cronologia
     var timelinethumbnail = data.cronologia || undefined;
     ret.timelinethumbnail = "";
-    if (timelinethumbnail && typeof timelinethumbnail == "string" && timelinethumbnail.trim().length > 0) {
+    if (timelinethumbnail && typeof timelinethumbnail === "string" && timelinethumbnail.trim().length > 0) {
         ret.timelinethumbnail = pathtimelineth+timelinethumbnail;
     }
 
-    if (data.dimension && typeof data.dimension == 'string') {
+    if (data.dimension && typeof data.dimension === 'string') {
         ret.dimension = "";
         var mydim = data.dimension;
         if (mydim.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
@@ -376,7 +376,7 @@ function (data) {
             }
         }
 
-        if (data.unidad && typeof data.unidad == "string") {
+        if (data.unidad && typeof data.unidad === "string") {
             ret.dimension += " "
             var myunit = data.unidad;
             if (mydim.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
@@ -394,86 +394,86 @@ function (data) {
 
     // validar id tipo del bic
     var bictypeid = data.id_tipo_del_bic || undefined;
-    if (bictypeid && typeof bictypeid == "string" && bictypeid.trim().length > 0) {
+    if (bictypeid && typeof bictypeid === "string" && bictypeid.trim().length > 0) {
         ret.bictypeid = bictypeid;
     }
 
     // validar tipo del bic
     var bictype = data.tipo_del_bic || undefined;
-    if (bictype && typeof bictype == "string" && bictype.trim().length > 0) {
+    if (bictype && typeof bictype === "string" && bictype.trim().length > 0) {
         ret.bictype = bictype;
     }
 
     // validar tipo de identificador id
     var identifiertypeid = data.id_tipo_de_identificador || undefined;
-    if (identifiertypeid && typeof identifiertypeid == "string" && identifiertypeid.trim().length > 0) {
+    if (identifiertypeid && typeof identifiertypeid === "string" && identifiertypeid.trim().length > 0) {
         ret.identifiertypeid = identifiertypeid;
     }
 
     // validar tipo de identificador
     var identifiertype = data.tipo_de_identificador || undefined;
-    if (identifiertype && typeof identifiertype == "string" && identifiertype.trim().length > 0) {
+    if (identifiertype && typeof identifiertype === "string" && identifiertype.trim().length > 0) {
         ret.identifiertype = identifiertype;
     }
 
     // validar id unidad
     var unidadid = data.id_unidad || undefined;
-    if (unidadid && typeof unidadid == "string" && unidadid.trim().length > 0) {
+    if (unidadid && typeof unidadid === "string" && unidadid.trim().length > 0) {
         ret.unidadid = unidadid;
     }
 
     // validar tipo unidad
     var unidadtype = data.tipo_unidad || undefined;
-    if (unidadtype && typeof unidadtype == "string" && unidadtype.trim().length > 0) {
+    if (unidadtype && typeof unidadtype === "string" && unidadtype.trim().length > 0) {
         ret.unidadtype = unidadtype;
     }
 
     // validar id tipo dimension
     var dimensiontypeid = data.id_tipo_de_dimension || undefined;
-    if (dimensiontypeid && typeof dimensiontypeid == "string" && dimensiontypeid.trim().length > 0) {
+    if (dimensiontypeid && typeof dimensiontypeid === "string" && dimensiontypeid.trim().length > 0) {
         ret.dimensionid = dimensiontypeid;
     }
 
     // validar tipo dimension
     var dimensiontype = data.tipo_de_dimension || undefined;
-    if (dimensiontype && typeof dimensiontype == "string" && dimensiontype.trim().length > 0) {
+    if (dimensiontype && typeof dimensiontype === "string" && dimensiontype.trim().length > 0) {
         ret.dimensiontype = dimensiontype;
     }
 
     // validar capítulo
     var chapter = data.capitulo || undefined;
-    if (chapter && typeof chapter == "string" && chapter.trim().length > 0) {
+    if (chapter && typeof chapter === "string" && chapter.trim().length > 0) {
         ret.chapter = chapter;
     }
     //validar destacados
     var destacado = data.destacados || undefined;
-    if (destacado && typeof destacado == "string" && destacado.trim().length > 0) {
+    if (destacado && typeof destacado === "string" && destacado.trim().length > 0) {
         ret.destacado = true;
     } else {
         ret.destacado = false;
     }
     // validar formatos disponibles
     var availableformats = data.formatos_disponibles || undefined;
-    if (availableformats && typeof availableformats == "string" && availableformats.trim().length > 0) {
+    if (availableformats && typeof availableformats === "string" && availableformats.trim().length > 0) {
         ret.availableformats = availableformats;
     }
 
 
     // validar id media
     var mediaid = data.id_media || undefined;
-    if (mediaid && typeof mediaid == "string" && mediaid.trim().length > 0) {
+    if (mediaid && typeof mediaid === "string" && mediaid.trim().length > 0) {
         ret.mediaid = mediaid;
     }
 
     // validar id formato
     var formatid = data.id_formato || undefined;
-    if (formatid && typeof formatid == "string" && formatid.trim().length > 0) {
+    if (formatid && typeof formatid === "string" && formatid.trim().length > 0) {
         ret.formatid = formatid;
     }
 
     // validar episodio
     var episodio = data.episodio || undefined;
-    if (episodio && typeof episodio == "string" && episodio.trim().length > 0) {
+    if (episodio && typeof episodio === "string" && episodio.trim().length > 0) {
         ret.episode = episodio;
     }
 

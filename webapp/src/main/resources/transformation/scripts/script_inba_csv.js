@@ -1,6 +1,6 @@
 function(data) {
 /** INBA CSV file Script **/
-    var doURL = "http://35.193.209.163/mediateca/";
+    var doURL = "https://mexicana.cultura.gob.mx/mediateca/";
     var ret = {};
     var idArray =[];
     var elType = [];
