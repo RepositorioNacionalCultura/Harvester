@@ -311,7 +311,7 @@ function (data) {
                 o_rights.description = rights;
             }
             objDO.rights = o_rights;
-            objDO.url = digObj;  // doURL +
+            objDO.url = doURL + digObj;  // doURL +
             dObjs.push(objDO);
             ret.resourcethumbnail = paththumbnail + digObj;
         } else {

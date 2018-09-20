@@ -348,7 +348,7 @@ function (data) {
                 o_rights.description = rights;
             }
             objDO.rights = o_rights;
-            if (digObj.startsWith("https://")) {
+            if (digObj.startsWith("https://")|| digObj.startsWith("http://")) {
                 objDO.url = digObj.trim();
             } else {
                 objDO.url = doURL + digObj;  // 
