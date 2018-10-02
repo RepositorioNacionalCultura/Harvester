@@ -2,7 +2,7 @@ function (data) {
     /**
      Dirección General de Culturas Populares CSV file Script
      **/
-    var doURL = "https://mexicana.cultura.gob.mx/multimedia/dgcpu/";
+    var doURL = "/multimedia/dgcpu/";
     var paththumbnail = doURL + "thumbnail/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};
@@ -87,10 +87,20 @@ function (data) {
         if (data.tipo_del_bic.indexOf(",") > -1) {
             var colles = data.tipo_del_bic.split(',');
             for (var i = 0; i < colles.length; i++) {
-                elType.push(colles[i]);
+                var tmptipo = colles[i];
+                if (null !== tmptipo && tmptipo.trim().length > 0) {
+                    tmptipo = tmptipo.trim();
+                    tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                    elType.push(tmptipo);
+                }
             }
         } else {
-            elType.push(data.tipo_del_bic);
+            var tmptipo = data.tipo_del_bic;
+            if (null !== tmptipo && tmptipo.trim().length > 0) {
+                tmptipo = tmptipo.trim();
+                tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                elType.push(tmptipo);
+            }
         }
     }
 // Título
@@ -310,9 +320,11 @@ function (data) {
 
     if (data.media) {
         dotype.mime = data.media.toLowerCase();
+        dotype.name = data.media.toLowerCase();
         derechos.media = dotype;
     } else {
         dotype.mime = "";
+        dotype.name = "";
         derechos.media = dotype;
     }
 
@@ -475,12 +487,12 @@ function (data) {
         ret.dimensiontype = dimensiontype;
     }
 
-    //validar destacados
-    var destacado = data.destacados || undefined;
-    if (destacado && typeof destacado == "string" && destacado.trim().length > 0) {
-        ret.destacado = true;
+    //validar destacado
+    var destacado = data.destacado || undefined;
+    if (destacado && typeof destacado === "string" && destacado.trim().length > 0) {
+        ret.important = destacado;
     } else {
-        ret.destacado = false;
+        ret.important = 0;
     }
     // validar formatos disponibles
     var availableformats = data.formatos_disponibles || undefined;

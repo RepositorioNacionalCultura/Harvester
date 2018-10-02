@@ -474,14 +474,14 @@ function (data) {
         }
 
         //validar destacados
-        var destacado = dcData.destacados || undefined;
-        if (destacado && typeof destacado === "string" && destacado.trim().length > 0) {
-            ret.destacado = true;
-        } else {
-            ret.destacado = false;
-        }
+//        var destacado = dcData.destacados || undefined;
+//        if (destacado && typeof destacado === "string" && destacado.trim().length > 0 && destacado==="1") {
+//            ret.important = 1;
+//        } else {
+//            ret.important = 0;
+//        }
 
-
+        ret.important = 1;
         // validar técnica
         var tecnica = dcData.investInvestTecnica || undefined;
         if (tecnica && typeof tecnica === "string" && tecnica.trim().length > 0) {

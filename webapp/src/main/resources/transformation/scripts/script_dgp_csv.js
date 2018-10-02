@@ -2,7 +2,7 @@ function (data) {
     /**
      Dirección General de Publicaciones CSV file Script
      **/
-    var doURL = "https://mexicana.cultura.gob.mx/multimedia/dgp/";
+    var doURL = "/multimedia/dgp/";
     var paththumbnail = doURL + "thumbnail/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};
@@ -81,10 +81,20 @@ function (data) {
         if (data.tipo_del_bic.indexOf(",") > -1) {
             var colles = data.tipo_del_bic.split(',');
             for (var i = 0; i < colles.length; i++) {
-                elType.push(colles[i]);
+                var tmptipo = colles[i];
+                if (null !== tmptipo && tmptipo.trim().length > 0) {
+                    tmptipo = tmptipo.trim();
+                    tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                    elType.push(tmptipo);
+                }
             }
         } else {
-            elType.push(data.tipo_del_bic);
+            var tmptipo = data.tipo_del_bic;
+            if (null !== tmptipo && tmptipo.trim().length > 0) {
+                tmptipo = tmptipo.trim();
+                tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                elType.push(tmptipo);
+            }
         }
     }
 // Título
@@ -523,12 +533,11 @@ function (data) {
     if (chapter && typeof chapter == "string" && chapter.trim().length > 0) {
         ret.chapter = chapter;
     }
-    //validar destacados
-    var destacado = data.destacados || undefined;
-    if (destacado && typeof destacado == "string" && destacado.trim().length > 0) {
-        ret.destacado = true;
+    var destacado = data.destacado || undefined;
+    if (destacado && typeof destacado === "string" && destacado.trim().length > 0) {
+        ret.important = destacado;
     } else {
-        ret.destacado = false;
+        ret.important = 0;
     }
     // validar formatos disponibles
     var availableformats = data.formatos_disponibles || undefined;

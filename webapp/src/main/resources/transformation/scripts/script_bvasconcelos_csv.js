@@ -2,7 +2,7 @@ function (data) {
     /**
      Biblioteca Vasconcelos CSV file Script
      **/
-    var doURL = "https://mexicana.cultura.gob.mx/multimedia/biblioteca_vasconcelos/";
+    var doURL = "/multimedia/biblioteca_vasconcelos/";
     var paththumbnail = doURL + "thumbnail/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};
@@ -65,10 +65,20 @@ function (data) {
         if (data.tipo_de_bic.indexOf(",") > -1) {
             var colles = data.tipo_de_bic.split(',');
             for (var i = 0; i < colles.length; i++) {
-                elType.push(colles[i]);
+                var tmptipo = colles[i];
+                if (null !== tmptipo && tmptipo.trim().length > 0) {
+                    tmptipo = tmptipo.trim();
+                    tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                    elType.push(tmptipo);
+                }
             }
         } else {
-            elType.push(data.tipo_de_bic);
+            var tmptipo = data.tipo_de_bic;
+                if (null !== tmptipo && tmptipo.trim().length > 0) {
+                    tmptipo = tmptipo.trim();
+                    tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                    elType.push(tmptipo);
+                }
         }
     }
 
@@ -321,6 +331,7 @@ function (data) {
     }
     if (data.media) {
         dotype.mime = data.media.toLowerCase();
+        dotype.name = data.media.toLowerCase();
         derechos.media = dotype;
     } else {
         dotype.mime = "";
@@ -418,36 +429,60 @@ function (data) {
 //
 //    }
 
-    if (data.dimension && typeof data.dimension === 'string') {
+
+if (data.dimension && typeof data.dimension === 'string') {
         ret.dimension = "";
         var mydim = data.dimension;
         if (mydim.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
             var arrklist = mydim.split(" - ");
+            var arrunits;
+            var usize = -1;
+            if (data.unidad && typeof data.unidad === "string") {
+                var myunit = data.unidad;
+                if (myunit.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
+                    arrunits = myunit.split(" - ");
+                    usize = arrunits.length;
+                }
+            }
             for (var i = 0; i < arrklist.length; i++) {
                 ret.dimension += arrklist[i];
-                if ((i + 1) < arrklist.length)
-                    ret.dimension += ":";
-            }
-        } else {
-            ret.dimension = mydim;
-        }
-
-        if (data.unidad && typeof data.unidad === "string") {
-            ret.dimension += " "
-            var myunit = data.unidad;
-            if (mydim.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
-                var arrklist = myunit.split(" - ");
-                for (var i = 0; i < arrklist.length; i++) {
-                    ret.dimension += arrklist[i];
-                    if ((i + 1) < arrklist.length)
-                        ret.dimension += " ";
+                if (usize > -1 && usize === arrklist.length) {
+                    ret.dimension += " " + arrunits[i] + " ";
                 }
-            } else {
-                ret.dimension += " " + myunit
             }
         }
-
     }
+    
+//    if (data.dimension && typeof data.dimension === 'string') {
+//        ret.dimension = "";
+//        var mydim = data.dimension;
+//        if (mydim.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
+//            var arrklist = mydim.split(" - ");
+//            for (var i = 0; i < arrklist.length; i++) {
+//                ret.dimension += arrklist[i];
+//                if ((i + 1) < arrklist.length)
+//                    ret.dimension += ":";
+//            }
+//        } else {
+//            ret.dimension = mydim;
+//        }
+//
+//        if (data.unidad && typeof data.unidad === "string") {
+//            ret.dimension += " "
+//            var myunit = data.unidad;
+//            if (mydim.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
+//                var arrklist = myunit.split(" - ");
+//                for (var i = 0; i < arrklist.length; i++) {
+//                    ret.dimension += arrklist[i];
+//                    if ((i + 1) < arrklist.length)
+//                        ret.dimension += " ";
+//                }
+//            } else {
+//                ret.dimension += " " + myunit
+//            }
+//        }
+//
+//    }
     // validar id tipo del bic
     var bictypeid = data.id_tipo_del_bic || undefined;
     if (bictypeid && typeof bictypeid === "string" && bictypeid.trim().length > 0) {
@@ -501,12 +536,12 @@ function (data) {
     if (chapter && typeof chapter === "string" && chapter.trim().length > 0) {
         ret.chapter = chapter;
     }
-    //validar destacados
-    var destacado = data.destacados || undefined;
+    //validar destacado
+    var destacado = data.destacado || undefined;
     if (destacado && typeof destacado === "string" && destacado.trim().length > 0) {
-        ret.destacado = true;
+        ret.important = destacado;
     } else {
-        ret.destacado = false;
+        ret.important = 0;
     }
 
     // validar id media

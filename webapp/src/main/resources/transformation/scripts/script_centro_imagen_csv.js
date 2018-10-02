@@ -2,7 +2,7 @@ function (data) {
     /**
      CENTRO DE LA IMAGEN CSV file Script
      **/
-    var doURL = "https://mexicana.cultura.gob.mx/multimedia/CENTRO_DE_LA_IMAGEN/";
+    var doURL = "/multimedia/CENTRO_DE_LA_IMAGEN/";
     var paththumbnail = doURL + "thumbnail/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};
@@ -69,7 +69,7 @@ function (data) {
     idArray.push({type: "oai", value: data.oaiid, preferred: true});
 // Tipo de BIC  
     /*
-     if(data.media && typeof data.media == 'string'){
+     if(data.media && typeof data.media === 'string'){
      elType.push(data.media);
      }  
      */
@@ -77,10 +77,20 @@ function (data) {
         if (data.tipo_del_bic.indexOf(",") > -1) {
             var colles = data.tipo_del_bic.split(',');
             for (var i = 0; i < colles.length; i++) {
-                elType.push(colles[i]);
+                var tmptipo = colles[i];
+                if (null !== tmptipo && tmptipo.trim().length > 0) {
+                    tmptipo = tmptipo.trim();
+                    tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                    elType.push(tmptipo);
+                }
             }
         } else {
-            elType.push(data.tipo_del_bic);
+            var tmptipo = data.tipo_del_bic;
+            if (null !== tmptipo && tmptipo.trim().length > 0) {
+                tmptipo = tmptipo.trim();
+                tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                elType.push(tmptipo);
+            }
         }
     }
 // Título
@@ -116,12 +126,12 @@ function (data) {
         if (palabras.indexOf(',') > -1) { //revisando si son palabras clave separadas por ","
             var arrklist = palabras.split(',');
             for (var i = 0; i < arrklist.length; i++) {
-                if (elkeys.indexOf(arrklist[i]) == -1) {
+                if (elkeys.indexOf(arrklist[i]) === -1) {
                     elkeys.push(arrklist[i].trim());
                 }
             }
         } else {  //es una palabra clave
-            if (elkeys.indexOf(palabras) == -1) {
+            if (elkeys.indexOf(palabras) === -1) {
                 elkeys.push(palabras.trim());
             }
         }
@@ -220,7 +230,7 @@ function (data) {
     }
 // Lenguaje
     var lengua = data.lengua || undefined;
-    if (lengua && typeof lengua == "string" && lengua.trim().length > 0) {
+    if (lengua && typeof lengua === "string" && lengua.trim().length > 0) {
         elLang.push(lengua);
         ret.lang = elLang;
     }
@@ -327,9 +337,11 @@ function (data) {
     }
     if (data.media) {
         dotype.mime = data.media.toLowerCase();
+        dotype.name = data.media.toLowerCase();
         derechos.media = dotype;
     } else {
         dotype.mime = "";
+        dotype.name = "";
         derechos.media = dotype;
     }
 
@@ -383,25 +395,25 @@ function (data) {
 
     // Holder id
     var holderid = data.id_institucion || undefined;
-    if (holderid && typeof holderid == "string" && holderid.trim().length > 0) {
+    if (holderid && typeof holderid === "string" && holderid.trim().length > 0) {
         ret.holderid = holderid;
     }
 
     // Thumbnail
     var thumbnail = data.thumbnail || undefined;
     ret.resourcethumbnail = "";
-    if (thumbnail && typeof thumbnail == "string" && thumbnail.trim().length > 0) {
+    if (thumbnail && typeof thumbnail === "string" && thumbnail.trim().length > 0) {
         ret.resourcethumbnail = paththumbnail+thumbnail;
     }
 
     //thumbnail cronologia
     var timelinethumbnail = data.cronologia || undefined;
     ret.timelinethumbnail = "";
-    if (timelinethumbnail && typeof timelinethumbnail == "string" && timelinethumbnail.trim().length > 0) {
+    if (timelinethumbnail && typeof timelinethumbnail === "string" && timelinethumbnail.trim().length > 0) {
         ret.timelinethumbnail = pathtimelineth+timelinethumbnail;
     }
 
-    if (data.dimension && typeof data.dimension == 'string') {
+    if (data.dimension && typeof data.dimension === 'string') {
         ret.dimension = "";
         var mydim = data.dimension;
         if (mydim.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
@@ -413,7 +425,7 @@ function (data) {
             }
         }
 
-        if (data.unidad && typeof data.unidad == "string" ) {
+        if (data.unidad && typeof data.unidad === "string" ) {
             ret.dimension += " "
             var myunit = data.unidad;
             if (mydim.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
@@ -431,101 +443,94 @@ function (data) {
 
     // validar id tipo del bic
     var bictypeid = data.id_tipo_del_bic || undefined;
-    if (bictypeid && typeof bictypeid == "string" && bictypeid.trim().length > 0) {
+    if (bictypeid && typeof bictypeid === "string" && bictypeid.trim().length > 0) {
         ret.bictypeid = bictypeid;
     }
 
     // validar tipo del bic
     var bictype = data.tipo_del_bic || undefined;
-    if (bictype && typeof bictype == "string" && bictype.trim().length > 0) {
+    if (bictype && typeof bictype === "string" && bictype.trim().length > 0) {
         ret.bictype = bictype;
     }
 
     // validar tipo de identificador id
     var identifiertypeid = data.id_tipo_de_identificador || undefined;
-    if (identifiertypeid && typeof identifiertypeid == "string" && identifiertypeid.trim().length > 0) {
+    if (identifiertypeid && typeof identifiertypeid === "string" && identifiertypeid.trim().length > 0) {
         ret.identifiertypeid = identifiertypeid;
     }
 
     // validar tipo de identificador
     var identifiertype = data.tipo_de_identificador || undefined;
-    if (identifiertype && typeof identifiertype == "string" && identifiertype.trim().length > 0) {
+    if (identifiertype && typeof identifiertype === "string" && identifiertype.trim().length > 0) {
         ret.identifiertype = identifiertype;
     }
 
     // validar id unidad
     var unidadid = data.id_unidad || undefined;
-    if (unidadid && typeof unidadid == "string" && unidadid.trim().length > 0) {
+    if (unidadid && typeof unidadid === "string" && unidadid.trim().length > 0) {
         ret.unidadid = unidadid;
     }
 
     // validar tipo unidad
     var unidadtype = data.tipo_unidad || undefined;
-    if (unidadtype && typeof unidadtype == "string" && unidadtype.trim().length > 0) {
+    if (unidadtype && typeof unidadtype === "string" && unidadtype.trim().length > 0) {
         ret.unidadtype = unidadtype;
     }
 
     // validar id tipo dimension
     var dimensiontypeid = data.id_tipo_de_dimension || undefined;
-    if (dimensiontypeid && typeof dimensiontypeid == "string" && dimensiontypeid.trim().length > 0) {
+    if (dimensiontypeid && typeof dimensiontypeid === "string" && dimensiontypeid.trim().length > 0) {
         ret.dimensionid = dimensiontypeid;
     }
 
     // validar tipo dimension
     var dimensiontype = data.tipo_de_dimension || undefined;
-    if (dimensiontype && typeof dimensiontype == "string" && dimensiontype.trim().length > 0) {
+    if (dimensiontype && typeof dimensiontype === "string" && dimensiontype.trim().length > 0) {
         ret.dimensiontype = dimensiontype;
     }
 
     // validar capítulo
     var chapter = data.capitulo || undefined;
-    if (chapter && typeof chapter == "string" && chapter.trim().length > 0) {
+    if (chapter && typeof chapter === "string" && chapter.trim().length > 0) {
         ret.chapter = chapter;
     }
     //validar destacados
-    var destacado = data.destacados || undefined;
-    if (destacado && typeof destacado == "string" && destacado.trim().length > 0) {
-        ret.destacado = true;
+    var destacado = data.destacado || undefined;
+    if (destacado && typeof destacado === "string" && destacado.trim().length > 0) {
+        ret.important = destacado;
     } else {
-        ret.destacado = false;
+        ret.important = 0;
     }
     // validar formatos disponibles
     var availableformats = data.formatos_disponibles || undefined;
-    if (availableformats && typeof availableformats == "string" && availableformats.trim().length > 0) {
+    if (availableformats && typeof availableformats === "string" && availableformats.trim().length > 0) {
         ret.availableformats = availableformats;
     }
 
 
     // validar id media
     var mediaid = data.id_media || undefined;
-    if (mediaid && typeof mediaid == "string" && mediaid.trim().length > 0) {
+    if (mediaid && typeof mediaid === "string" && mediaid.trim().length > 0) {
         ret.mediaid = mediaid;
     }
 
     // validar id formato
     var formatid = data.id_formato || undefined;
-    if (formatid && typeof formatid == "string" && formatid.trim().length > 0) {
+    if (formatid && typeof formatid === "string" && formatid.trim().length > 0) {
         ret.formatid = formatid;
     }
 
     // validar episodio
     var episodio = data.episodio || undefined;
-    if (episodio && typeof episodio == "string" && episodio.trim().length > 0) {
+    if (episodio && typeof episodio === "string" && episodio.trim().length > 0) {
         ret.episode = episodio;
     }
     
     // validar fondo documental del bic
     var fondodocu = data.fondo_documental_del_bic || undefined;
-    if (fondodocu && typeof fondodocu == "string" && fondodocu.trim().length > 0) {
+    if (fondodocu && typeof fondodocu === "string" && fondodocu.trim().length > 0) {
         ret.documentalfund = fondodocu;
     }
-    
-//    // validar serie
-//    var serie = data.serie || undefined;
-//    if (serie && typeof serie == "string" && serie.trim().length > 0) {
-//        ret.serie = serie;
-//    }
-
 
     ret.rights = derechos;
     ret.digitalObject = dObjs;

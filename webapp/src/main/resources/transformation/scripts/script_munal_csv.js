@@ -2,7 +2,7 @@ function (data) {
     /**
      MUSEO NACIONAL DE ARTE CSV file Script
      **/
-    var doURL = "https://mexicana.cultura.gob.mx/multimedia/munal/";
+    var doURL = "/multimedia/munal/";
     var paththumbnail = doURL + "thumbs/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};
@@ -61,16 +61,25 @@ function (data) {
     if (data.media && typeof data.media === 'string') {
         elType.push(data.media);
     }
-
-    var tipoBic = data.tipo_del_bic || undefined;
-    if (tipoBic) {
-        if (tipoBic.trim().length > 0 && tipoBic.indexOf(",") > -1) {
-            var colles = tipoBic.split(',');
+    
+    if (data.tipo_del_bic) {
+        if (data.tipo_del_bic.indexOf(",") > -1) {
+            var colles = data.tipo_del_bic.split(',');
             for (var i = 0; i < colles.length; i++) {
-                elType.push(colles[i]);
+                var tmptipo = colles[i];
+                if (null !== tmptipo && tmptipo.trim().length > 0) {
+                    tmptipo = tmptipo.trim();
+                    tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                    elType.push(tmptipo);
+                }
             }
         } else {
-            elType.push(tipoBic);
+            var tmptipo = data.tipo_del_bic;
+                if (null !== tmptipo && tmptipo.trim().length > 0) {
+                    tmptipo = tmptipo.trim();
+                    tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                    elType.push(tmptipo);
+                }
         }
     }
 
@@ -120,7 +129,7 @@ function (data) {
     }
 // Creadores
     var dc_creatorsName = data.creador_del_bic_nombre || undefined;
-    var dc_creatorsLast = data.creador_del_bic_apellido || undefined;
+    var dc_creatorsLast = data.creador_del_bic_apellidos || undefined;
     if (dc_creatorsName && dc_creatorsLast) {
         if (dc_creatorsName.indexOf(';') > -1 && dc_creatorsLast.indexOf(';') > -1) { //revisando si son palabras clave separadas por ","
             var arrklistName = dc_creatorsName.split(';');
@@ -278,9 +287,11 @@ function (data) {
         dotype.mime = strFormato;
     }
     if (data.media) {
+        dotype.mime = data.media.toLowerCase();
         dotype.name = data.media.toLowerCase();
         derechos.media = dotype;
     } else {
+        dotype.mime = "";
         dotype.name = "";
         derechos.media = dotype;
     }
@@ -458,12 +469,12 @@ function (data) {
         ret.discipline = disciplina;
     }
 
-    //validar destacados
-    var destacado = data.destacados || undefined;
+    //validar destacado
+    var destacado = data.destacado || undefined;
     if (destacado && typeof destacado === "string" && destacado.trim().length > 0) {
-        ret.destacado = true;
+        ret.important = destacado;
     } else {
-        ret.destacado = false;
+        ret.important = 0;
     }
 
     // validar id media

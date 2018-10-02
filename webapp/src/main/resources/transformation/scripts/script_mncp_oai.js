@@ -27,6 +27,7 @@ function (data) {
     var rights = "";
     var dotype = {};
     var reccollection = [];
+    var serie = [];
 
     var dcData = data.oai_dc.objeto || undefined;
 
@@ -205,7 +206,7 @@ function (data) {
 // Fecha
         var bic_dates = dcData.infoGenFecha || undefined;
         if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada" && !isNaN(bic_dates.trim()) && bic_dates.trim().toLowerCase() !== "s/f" && bic_dates.trim().toLowerCase() !== "sin fecha") {
-            if (timeline_date && timeline_date.trim().length > 0 && !isNaN(timeline_date.trim()) ) {
+            if (timeline_date && timeline_date.trim().length > 0 && !isNaN(timeline_date.trim())) {
                 ret.datecreated = {"format": "", "value": timeline_date.trim(), note: bic_dates.trim()};
             } else {
                 ret.datecreated = {"format": "", note: bic_dates.trim()};
@@ -241,7 +242,7 @@ function (data) {
             derechos.url = urlLicense;
         }
 
-        
+
         var strFormato = "";
 // Digital Objects
         var od = [];
@@ -257,7 +258,7 @@ function (data) {
                     if (strFormato && strFormato.trim().length > 0) {
                         strFormato = strFormato.trim();
                         ret.resourcethumbnail = paththumbnail + strFormato;
-                        objMedia.mime = strFormato.substring(strFormato.indexOf(".")+1).toLowerCase();
+                        objMedia.mime = strFormato.substring(strFormato.indexOf(".") + 1).toLowerCase();
 
                         objMedia.name = strFormato;
 //                        var originalName = dcData.nombre_del_objeto_digital_original || undefined;
@@ -282,7 +283,7 @@ function (data) {
                     }
 
                 }
-                if(od.length===0){
+                if (od.length === 0) {
                     ret.forIndex = false;
                 }
             } else if (digObj.length > 0) {
@@ -292,7 +293,7 @@ function (data) {
                 strFormato = digObj;
                 if (strFormato) {
                     strFormato = strFormato.trim();
-                    objMedia.mime = strFormato.substring(strFormato.indexOf(".")+1).toLowerCase();
+                    objMedia.mime = strFormato.substring(strFormato.indexOf(".") + 1).toLowerCase();
                 }
                 objMedia.name = digObj;
 //                var originalName = dcData.nombre_del_objeto_digital_original || undefined;
@@ -319,8 +320,9 @@ function (data) {
             ret.forIndex = false;
         }
 
-        if (strFormato && strFormato.trim().length>0) {
-            dotype.mime = strFormato.substring(strFormato.indexOf(".")+1).toLowerCase();;
+        if (strFormato && strFormato.trim().length > 0) {
+            dotype.mime = strFormato.substring(strFormato.indexOf(".") + 1).toLowerCase();
+            ;
             derechos.media = dotype;
         } else {
             dotype.mime = "";
@@ -394,12 +396,13 @@ function (data) {
         }
 
         //validar destacados
-        var destacado = dcData.destacados || undefined;
-        if (destacado && typeof destacado === "string" && destacado.trim().length > 0) {
-            ret.destacado = true;
-        } else {
-            ret.destacado = false;
-        }
+//        var destacado = dcData.destacados || undefined;
+//        if (destacado && typeof destacado === "string" && destacado.trim().length > 0 && destacado==="1") {
+//            ret.important = 1;
+//        } else {
+//            ret.important = 0;
+//        }
+        ret.important = 1;
         // validar formatos disponibles
         var availableformats = dcData.formatos_disponibles || undefined;
         if (availableformats && typeof availableformats === "string" && availableformats.trim().length > 0) {
@@ -431,9 +434,19 @@ function (data) {
             ret.documentalfund = fondodocu;
         }
 
+
         // validar serie
-        var serie = dcData.serie || undefined;
-        if (serie && typeof serie === "string" && serie.trim().length > 0) {
+        if (data.serie) {
+            if (data.serie.indexOf(",") > -1) {
+                var colles = data.serie.split(',');
+                for (var i = 0; i < colles.length; i++) {
+                    var coleccion = colles[i];
+                    serie.push(coleccion);
+                }
+            } else {
+                var coleccion = data.serie;
+                serie.push(coleccion);
+            }
             ret.serie = serie;
         }
 

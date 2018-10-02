@@ -2,7 +2,7 @@ function (data) {
     /**
      CANAL 22 CSV file Script
      **/
-    var doURL = "https://mexicana.cultura.gob.mx/multimedia/canal22/";
+    var doURL = "/multimedia/canal22/";
     var paththumbnail = doURL + "thumbnail/";
     var pathtimelineth = doURL + "cronologia/";
     var ret = {};
@@ -45,7 +45,7 @@ function (data) {
         }
         ret.reccollection = reccollection;
     }
-    if(data.institucion_creadora_del_bic && data.institucion_creadora_del_bic.trim().length>0){
+    if (data.institucion_creadora_del_bic && data.institucion_creadora_del_bic.trim().length > 0) {
         elCollection.push(data.institucion_creadora_del_bic.trim());
     }
     ret.collection = elCollection;
@@ -61,10 +61,20 @@ function (data) {
         if (data.tipo_del_bic.indexOf(",") > -1) {
             var colles = data.tipo_del_bic.split(',');
             for (var i = 0; i < colles.length; i++) {
-                elType.push(colles[i]);
+                var tmptipo = colles[i];
+                if (null !== tmptipo && tmptipo.trim().length > 0) {
+                    tmptipo = tmptipo.trim();
+                    tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                    elType.push(tmptipo);
+                }
             }
         } else {
-            elType.push(data.tipo_del_bic);
+            var tmptipo = data.tipo_del_bic;
+            if (null !== tmptipo && tmptipo.trim().length > 0) {
+                tmptipo = tmptipo.trim();
+                tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                elType.push(tmptipo);
+            }
         }
     }
 // Título
@@ -133,29 +143,29 @@ function (data) {
             }
 
         } else {  //es un creador
-            
-            var fullname = ""; 
-            if(dc_creatorsName && !dc_creatorsLast){
+
+            var fullname = "";
+            if (dc_creatorsName && !dc_creatorsLast) {
                 fullname = dc_creatorsName.trim();
-            } else if(!dc_creatorsName && dc_creatorsLast){
+            } else if (!dc_creatorsName && dc_creatorsLast) {
                 fullname = dc_creatorsLast.trim();
             }
             elCreator.push(fullname);
         }
         ret.creator = elCreator;
     } else {  //es un creador
-        
-            var fullname = ""; 
-            if(dc_creatorsName && !dc_creatorsLast){
-                fullname = dc_creatorsName.trim();
-            } else if(!dc_creatorsName && dc_creatorsLast){
-                fullname = dc_creatorsLast.trim();
-            }
-            elCreator.push(fullname);
-            ret.creator = elCreator;
+
+        var fullname = "";
+        if (dc_creatorsName && !dc_creatorsLast) {
+            fullname = dc_creatorsName.trim();
+        } else if (!dc_creatorsName && dc_creatorsLast) {
+            fullname = dc_creatorsLast.trim();
         }
-        
-    
+        elCreator.push(fullname);
+        ret.creator = elCreator;
+    }
+
+
     // nota del creador
     var creatornote = data.nota_creador_del_bic || undefined;
     if (creatornote) {
@@ -233,7 +243,7 @@ function (data) {
     var bic_dates = data.fecha || undefined;
     if (bic_dates && bic_dates.trim().length > 0 && bic_dates.trim().toLowerCase() !== "no identificada") {
         bic_dates = bic_dates.replace(new RegExp("/", 'g'), "-");
-        if (bic_dates.indexOf("-")>-1){
+        if (bic_dates.indexOf("-") > -1) {
             var arrklist = bic_dates.split('-');
             var fechayear = 0;
             var fechaday = 0;
@@ -264,12 +274,12 @@ function (data) {
     var dateend = {};
     var fechaIni = data.rango_inicial || undefined;
     var fechaFin = data.rango_final || undefined;
-    if(fechaIni && fechaFin){
+    if (fechaIni && fechaFin) {
         datestart = {"format": "", "value": fechaIni.trim()};
         dateend = {"format": "", "value": fechaFin.trim()};
         ret.periodcreated = {"datestart": datestart, "dateend": dateend};
     }
-    
+
 
 // Rights digital objects
     var derechos = {};
@@ -290,6 +300,7 @@ function (data) {
     }
     if (data.media) {
         dotype.mime = data.media.toLowerCase();
+        dotype.name = data.media.toLowerCase();
         derechos.media = dotype;
     } else {
         dotype.mime = "";
@@ -302,10 +313,10 @@ function (data) {
         if (digObj.length > 0) {
             var objDO = {};
             var objMedia = {};
-            
+
             var strFormato = data.formato;
             strFormato = strFormato.trim();
-            if(strFormato.startsWith(".")){
+            if (strFormato.startsWith(".")) {
                 strFormato = strFormato.substring(1).toLowerCase();
             }
             objMedia.mime = strFormato;
@@ -354,14 +365,14 @@ function (data) {
     var thumbnail = data.thumbnail || undefined;
     ret.resourcethumbnail = "";
     if (thumbnail && typeof thumbnail === "string" && thumbnail.trim().length > 0) {
-        ret.resourcethumbnail = paththumbnail+thumbnail;
+        ret.resourcethumbnail = paththumbnail + thumbnail;
     }
 
     //thumbnail cronologia
     var timelinethumbnail = data.cronologia || undefined;
     ret.timelinethumbnail = "";
     if (timelinethumbnail && typeof timelinethumbnail === "string" && timelinethumbnail.trim().length > 0) {
-        ret.timelinethumbnail = pathtimelineth+timelinethumbnail;
+        ret.timelinethumbnail = pathtimelineth + timelinethumbnail;
     }
 
     if (data.dimension && typeof data.dimension === 'string') {
@@ -369,26 +380,22 @@ function (data) {
         var mydim = data.dimension;
         if (mydim.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
             var arrklist = mydim.split(" - ");
+            var arrunits;
+            var usize = -1;
+            if (data.unidad && typeof data.unidad === "string") {
+                var myunit = data.unidad;
+                if (myunit.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
+                    arrunits = myunit.split(" - ");
+                    usize = arrunits.length;
+                }
+            }
             for (var i = 0; i < arrklist.length; i++) {
                 ret.dimension += arrklist[i];
-                if ((i + 1) < arrklist.length)
-                    ret.dimension += ":";
-            }
-        }
-
-        if (data.unidad && typeof data.unidad === "string") {
-            ret.dimension += " "
-            var myunit = data.unidad;
-            if (mydim.indexOf(" - ") > -1) { //revisando si son minutos y segundos separados por "-"
-                var arrklist = myunit.split(" - ");
-                for (var i = 0; i < arrklist.length; i++) {
-                    ret.dimension += arrklist[i];
-                    if ((i + 1) < arrklist.length)
-                        ret.dimension += " ";
+                if (usize > -1 && usize === arrklist.length) {
+                    ret.dimension += " " + arrunits[i] + " ";
                 }
             }
         }
-
     }
 
 
@@ -446,11 +453,11 @@ function (data) {
         ret.chapter = chapter;
     }
     //validar destacados
-    var destacado = data.destacados || undefined;
+    var destacado = data.destacado || undefined;
     if (destacado && typeof destacado === "string" && destacado.trim().length > 0) {
-        ret.destacado = true;
+        ret.important = destacado;
     } else {
-        ret.destacado = false;
+        ret.important = 0;
     }
     // validar formatos disponibles
     var availableformats = data.formatos_disponibles || undefined;
@@ -475,6 +482,12 @@ function (data) {
     var episodio = data.episodio || undefined;
     if (episodio && typeof episodio === "string" && episodio.trim().length > 0) {
         ret.episode = episodio;
+    }
+
+    // validar editorial
+    var editorial = data.editorial || undefined;
+    if (editorial && typeof editorial === "string" && editorial.trim().length > 0) {
+        ret.editorial = editorial;
     }
 
 
