@@ -99,8 +99,8 @@ function (data) {
     }
 // Título
     var tmpTitle = "";
-    if (data.titulo_del_bic && typeof data.titulo_del_bic === 'string') {
-        tmpTitle = data.titulo_del_bic;
+    if (data.titulo && typeof data.titulo === 'string') {
+        tmpTitle = data.titulo;
         tmpTitle = tmpTitle.replace(new RegExp("´", 'g'), "'");
         tmpTitle = tmpTitle.replace(new RegExp("‘", 'g'), "'");
         tmpTitle = tmpTitle.replace(new RegExp("“", 'g'), '"');
@@ -579,7 +579,7 @@ function (data) {
     }
 
     // validar subtitulo
-    var subtitle = data.subtitle || undefined;
+    var subtitle = data.subtitulo || undefined;
     if (subtitle && typeof subtitle == "string" && subtitle.trim().length > 0) {
         ret.subtitle = subtitle;
     }
