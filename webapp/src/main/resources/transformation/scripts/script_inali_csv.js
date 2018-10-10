@@ -177,11 +177,13 @@ INALI CSV file Script
         urlLicense = data.url_declaracion;
         derechos.url = urlLicense;
     }
-    if(data.media){
-        dotype.mime = data.media;
+    if (data.media) {
+        dotype.mime = data.media.toLowerCase();
+        dotype.name = data.media.toLowerCase();
         derechos.media = dotype;
     } else {
         dotype.mime = "";
+        dotype.name = "";
         derechos.media = dotype;
     }
 

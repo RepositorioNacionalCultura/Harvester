@@ -308,10 +308,10 @@ function (data) {
     }
 
 //    // validar tipo del bic
-//    var bictype = data.tipo_del_bic || undefined;
-//    if(bictype && typeof bictype === "string" && bictype.trim().length>0){
-//       ret.bictype = bictype; 
-//    }
+    var bictype = data.tipo_del_bic || undefined;
+    if(bictype && typeof bictype === "string" && bictype.trim().length>0){
+       ret.bictype = bictype; 
+    }
 
 
     // validar tipo de identificador id

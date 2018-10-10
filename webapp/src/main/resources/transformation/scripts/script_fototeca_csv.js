@@ -54,19 +54,40 @@ function (data) {
     idArray.push({type: "oai", value: data.oaiid, preferred: true});
 // Tipo de BIC  
 
-    if (data.media && typeof data.media === 'string') {
-        elType.push(data.media);
-    }
+//    if (data.media && typeof data.media === 'string') {
+//        elType.push(data.media);
+//    }
 
-    var tipoBic = data.tipo || undefined;
-    if (tipoBic) {
-        if (tipoBic.trim().length > 0 && tipoBic.indexOf(",") > -1) {
-            var colles = tipoBic.split(',');
+//    var tipoBic = data.tipo || undefined;
+//    if (tipoBic) {
+//        if (tipoBic.trim().length > 0 && tipoBic.indexOf(",") > -1) {
+//            var colles = tipoBic.split(',');
+//            for (var i = 0; i < colles.length; i++) {
+//                elType.push(colles[i]);
+//            }
+//        } else {
+//            elType.push(tipoBic);
+//        }
+//    }
+    
+    if (data.tipo) {
+        if (data.tipo.indexOf(",") > -1) {
+            var colles = data.tipo.split(',');
             for (var i = 0; i < colles.length; i++) {
-                elType.push(colles[i]);
+                var tmptipo = colles[i];
+                if (null !== tmptipo && tmptipo.trim().length > 0) {
+                    tmptipo = tmptipo.trim();
+                    tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                    elType.push(tmptipo);
+                }
             }
         } else {
-            elType.push(tipoBic);
+            var tmptipo = data.tipo;
+                if (null !== tmptipo && tmptipo.trim().length > 0) {
+                    tmptipo = tmptipo.trim();
+                    tmptipo = tmptipo.substring(0, 1).toUpperCase() + tmptipo.substring(1).toLowerCase();
+                    elType.push(tmptipo);
+                }
         }
     }
 

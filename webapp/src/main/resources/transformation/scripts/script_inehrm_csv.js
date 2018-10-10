@@ -58,9 +58,9 @@ function (data) {
     idArray.push({type: "oai", value: data.oaiid, preferred: true});
 // Tipo de BIC  
 
-    if (data.media && typeof data.media === 'string') {
-        elType.push(data.media);
-    }
+//    if (data.media && typeof data.media === 'string') {
+//        elType.push(data.media);
+//    }
     
     if (data.tipo_del_bic) {
         if (data.tipo_del_bic.indexOf(",") > -1) {
@@ -325,11 +325,11 @@ function (data) {
     }
     
     if (data.media) {
-        dotype.mime = data.media.toLowerCase();
+        //dotype.mime = data.media.toLowerCase();
         dotype.name = data.media.toLowerCase();
         derechos.media = dotype;
     } else {
-        dotype.mime = "";
+        //dotype.mime = "";
         dotype.name = "";
         derechos.media = dotype;
     }
