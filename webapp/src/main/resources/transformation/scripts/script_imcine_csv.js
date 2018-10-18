@@ -128,7 +128,7 @@ function (data) {
         ret.keywords = elkeys;
     }
 // Creadores
-    var dc_creatorsName = data.creador_del_bic_nombre || undefined;
+    var dc_creatorsName = data.institucion_creadora_del_del_bic_nombre || undefined;
     var dc_creatorsLast = data.creador_del_bic_apellido || undefined;
     if (dc_creatorsName && dc_creatorsLast) {
         if (dc_creatorsName.indexOf(';') > -1 && dc_creatorsLast.indexOf(';') > -1) { //revisando si son palabras clave separadas por ","

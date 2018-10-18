@@ -165,12 +165,12 @@ INBA Script
 
     var mods_keys = modsData.mods_subject || undefined;
 
-    if ((!dcData || !dcData.dc_subject) && mods_keys && typeof mods_keys == "object") {
+    if ((!dcData || !dcData.dc_subject) && mods_keys && typeof mods_keys === "object") {
         if( mods_keys instanceof org.semanticwb.datamanager.DataList && mods_keys.length>0){
             for (var w = 0; w < mods_keys.length; w++ ) {
                 elkeys.push(mods_keys[w].mods_topic); 
             }
-        } else if(mods_keys.mods_topic && typeof mods_keys.mods_topic == "string"){
+        } else if(mods_keys.mods_topic && typeof mods_keys.mods_topic === "string"){
             elkeys.push(mods_keys.mods_topic);
         }
         ret.keywords = elkeys; 
