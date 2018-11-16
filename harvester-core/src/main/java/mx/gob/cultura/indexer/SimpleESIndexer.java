@@ -5,6 +5,9 @@ import mx.gob.cultura.commons.config.AppConfig;
 import org.elasticsearch.client.RestHighLevelClient;
 
 import java.util.ArrayList;
+import org.semanticwb.datamanager.DataObject;
+import org.semanticwb.datamanager.SWBDataSource;
+import org.semanticwb.datamanager.SWBScriptEngine;
 
 /**
  * Simple class to index objects using ElasticSearch {@link RestHighLevelClient}.
@@ -12,8 +15,8 @@ import java.util.ArrayList;
  */
 public class SimpleESIndexer {
     private static RestHighLevelClient client;
-    private String indexName;
-    private String indexType;
+    private String indexName = AppConfig.getConfigObject().getIndexName();
+    private String indexType = AppConfig.getConfigObject().getIndexType();
 
     /**
      * Constructor. Creates a new instance of {@link SimpleESIndexer}.
@@ -63,7 +66,46 @@ public class SimpleESIndexer {
      * @return ID of indexed object or null if indexing fails.
      */
     public String index(String objectJson, String id) {
-        return Util.ELASTICSEARCH.indexObject(client, indexName, indexType, id, objectJson);
+        String ret = null;
+        if(!Util.ELASTICSEARCH.existsIndex(client, indexName, indexType, id)){
+            //System.out.println("Se crea nuevo INDICE....\n\n");
+            ret =Util.ELASTICSEARCH.indexObject(client, indexName, indexType, id, objectJson);
+        } else {
+            //System.out.println("Se actualiza INDICE....\n\n");
+            ret =Util.ELASTICSEARCH.updateObject(client, indexName, indexType, id, objectJson);
+        }
+        return ret;
+    }
+    
+    /**
+     * Indexes object in ElasticSearch using specified id.
+     * @param objectJson Object JSON.
+     * @param id Identifier to use.
+     * @return ID of indexed object or null if indexing fails.
+     */
+    public String index(String objectJson, String id, DataObject extractor, SWBScriptEngine engine, SWBDataSource transobj) {
+        String ret = null;
+        if(!Util.ELASTICSEARCH.existsIndex(client, indexName, indexType, id)){
+            //System.out.println("Se crea nuevo INDICE....\n\n");
+            //Generar cultuaoaiid con el id del holder y consecutivo
+            DataObject resdo = Util.addPatternOAIID2DataObject(objectJson, extractor, engine, transobj);
+            ret =Util.ELASTICSEARCH.indexObject(client, indexName, indexType, id, resdo.toString());
+        } else {
+            //System.out.println("Se actualiza INDICE....\n\n");
+            DataObject dataO = (DataObject)DataObject.parseJSON(objectJson);
+            String coaiid = Util.ELASTICSEARCH.checkForCulturaOAIIDPropByIdentifier(client, indexName, indexType, dataO.getString("oaiid"));
+            String tmpobjectJson = objectJson;
+            if(null==coaiid){
+//                System.out.println("No tiene culturaoaiid");
+                DataObject resdo = Util.addPatternOAIID2DataObject(objectJson, extractor, engine, transobj);
+                tmpobjectJson = resdo.toString();
+            } 
+//            else {
+//                System.out.println("Ya tiene culturaoaiid");
+//            }
+            ret =Util.ELASTICSEARCH.updateObject(client, indexName, indexType, id, tmpobjectJson);
+        }
+        return ret;
     }
 
     /**
