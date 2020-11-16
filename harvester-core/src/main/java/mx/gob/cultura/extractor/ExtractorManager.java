@@ -7,7 +7,6 @@ import org.semanticwb.datamanager.*;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
 
 /**
  * Class that manages Extractor execution.
@@ -22,16 +21,23 @@ public class ExtractorManager {
     private static SWBScriptEngine engine = null;
     private static ExtractorManager instance = null; //  Instancia del ExtractorManager
     private long TIME_INTERVAL_REVIEW = 60000; //Se ejecutará cada 60 segundos la revisión de todos los extractores con periodicidad
+    private static String path = null; 
 
     public ExtractorManager() {
     }
 
     public static ExtractorManager getInstance() {
+       
         if (null == instance) {
             instance = new ExtractorManager();
             instance.init();
         }
         return instance;
+    }
+    
+    public static ExtractorManager getInstance(String pathds) {
+        path = pathds;
+        return getInstance();
     }
 
     /**
@@ -48,7 +54,7 @@ public class ExtractorManager {
      */
     public void init() {
         client = new MongoClient("localhost", 27017);
-        engine = DataMgr.getUserScriptEngine("/work/cultura/jsp/datasources.js", null);
+        engine = DataMgr.getUserScriptEngine(path, null);
         //engine = DataMgr.initPlatform(null);
         try {
             datasource = engine.getDataSource("Extractor");
@@ -73,8 +79,10 @@ public class ExtractorManager {
                         if (null != className) {
                             if (className.endsWith("CSVExtractor")) {
                                 extractor = new CSVExtractor(key,engine);
-                            } else if (className.endsWith("OAIDCExtractor")) {
+                            } else if (className.endsWith("OAIExtractor")) {
                                 extractor = new OAIExtractor(key,engine);
+                            } else if (className.endsWith("JSONExtractor")) {
+                                extractor = new JSONExtractor(key,engine);
                             }
                         }
                     }
@@ -127,6 +135,8 @@ public class ExtractorManager {
                         extractor = new CSVExtractor(extractorConfig.getId(),engine);
                     } else if (className.endsWith("OAIExtractor")) {
                         extractor = new OAIExtractor(extractorConfig.getId(),engine);
+                    } else if (className.endsWith("JSONExtractor")) {
+                        extractor = new JSONExtractor(extractorConfig.getId(),engine);
                     }
                     hmExtractor.put(extractorConfig.getId(), extractor);  // actualizando instancia del extractor en el HashMap
 //                    hmExtractorDef.put(extractorConfig.getId(), extractorConfig);  // actualizando configuración del extractor en el HashMap

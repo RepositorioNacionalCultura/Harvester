@@ -1,50 +1,54 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package mx.gob.cultura.extractor;
 
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBList;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
-import mx.gob.cultura.indexer.SimpleESIndexer;
-import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
-import mx.gob.cultura.commons.Util;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
-import org.apache.log4j.Logger;
-import org.semanticwb.datamanager.*;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
+import com.mongodb.util.JSON;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import mx.gob.cultura.commons.Util;
+
+import mx.gob.cultura.indexer.SimpleESIndexer;
+import mx.gob.cultura.transformer.DataObjectScriptEngineMapper;
+import org.apache.log4j.Logger;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.semanticwb.datamanager.DataMgr;
+import org.semanticwb.datamanager.DataObject;
+import org.semanticwb.datamanager.DataObjectIterator;
+import org.semanticwb.datamanager.SWBDataSource;
+import org.semanticwb.datamanager.SWBScriptEngine;
 
 /**
- * Extractor implementation that reads and processes a CSV file.
  *
  * @author juan.fernandez
  */
-public class CSVExtractor extends ExtractorBase {
+public class JSONExtractor extends ExtractorBase {
 
-    static final Logger log = Logger.getLogger(CSVExtractor.class);
+    static Logger log = Logger.getLogger(JSONExtractor.class);
     protected DataObject extractorDef;
     private SWBScriptEngine engine;
     private SWBDataSource dsExtract;
     private boolean extracting;
     private boolean update;
-
     private STATUS status = STATUS.LOADED;
 
-    /**
-     * Constructor. Creates a new instance of {@link CSVExtractor}.
-     *
-     * @param doID Identifier of {@link DataObject} with extractor definition.
-     * @param eng {@link SWBScriptEngine} object to use.
-     */
-    public CSVExtractor(String doID, SWBScriptEngine eng) {
+    public JSONExtractor(String doID, SWBScriptEngine eng) {
         super(doID, eng);
         extractorDef = super.extractorDef;
         engine = super.engine;
@@ -53,9 +57,9 @@ public class CSVExtractor extends ExtractorBase {
 
     @Override
     public void start() {
-        //System.out.println("canStart(" + canStart() + ")");
+//        System.out.println("canStart(" + canStart() + ")");
         if (canStart()) {
-            log.info("CSVExtractor :: Started extractor " + getName());
+            log.info("JSONExtractor :: Started extractor " + getName());
             try {
                 extract();
             } catch (Exception ex) {
@@ -155,11 +159,11 @@ public class CSVExtractor extends ExtractorBase {
 
                 DataObject dofile = extractorDef.getDataList("csvfile").getDataObject(0);
                 if (null == dofile) {
-                    log.error("Error no se encontró archivo CSV.");
+                    log.error("Error no se encontró archivo JSON.");
                     throw new Exception();
                 }
 
-                log.trace("\n\nEmpezando con:....CSV File");
+                log.trace("\n\nEmpezando con:....JSON File");
 
                 String name = dofile.getString("name");
 
@@ -170,9 +174,24 @@ public class CSVExtractor extends ExtractorBase {
                 String nameExt = name.substring(name.lastIndexOf('.'));
 
                 String path = DataMgr.getApplicationPath() + "/uploadfile/";
-                InputStreamReader in = new InputStreamReader(fin, "utf-8");
 
-                DB db = ExtractorManager.client.getDB(ext_name.toUpperCase());
+                String jsf = Util.FILE.readFromStream(fin, "UTF-8").trim();
+
+                StringBuilder jsfa = new StringBuilder();
+                if (!jsf.startsWith("[")) {
+                    jsfa.append("[");
+                }
+                jsfa.append(jsf);
+                if (!jsf.endsWith("]")) {
+                    jsfa.append("]");
+                }
+                jsf = jsfa.toString();
+                //System.out.println("JSON:\n" + jsf);
+                HashMap<String, String> hm = Util.SWBForms.loadOccurrences(engine);
+                jsf = Util.TEXT.replaceOccurrences(hm, jsf);
+                BasicDBList jarr = (BasicDBList) JSON.parse(jsf);
+
+                DB db = Util.MONGODB.getMongoClient().getDB(ext_name.toUpperCase());
                 DBCollection objects = db.getCollection("fullobjects");
                 objects.createIndex("oaiid");
 
@@ -180,102 +199,38 @@ public class CSVExtractor extends ExtractorBase {
                 extractorDef.put("lastExecution", sdf.format(new Date()));
 
                 dsExtract.updateObj(extractorDef);
-                HashMap<String, String> hm = Util.SWBForms.loadOccurrences(engine);
-                int r = 0;
-                ArrayList<String> arr = new ArrayList();  // nombres de columnas
-                for (CSVRecord record : CSVFormat.DEFAULT.parse(in)) {
+
+                int numextract = 0;
+                int numalready = 0;
+                //ArrayList<String> arr = new ArrayList();
+                String nid = null;
+                for (int i = 0; i < jarr.size(); i++) {
+
+                    BasicDBObject jo = (BasicDBObject) jarr.get(i);
 
                     extractorDef.put("status", STATUS.EXTRACTING.name());
                     extracting = true;
                     dsExtract.updateObj(extractorDef);
 
-                    //arreglo con el nombre de las columnas, sólo lo hace una vez para el nombre de las columnas
-                    if (r == 0) {
-                        int c = 0;
-                        for (String field : record) {
-                            if (field.trim().length() > 0) {
-                                if (c == 0) {
-                                    arr.add(c, "oaiid");
-                                } else {
-                                    field = field.toLowerCase().trim();
-                                    field = Util.TEXT.replaceSpecialCharacters(field, true);
-                                    field = Util.TEXT.replaceOccurrences(hm, field.trim());
+                    BasicDBObject jid = (BasicDBObject) ((BasicDBList) jo.get("identifier")).get(0);
+                    nid = jid.getString("value");
 
-                                    arr.add(c, field);
-                                }
-                            } else {
-                                arr.add(c, "");
-                            }
-                            c++;
-                        }
-                    } else {
-                        
-                        //revisa si tiene datos el registro
-                        boolean isEmpty = true;
-                        for (String field : record) {
-                            if(field!=null&&field.trim().length()>0){
-                                isEmpty = false;
-                                break;
-                            }
-                        }
-                        if(isEmpty) continue;
-                        //Agregar a la coleccion fullobjects cada record como DataObject
-                        int c = 0;
-                        boolean add = true;
-                        DataObject rec = new DataObject();
-                        BasicDBObject dbQuery = null;
+                    try {
+
                         DBObject dbres = null;
-                        String tmpColName = "";
-                        for (String field : record) {
-                            String colname = arr.get(c);
-                            if (null == colname || (colname != null && colname.trim().length() == 0)) { //revisando si la columna tiene nombre
-                                colname = tmpColName;
-//                                System.out.println("reutilizando..."+colname);
-                            } else {
-//                                System.out.println("Conservando..."+colname);
-                                tmpColName = colname;
-                            }
-                            if (colname.trim().length() > 0) {
-//                                System.out.println("cell value: "+field);
-                                Object val = field.trim();
-//                                System.out.println("cell size: "+field.trim().length());
-                                if (colname.equals("oaiid")) {
-                                    //buscar si el registro no se capturó previamente
-                                    if(val.toString().trim().length()==0) continue;
-                                    dbQuery = new BasicDBObject("oaiid", val.toString());
-                                    dbres = objects.findOne(dbQuery);
-                                }
-                                if (dbres != null && !colname.equals("oaiid")) {
-                                    if (dbres.get(colname) != null) {
-                                        String objval = dbres.get(colname).toString().trim();
-                                        if (!objval.equals(val.toString().trim()) && val.toString().trim().length()>0) {
-                                            dbres.put(colname, objval + " - " + val.toString().trim());
-                                        }
-                                    }
-                                }
-                                if (colname.trim().equals("digital_object")) {
-                                    String urldo = rec.getString("digital_object",null);
-                                    if(urldo!=null){
-                                        rec.put("digital_object", urldo + "," + val.toString().trim());
-                                    } else {
-                                        rec.put("digital_object",val.toString().trim());
-                                    }
-                                } else {
-                                    rec.put(colname, val);
-                                }
-                            }
-                            c++;
-                        }
-                        if (dbres != null && dbQuery != null) {
-                            objects.update(dbQuery, dbres);
+                        BasicDBObject dbQuery = new BasicDBObject("oaiid", nid);
+                        dbres = objects.findOne(dbQuery);
+
+                        if (null == dbres) {
+                            numextract++;
+                            jo.append("oaiid", nid);
+                            objects.insert(jo);
                         } else {
-                            BasicDBObject bjson = Util.SWBForms.toBasicDBObject(rec);
-                            objects.insert(bjson);
+                            numalready++;
                         }
-                    }
-                    r++;
-                    if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
-                        break;
+
+                    } catch (Exception e) {
+                        log.error("Error...", e);
                     }
                 }
 
@@ -285,16 +240,14 @@ public class CSVExtractor extends ExtractorBase {
                 extractorDef.put("cursor", 0);
                 extractorDef.put("rows2Processed", 0);
 
-                extractorDef.put("harvestered", r);
-                extractorDef.put("processed", r);
+                extractorDef.put("harvestered", numextract);
+                extractorDef.put("processed", numextract);
                 dsExtract.updateObj(extractorDef);
 
-                log.trace("Finalizando extracción..." + ext_name.toUpperCase() + " ==> Extracted(" + r + ")");
-                System.out.println("Finalizando extracción..." + ext_name.toUpperCase() + " ==> Extracted(" + r + ")");
+                log.trace("Finalizando extracción..." + ext_name.toUpperCase() + " ==> Extracted(" + numextract + ")");
             }
 
             log.trace("\n\n\n>>>>>>>>>> TRANSFORMING <<<<<<<<<<<<<<<<<\n\n\n");
-//            System.out.println("\n\n\n>>>>>>>>>> TRANSFORMING <<<<<<<<<<<<<<<<<\n\n\n");
             String idScript = extractorDef.getString("transScript");
             SWBDataSource dsTScript = engine.getDataSource("TransformationScript");
             DataObject doTS = dsTScript.fetchObjById(idScript);
@@ -370,7 +323,7 @@ public class CSVExtractor extends ExtractorBase {
                         log.trace("Total Items Deleted: " + numItemsDeleted);
 
                         //eliminando colección fullobjects
-                        //objects.drop();
+                        objects.drop();
                     } catch (Exception e) {
                         log.error("Error al indexar\n", e);
                     }
@@ -391,13 +344,9 @@ public class CSVExtractor extends ExtractorBase {
     public boolean replace() {
         boolean ret = false;
         try {
-
             DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
             db.dropDatabase();
-//            String collName = extractorDef.getString("collection", "objects");
-//            if (db.collectionExists(collName)) {
-//                db.getCollection(collName).drop();
-//            }
+
             ret = true;
             extract();
         } catch (Exception e) {
@@ -418,7 +367,7 @@ public class CSVExtractor extends ExtractorBase {
             extract();
             ret = true;
         } catch (Exception e) {
-            log.error("Error updating data for extractor", e);
+            log.error(e);
         }
         return ret;
     }
@@ -460,13 +409,13 @@ public class CSVExtractor extends ExtractorBase {
                             next.put("indexcreated", System.currentTimeMillis());
                             // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
                             //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
-                            //SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "repositorio", "bic");
                             SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");
+
                             //System.out.println("\n\n\n"+next.toString());
                             sesidx.index(next.toString(), iddo);
                             numItemsIndexed++;
                         } catch (Exception e) {
-                            log.error("Error en el mapeo e indexación...");
+                            log.error("Error en el mapeo e indexación...", e);
                         }
                     }
                     if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
@@ -487,11 +436,11 @@ public class CSVExtractor extends ExtractorBase {
                 extractorDef.put("indexed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
             }
+
         }
     }
 
     public DataObject getDefinitionObject() {
         return extractorDef;
     }
-
 }

@@ -24,9 +24,11 @@ import java.util.List;
 
 /**
  * Extractor implementation for OAI-PMH data sources.
+ *
  * @author juan.fernandez
  */
 public class OAIExtractor extends ExtractorBase {
+
     static Logger log = Logger.getLogger(OAIExtractor.class);
     protected DataObject extractorDef;
     private SWBScriptEngine engine;
@@ -100,11 +102,12 @@ public class OAIExtractor extends ExtractorBase {
     @Override
     public void extract() throws Exception {
         log.trace("\n\n\n>>>>>>>>>>>> EXTRACTING <<<<<<<<<<<<<<\n\n\n");
-        log.trace("DO Extract:"+extractorDef);
+        //System.out.println("DO Extract:" + extractorDef);
 
         //2017-12-01T13:05:00.000
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         //DataObject do_extrac = null;
+        String ext_fullHoldername = null;
         String ext_name = null;
         String ext_coll = null;
         String ext_url = null;
@@ -145,6 +148,7 @@ public class OAIExtractor extends ExtractorBase {
             //do_extrac = dsExtract.fetchObjById(pid);
 
             if (null != extractorDef) {
+                ext_fullHoldername = extractorDef.getString("fullHolderName");
                 ext_name = extractorDef.getString("name");
                 ext_coll = extractorDef.getString("collection", "objects");
                 ext_url = extractorDef.getString("url");
@@ -262,7 +266,7 @@ public class OAIExtractor extends ExtractorBase {
                                         tknFound = true;
                                     }
 
-                                    JSONObject json = XML.toJSONObject(jsonstr,true);
+                                    JSONObject json = XML.toJSONObject(jsonstr, true);
                                     //System.out.println("\n\n\nJSON:" + json.toString());
                                     JSONObject jsonroot = json.getJSONObject("OAI-PMH");
 
@@ -335,10 +339,11 @@ public class OAIExtractor extends ExtractorBase {
                                             try {
 
                                                 DBObject dbres = null;
-                                                if (isResumeExtract) {
+                                                //if (isResumeExtract) 
+                                                
                                                     BasicDBObject dbQuery = new BasicDBObject("oaiid", nid);
                                                     dbres = objects.findOne(dbQuery);
-                                                }
+                                                
                                                 if (null == dbres) {
                                                     numextract++;
                                                     String nodeAsString = jsonRd.getJSONObject(i).toString();
@@ -349,6 +354,9 @@ public class OAIExtractor extends ExtractorBase {
                                                     objects.insert(bjson);
                                                     itemsExtracted++;
                                                 } else {
+                                                    String nodeAsString = jsonRd.getJSONObject(i).toString();
+                                                    dbres.put("body", DataObject.parseJSON(nodeAsString));
+                                                    objects.update(dbQuery, dbres);
                                                     numalready++;
 //                                        //        System.out.println("Already Extracted...");
                                                 }
@@ -437,12 +445,15 @@ public class OAIExtractor extends ExtractorBase {
     public boolean replace() {
         boolean ret = false;
         try {
-            DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
-            db.dropDatabase();
-//            String collName = extractorDef.getString("collection", "objects");
-//            if (db.collectionExists(collName)) {
-//                db.getCollection(collName).drop();
-//            }
+            String dbName = extractorDef.getString("name").toUpperCase();
+            DB db = ExtractorManager.client.getDB(dbName);
+            if(!"MEDIATECA".equals(dbName)){
+                db.dropDatabase();
+            } else {
+                db.getCollection("TransObject").drop();
+                db.getCollection("fullobjects").drop();
+            }
+
             ret = true;
             extract();
         } catch (Exception e) {
@@ -477,126 +488,130 @@ public class OAIExtractor extends ExtractorBase {
     @Override
     public void process() throws Exception {
         log.trace("\n\n\n>>>>>>>>>> PROCESSING <<<<<<<<<<<<<<<<<\n\n\n");
-
+        String nameDB = extractorDef.getString("name").toUpperCase();
+        boolean process = null!=nameDB && "MEDIATECA".equals(nameDB)?false:true;
+        //boolean process = null!=nameDB && "MEDIATECA".equals(nameDB)?true:false;
         long numItems = 0;
         long numAlready = 0;
+        
 
         extractorDef.put("status", STATUS.PROCESSING.name());
         dsExtract.updateObj(extractorDef);
 
         DataList dlpfx = extractorDef.getDataList("prefix");
-//        System.out.println("num items:" + dlpfx.size());
         String[] ext_prefix = new String[dlpfx.size()];
         //Generar el nuevo DataObject combinado por cada prefix
-        try {
-            DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
-            DBCollection objects = db.getCollection("fullobjects");
-            objects.createIndex("oaiid");
+        if (process) 
+        {
+            try {
+                DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
+                DBCollection objects = db.getCollection("fullobjects");
+                objects.createIndex("oaiid");
 //                HashMap<String, DataObject> hmfull = new HashMap();
-            boolean hdrLoaded = false;
-            DataObject dobj = null;
+                boolean hdrLoaded = false;
+                DataObject dobj = null;
 
-            for (int i = 0; i < dlpfx.size(); i++) {
-                if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
-                    break;
-                }
-                String pfx = dlpfx.getString(i).trim();
-                log.debug("Revisando colección: " + pfx);
-                try {
-                    DBCollection datasource = db.getCollection(pfx);
-                    DBCursor cursor = datasource.find();
-                    log.debug(pfx + " cursor size: " + (null != cursor ? cursor.count() : "NULO"));
+                for (int i = 0; i < dlpfx.size(); i++) {
+                    if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
+                        break;
+                    }
+                    String pfx = dlpfx.getString(i).trim();
+                    log.debug("Revisando colección: " + pfx);
+                    try {
+                        DBCollection datasource = db.getCollection(pfx);
+                        DBCursor cursor = datasource.find();
+                        log.debug(pfx + " cursor size: " + (null != cursor ? cursor.count() : "NULO"));
 
-                    while (null != cursor && cursor.hasNext()) {
-                        if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
-                            break;
-                        }
-                        DBObject next = cursor.next();
-                        String key = (String) next.get("oaiid");
-                        boolean isDODeleted = false;
-                        boolean add2DB = false;
-                        hdrLoaded = false;
-                        //Revisar si existe en fullobjects
-                        BasicDBObject dbQuery = new BasicDBObject("oaiid", key);
-                        DBObject dbres = objects.findOne(dbQuery);
-                        if (null == dbres) {
-                            add2DB = true;
-                            dobj = new DataObject();
-                            dobj.put("oaiid", key);
-                        }
-                        if (null != dbres) {
-                            //Existe en la DB
-
-                            dobj = (DataObject) DataObject.parseJSON(dbres.toString()); //hmfull.get(key.trim());
-                            if (dobj.get("header") != null) {
-                                hdrLoaded = true;
+                        while (null != cursor && cursor.hasNext()) {
+                            if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
+                                break;
                             }
-                            if (dobj.get(pfx) != null) {
-                                numAlready++;
-                                continue;
+                            DBObject next = cursor.next();
+                            String key = (String) next.get("oaiid");
+                            boolean isDODeleted = false;
+                            boolean add2DB = false;
+                            hdrLoaded = false;
+                            //Revisar si existe en fullobjects
+                            BasicDBObject dbQuery = new BasicDBObject("oaiid", key);
+                            DBObject dbres = objects.findOne(dbQuery);
+                            if (null == dbres) {
+                                add2DB = true;
+                                dobj = new DataObject();
+                                dobj.put("oaiid", key);
                             }
-                        }
+                            if (null != dbres) {
+                                //Existe en la DB
 
-                        DataObject tmpObj = (DataObject) DataObject.parseJSON(next.get("body").toString());
-                        if (!hdrLoaded) {
-                            if (null != tmpObj) {
-                                Object header = tmpObj.get("header");
-                                if (null != header) {
-                                    dobj.put("header", header);
+                                dobj = (DataObject) DataObject.parseJSON(dbres.toString()); //hmfull.get(key.trim());
+                                if (dobj.get("header") != null) {
                                     hdrLoaded = true;
                                 }
+                                if (dobj.get(pfx) != null) {
+                                    numAlready++;
+                                    continue;
+                                }
                             }
-                        }
-                        Object metadata = tmpObj.get("metadata");
-                        if (null != metadata) {
-                            dobj.put(pfx, metadata);
-                            //System.out.println(metadata.toString());
-                        } else {
-                            DataObject doHdr = (DataObject) DataObject.parseJSON(tmpObj.get("header").toString());
-                            if (null != doHdr) {
-                                if (doHdr.getString("status") != null) {
-                                    dobj.put("status", doHdr.getString("status"));
-                                    if (doHdr.getString("status").equals("deleted")) {
-                                        isDODeleted = true;
+
+                            DataObject tmpObj = (DataObject) DataObject.parseJSON(next.get("body").toString());
+                            if (!hdrLoaded) {
+                                if (null != tmpObj) {
+                                    Object header = tmpObj.get("header");
+                                    if (null != header) {
+                                        dobj.put("header", header);
+                                        hdrLoaded = true;
                                     }
                                 }
                             }
-                        }
-                        //hmfull.put(key.trim(), dobj);
+                            Object metadata = tmpObj.get("metadata");
+                            if (null != metadata) {
+                                dobj.put(pfx, metadata);
+                                //System.out.println(metadata.toString());
+                            } else {
+                                DataObject doHdr = (DataObject) DataObject.parseJSON(tmpObj.get("header").toString());
+                                if (null != doHdr) {
+                                    if (doHdr.getString("status") != null) {
+                                        dobj.put("status", doHdr.getString("status"));
+                                        if (doHdr.getString("status").equals("deleted")) {
+                                            isDODeleted = true;
+                                        }
+                                    }
+                                }
+                            }
 
-                        // Esta parte sólo es para verificar como forma los objetos completos.
-                        BasicDBObject bjson = Util.SWBForms.toBasicDBObject(dobj);
-                        if (add2DB) {
-                            objects.insert(bjson);
-                        } else {
-                            objects.update(dbQuery, bjson);
+                            // Esta parte sólo es para verificar como forma los objetos completos.
+                            BasicDBObject bjson = Util.SWBForms.toBasicDBObject(dobj);
+                            if (add2DB) {
+                                objects.insert(bjson);
+                            } else {
+                                objects.update(dbQuery, bjson);
+                            }
+                            numItems++;
+                            if (numItems % 1000 == 0 && numItems > 0) {
+                                log.trace("Items Processed: " + numItems);
+                            }
                         }
-                        numItems++;
-                        if (numItems % 1000 == 0 && numItems > 0) {
-                            log.trace("Items Processed: " + numItems);
+                        try {
+                            cursor.close();
+                        } catch (Exception e) {
                         }
-                    }
-                    try {
-                        cursor.close();
+
                     } catch (Exception e) {
+                        log.error("Error al cargar el DataSource. ", e);
                     }
-
-                } catch (Exception e) {
-                    log.error("Error al cargar el DataSource. ", e);
                 }
+
+                extractorDef.put("rows2Processed", 0);
+                extractorDef.put("processed", numItems);
+                extractorDef.put("status", STATUS.FINISHED.name());
+                dsExtract.updateObj(extractorDef);
+
+            } catch (Exception e) {
+                log.error("Error al procesar la Base de Datos", e);
+                extractorDef.put("processed", numItems);
+                dsExtract.updateObj(extractorDef);
             }
-
-            extractorDef.put("rows2Processed", 0);
-            extractorDef.put("processed", numItems);
-            extractorDef.put("status", STATUS.FINISHED.name());
-            dsExtract.updateObj(extractorDef);
-
-        } catch (Exception e) {
-            log.error("Error al procesar la Base de Datos", e);
-            extractorDef.put("processed", numItems);
-            dsExtract.updateObj(extractorDef);
-        }
-
+        } 
+        //if(!process) return;
         log.trace("\n\n\n>>>>>>>>>> TRANSFORMING <<<<<<<<<<<<<<<<<\n\n\n");
         String idScript = extractorDef.getString("transScript");
         SWBDataSource dsTScript = engine.getDataSource("TransformationScript");
@@ -605,9 +620,10 @@ public class OAIExtractor extends ExtractorBase {
         ScriptEngineManager factory = new ScriptEngineManager();
         long numItemsIndexed = 0;
         long numItemsDeleted = 0;
+        String oaiKey = null;
 
-        if (null != scriptsrc && scriptsrc.trim().length() > 0 && (getStatus() == STATUS.STOPPED ||
-                getStatus() == STATUS.FINISHED || getStatus() == STATUS.LOADED)) {
+        if (null != scriptsrc && scriptsrc.trim().length() > 0 && (getStatus() == STATUS.STOPPED
+                || getStatus() == STATUS.FINISHED || getStatus() == STATUS.LOADED)) {
 
             extractorDef.put("status", STATUS.PROCESSING.name());
             dsExtract.updateObj(extractorDef);
@@ -623,9 +639,9 @@ public class OAIExtractor extends ExtractorBase {
                 DB db = ExtractorManager.client.getDB(extractorDef.getString("name").toUpperCase());
                 DBCollection objects = db.getCollection("fullobjects");
                 MongoCollection mcoll = Util.MONGODB.getMongoClient().getDatabase(extractorDef.getString("name").toUpperCase()).getCollection("TransObject");
-                mcoll.createIndex(Indexes.compoundIndex(Indexes.text("identifier"),Indexes.text("resourcetitle"),Indexes.text("resourcedescription")), opts);
+                mcoll.createIndex(Indexes.compoundIndex(Indexes.text("identifier"), Indexes.text("resourcetitle"), Indexes.text("resourcedescription")), opts);
                 SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
-                
+
                 DataObject dobj = null;
 
                 try {
@@ -645,6 +661,10 @@ public class OAIExtractor extends ExtractorBase {
                         }
 
                         dobj = (DataObject) DataObject.parseJSON(next.toString());
+                        oaiKey = dobj.getString("oaiid");
+                        String annotationKey = oaiKey.replace(":", "_").replace("/", "__");
+                        dobj.put("annKey", annotationKey);
+                        
                         //System.out.println("DataObject: " + dobj);
                         try {
 
@@ -659,15 +679,20 @@ public class OAIExtractor extends ExtractorBase {
                             //System.out.println("Antes de agregar el objeto");
                             result.put("forIndex", true);
                             DataObject dobjnew = transobjs.addObj(result);
-                            //System.out.println("Resultado del Mapeo:....\n" + result);
+                            //System.out.println("\n===============================================\nResultado del Mapeo:....\n==========================================\n" + result);
                             numItemsIndexed++;
                         } catch (Exception e) {
-                            log.error("Error en el mapeo e indexación...", e);
+                            log.error("Error en el mapeo e indexación..." + oaiKey, e);
+//                            System.out.println("ERROR--in: \n\n================================\n" + e.toString());
                         }
 
                         if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
                             log.trace("Items Transformed: " + numItemsIndexed);
                         }
+//                        if (!process && numItemsIndexed == 100) {
+//                            System.out.println("Se procesaron "+numItemsIndexed+" registros ...");
+//                            break;
+//                        }
 
                     }
                     cursor.close();
@@ -675,12 +700,13 @@ public class OAIExtractor extends ExtractorBase {
                     log.trace("Total Items Deleted: " + numItemsDeleted);
                 } catch (Exception e) {
                     log.error("Error en la transformación y mapeo\n", e);
+//                    System.out.println("ERROR--ext: \n\n================================\n" + e.toString());
                 }
                 extractorDef.put("status", STATUS.FINISHED.name());
                 extractorDef.put("transformed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
                 //eliminando colección fullobjects
-                objects.drop();
+                //objects.drop();
 
             } catch (Exception e) {
                 log.error("Error al procesar la Base de Datos", e);
@@ -693,33 +719,56 @@ public class OAIExtractor extends ExtractorBase {
 
     @Override
     public void index() throws Exception {
+
         log.trace("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
+        //System.out.println("\n\n\n>>>>>>>>>> INDEXING <<<<<<<<<<<<<<<<<\n\n\n");
+
         SWBDataSource transobjs = engine.getDataSource("TransObject", extractorDef.getString("name").toUpperCase());
         long numItemsIndexed = 0;
 
         if ((getStatus() == STATUS.STOPPED || getStatus() == STATUS.FINISHED || getStatus() == STATUS.LOADED)) {
+            String ext_fullHoldername = extractorDef.getString("fullHolderName", "N/A");
+
+//            System.out.println(ext_fullHoldername);
             extractorDef.put("status", STATUS.INDEXING.name());
             dsExtract.updateObj(extractorDef);
-
+//            System.out.println(getStatus());
             try {
+//                try {
+//                    long objsDeleted = Util.ELASTICSEARCH.deleteObjectsByHolder(ext_fullHoldername);
+//                } catch (Exception e) {
+//                    System.out.println("\nError al tratar de eliminar el indice.\n=========================================\n"+e.toString());
+//                }
+
                 DataObjectIterator cursor = transobjs.find();
                 while (null != cursor && cursor.hasNext()) {
+//                    System.out.println("while-cursor: " + getStatus());
                     if (getStatus() == STATUS.STOPPED || getStatus() == STATUS.ABORTED) {
                         break;
                     }
                     DataObject next = cursor.next();
+//                    System.out.println("DO NXT\n================================\n" + next != null ? "NOT NULL" : "NULL");
                     if (next.getBoolean("forIndex", true)) {
                         try {
+                            String iddo = next.getId();
                             next.remove("_id");
-                            // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
-                            //SimpleESIndexer sesidx = new SimpleESIndexer("test", "bic");
-                            //SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "repositorio", "bic");
-                            SimpleESIndexer sesidx = new SimpleESIndexer("127.0.0.1", 9200, "cultura", "bic");
-                            //System.out.println("\n\n\n"+next.toString());
-                            sesidx.index(next.toString());
+                            next.put("indexcreated", System.currentTimeMillis());
+//                            System.out.println(next.toString() + "\n\n");
+                            try {
+                                // usar indice de "repositorio" para pruebas, el que se utilizará para la aplicación será "cultura"
+                                SimpleESIndexer sesidx = new SimpleESIndexer("localhost", 9200, "cultura", "bic");
+
+//                                System.out.println("After SimpleESIndexer..");
+
+                                sesidx.index(next.toString(), iddo);
+                            } catch (Exception e) {
+                                System.out.println("error\n" + e.toString());
+                            }
+
                             numItemsIndexed++;
                         } catch (Exception e) {
                             log.error("Error en el mapeo e indexación...", e);
+//                            System.out.println(e.toString());
                         }
                     }
                     if (numItemsIndexed % 1000 == 0 && numItemsIndexed > 0) {
@@ -739,6 +788,7 @@ public class OAIExtractor extends ExtractorBase {
                 log.error("Error al indexar\n", e);
                 extractorDef.put("indexed", numItemsIndexed);
                 dsExtract.updateObj(extractorDef);
+//                System.out.println(e.toString());
             }
 
         }

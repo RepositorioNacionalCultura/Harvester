@@ -1,0 +1,79 @@
+body              { padding-top:0}
+body.harvester    { background:#FFF}
+.sidebar          { position:fixed; top:0; bottom:0; left:0; z-index:1000; padding:20px 0; overflow-x:hidden; overflow-y:auto; border-right:0; padding:0 15px}
+.sidebar a        { color:#FFF}
+.sidebar a svg    { display:none}
+.sidebar.bg-light { background-color:#e43e56 !important; color:#FFF}
+
+.sidebar h1 { font-family:"Oswald"; font-size:35px;  letter-spacing:1px; margin:25px 0; border:none; }
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link  { background-color:#4C4C4C;}
+.nav-link {  border:none; border-bottom:solid 1px #FFF; color:#FFF; font-family:"Source Sans Pro"; font-size:20px; }
+
+main *  { font-family:"Source Sans Pro"; color:#333;}
+main.pt-3 { padding-top:100px !important}
+main h2 { color:#e43e56; font-size:35px; margin-bottom:30px }
+main h4 { color:#e43e56; margin:30px 0 0px}
+main h4 + hr { border:2px solid #e43e56; margin:12px 0 0 0; width:22px}
+
+.listGrid { margin:0px !important; border-top:0px}
+
+.imgHeaderButton, .headerButton, .sorterButton { background-color:#f3f3f3; color:#e43e56; font-size:15px !important; font-weight:normal !important }
+.headerButton div { color:#e43e56;}
+
+
+.harvester form { padding:40px; min-width:500px !important;}
+.harvester form h2     { text-align:center} 
+.harvester form button,
+.harvester form button:active { background:#e43e56}
+.harvester form input,
+.harvester form button { margin:30px 0}
+.harvester form h2 { text-align:center; font-family:"oswald"; font-size:30px !important; color:#e43e56; text-transform:uppercase}
+
+
+
+.tabButtonTop, 
+.tabButtonTopOver, 
+.tabButtonTopDown, 
+.tabButtonTopFocusedDown, 
+.tabButtonTopFocused, 
+.tabButtonTopFocusedOver, 
+.tabButtonTopSelectedFocused { border:none; background:#e07181 !important; box-shadow:none !important}
+
+.tabButtonTopSelected, 
+.tabButtonTopSelectedOver, 
+.tabButtonTopSelectedDown, 
+.tabButtonTopSelectedFocusedOver, 
+.tabButtonTopSelectedFocusedDown { border:none !important; background:#e43e56 !important; box-shadow:none !important}
+
+
+.button, 
+.buttonOver, 
+.buttonFocused, 
+.buttonFocusedOver, 
+.buttonDown, 
+.buttonFocusedDown, 
+.buttonSelected, 
+.buttonSelectedFocused, 
+.buttonSelectedDown, 
+.buttonSelectedFocusedDown, 
+.buttonSelectedOver, 
+.buttonSelectedFocusedOver, 
+.buttonDisabled, 
+.buttonSelectedDisabled { background-color:#e43e56 !important; color:#FFF !important; box-shadow:none !important; border:none !important}
+
+
+/*.normal div { border-width:0px !important; color:#FFF !important;}
+LO COMENTË PORQUE AL PARECER PONE EN BLANCO EL TEXRTO DE LOS COMBOS SELECCIONADOS*/
+
+.windowHeader,
+.windowHeaderHilite,
+.dialogHeader,
+.dialogHeaderHilite { background:#e43e56 !important; width:100% !important}
+
+.windowHeaderText,
+.dialogHeaderText,
+.dialogStatusBarText { background:transparent !important}
+
+button { color:#FFF; background:#e43e56; border:none; border-radius:2px}
